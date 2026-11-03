@@ -11,18 +11,15 @@ local SHAPE={[3]={3,90,.62,-.12},[4]={3,-90,.62,.14},[8]={4,0,.58,0},[10]={5,-90
 
 local function roll_values() for i=1,qty do vals[i]=math.random(1,TYPES[ti]) end end
 function on_enter()
-  labels("Dado +","+ dado","Dado -","- dado","Rolar")
-  split_pads(true) labels_split("Dado -","Dado +","Rolar","Rolar")
+  labels("Rolar","+ dado","Tipo","- dado","")
   repeat_pads("")
   roll_values()
 end
 local function start_roll() rolling=0.9 tick=0 sfx("roll") end
 function on_pad(d)
   if rolling>0 then return end
-  if d=="n" or d=="nr" then ti=ti%#TYPES+1 sfx("tick") roll_values()
-  elseif d=="s" then ti=(ti-2)%#TYPES+1 sfx("tick") roll_values()
-  elseif d=="nl" then ti=(ti-2)%#TYPES+1 sfx("tick") roll_values()
-  elseif d=="sl" or d=="sr" then start_roll()
+  if d=="n" then start_roll()
+  elseif d=="s" then ti=ti%#TYPES+1 sfx("tick") roll_values()
   elseif d=="e" then if qty<6 then qty=qty+1 sfx("tick") roll_values() end
   elseif d=="w" then if qty>1 then qty=qty-1 sfx("tick") roll_values() end end
 end

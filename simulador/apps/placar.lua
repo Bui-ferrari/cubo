@@ -8,7 +8,7 @@ local SIDE={"n","e","s","w"}
 local POS={{120,78,180},{192,160,-90},{120,250,0},{48,160,90}}
 local COL={"accent","ok","warn","bad"}
 local function lab() labels("+1","+1","+1","+1",minus and "Modo +" or "Modo -","Desfazer","Zerar") end
-function on_enter() local s=recall("p","") if s~="" then local i=1 for v in s:gmatch("-?%d+") do sc[i]=tonumber(v) i=i+1 end end repeat_pads("nesw") lab() end
+function on_enter() local s=recall("p","") if s~="" then local i=1 for v in s:gmatch("-?%d+") do sc[i]=tonumber(v) i=i+1 end end repeat_pads("") lab() end
 local function store() save("p",table.concat(sc,",")) end
 function on_pad(d,n)
   for i,k in ipairs(SIDE) do

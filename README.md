@@ -1,6 +1,6 @@
 # Cubo
 
-Gadget para jogos de tabuleiro com ESP32-S3: tela de 240 × 320, pads de toque, sensor de movimento e alto-falante. Os apps são escritos em Lua e rodam primeiro neste simulador web, depois no aparelho.
+Gadget para jogos de tabuleiro com ESP32-S3: tela de 240 × 320, 6 pads de toque, sensor de movimento e alto-falante. Os apps são escritos em Lua e rodam primeiro neste simulador web, depois no aparelho.
 
 **Estado:** em desenvolvimento. Ainda sem licença definida.
 

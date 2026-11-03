@@ -14,7 +14,7 @@ local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%02d:%02d
 local function goto_set()
   state="set" stop_sound()
   if mode==3 then phase="foco" total=focus remaining=focus else total=setsecs remaining=setsecs end
-  labels("Iniciar","+10s","Zerar","-10s","Iniciar","Modo","") repeat_pads("ew")
+  labels("Iniciar","+10s","Zerar","-10s","Modo","","") repeat_pads("ew")
 end
 function on_enter() goto_set() end
 local function music() if mode==2 then play(TENSE,150,true,"triangle") end end
@@ -51,8 +51,7 @@ local function finish()
   end
 end
 function on_chord(c)
-  if c=="ne" then on_pad("n")
-  elseif c=="se" and state=="set" then mode=mode%3+1 sfx("tick") goto_set() end
+  if c=="ne" then if state=="set" then mode=mode%3+1 sfx("tick") goto_set() else on_pad("n") end end
 end
 function update(dt)
   if state=="run" then

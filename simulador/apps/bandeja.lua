@@ -1,9 +1,9 @@
 -- name: Bandeja de dados
 -- icon: ............/.aaa..bbb..../.aWa..bWb..../.aaa..bbb..../............/...bb...aaa.../..bWWb..aWa.../...bb...aaa.../............/.ffffffffff./.f........f./.ffffffffff./............
 -- Cada pad adiciona um dado de um tipo. Monte a jogada, chacoalhe e pronto.
-local TYPES={4,6,8,10,12,20,100,2}
+local TYPES={4,6,8,10,12,20}
 -- posição dos 8 pads (sentido horário a partir do topo esquerdo)
-local PAD={nl=1,nr=2,en=3,es=4,sr=5,sl=6,ws=7,wn=8}
+local PAD={wn=1,ws=2,en=3,es=4,s=5,n=6}
 local SHAPE={[2]={0},[4]={3,-90},[6]={4,45},[8]={4,0},[10]={5,-90},[12]={10,-90},[20]={6,-90},[100]={0}}
 local tray={}
 local cur=2
@@ -12,23 +12,20 @@ local rolling=0
 local function nm(t) return t==2 and "Moeda" or ("d"..t) end
 local function lab()
   split_pads(2)
-  labels("Tipo +","Adiciona","Tipo -","Tira","Rolar","","Limpar")
-  labels_split(nm(TYPES[1]),nm(TYPES[2]),nm(TYPES[6]),nm(TYPES[5]))
-  labels_side(nm(TYPES[3]),nm(TYPES[4]),nm(TYPES[8]),nm(TYPES[7]))
+  labels(nm(TYPES[6]),"","d12","","Rolar","Tirar","Limpar")
+  labels_side(nm(TYPES[3]),nm(TYPES[4]),nm(TYPES[1]),nm(TYPES[2]))
   repeat_pads("")
 end
 function on_enter() lab() end
 local function add(t) if #tray<12 then tray[#tray+1]={t=t,v=nil} rolled=false sfx("tick") else sfx("back") end end
 local function roll() if #tray==0 then return end rolling=0.8 sfx("roll") end
 function on_pad(d)
-  if PAD[d] then add(TYPES[PAD[d]]) return end
-  if d=="n" then cur=cur%#TYPES+1 sfx("tick")
-  elseif d=="s" then cur=(cur-2)%#TYPES+1 sfx("tick")
-  elseif d=="e" then add(TYPES[cur])
-  elseif d=="w" then if #tray>0 then tray[#tray]=nil rolled=false sfx("back") end end
+  if PAD[d] then add(TYPES[PAD[d]]) end
 end
 function on_chord(c)
-  if c=="ne" then roll() elseif c=="sw" then tray={} rolled=false sfx("back") end
+  if c=="ne" then roll()
+  elseif c=="se" then if #tray>0 then tray[#tray]=nil rolled=false sfx("back") end
+  elseif c=="sw" then tray={} rolled=false sfx("back") end
 end
 function on_shake() roll() end
 function update(dt)

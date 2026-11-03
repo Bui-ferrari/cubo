@@ -11,7 +11,7 @@ local function store() save("d",table.concat(dmg,",")) end
 function on_enter()
   local s=recall("d","")
   if s~="" then local i=1 for v in s:gmatch("%d+") do dmg[i]=tonumber(v) i=i+1 end end
-  labels("Anterior","+10","Próximo","-10","Zerar","","Zerar tudo") repeat_pads("ew")
+  labels("Anterior","+10","Próximo","-10","Zerar","","") repeat_pads("ew")
 end
 function on_pad(d,n)
   n=n or 1

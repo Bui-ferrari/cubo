@@ -47,9 +47,7 @@ h1{font:700 28px/1.1 var(--font-d);margin:0 0 4px;letter-spacing:-.01em;text-wra
 #pEN{left:80.36%;top:22.05%;width:17.86%;height:25.9%}#pES{left:80.36%;top:52.05%;width:17.86%;height:25.9%}
 #pWN{left:1.79%;top:22.05%;width:17.86%;height:25.9%}#pWS{left:1.79%;top:52.05%;width:17.86%;height:25.9%}
 #pEN svg,#pES svg{transform:rotate(90deg)}#pWN svg,#pWS svg{transform:rotate(-90deg)}
-.dev[data-pads="4"] .sp2,.dev[data-pads="6"] .sp2{display:none}
-.dev[data-pads="8"] #pN,.dev[data-pads="8"] #pS,.dev[data-pads="8"] #pE,.dev[data-pads="8"] #pW{display:none}
-.dev[data-pads="4"] .sp{display:none}.dev[data-pads="6"] #pN,.dev[data-pads="6"] #pS{display:none}
+.dev #pE,.dev #pW,.dev .sp,.dev .cor{display:none}
 .cor{position:absolute;width:9.4%;aspect-ratio:1;border:0;padding:0;border-radius:50%;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;
   background:linear-gradient(180deg,var(--pad-a),var(--pad-b));color:var(--pad-ink);font:700 3cqw var(--font-d);box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 1px 2px rgba(0,0,0,.25)}
 .cor.on{background:var(--pad-on)}
@@ -81,10 +79,10 @@ body.full{padding-block:8px}
 
 <button class="btn" id="bFull" aria-pressed="false">Tela cheia</button>
 <div class="wrap">
-<header><h1>Simulador do Cubo</h1><p class="sub">Tela de 240 × 320 e 4 pads, com os mesmos apps que vão rodar no ESP32.</p></header>
+<header><h1>Simulador do Cubo</h1><p class="sub">Tela de 240 × 320 e 6 pads, com os mesmos apps que vão rodar no ESP32.</p></header>
 
 <div>
- <div class="stage"><div class="dev" id="dev" data-pads="4">
+ <div class="stage"><div class="dev" id="dev" data-pads="6">
   <div class="scr"><canvas id="cv" width="240" height="320" aria-label="Tela do cubo"></canvas></div>
   <button class="pad" id="pN" aria-label="Pad norte"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad" id="pE" aria-label="Pad leste"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
@@ -107,7 +105,6 @@ body.full{padding-block:8px}
   <button class="btn primary" id="bShake">Chacoalhar</button>
   <button class="btn" id="bHome">Menu</button>
   <button class="btn" id="bMotion" aria-pressed="false">Sensor do celular</button>
-  <button class="btn" id="bPads">Pads: 4</button>
   <button class="btn primary" id="bPerm">Permitir sensor e microfone</button>
  </div>
  <div class="status" id="status" aria-live="off"></div>
@@ -116,10 +113,11 @@ body.full{padding-block:8px}
 
 <div class="side">
  <div class="card"><h2>Como usar</h2><ul>
-  <li>4 lados: toque num pad (ou use as setas). 4 cantos: dois pads vizinhos juntos, como norte+leste. Os rótulos nas bordas e nos cantos da tela mostram o que cada um faz agora.</li>
-  <li>No celular, encoste dois dedos em pads vizinhos. Com o mouse, use as bolinhas <span class="kbd">2×</span> dos cantos do aparelho.</li>
-  <li>Canto noroeste = Menu, sempre (<span class="kbd">Esc</span>). Canto nordeste = <span class="kbd">Enter</span>.</li>
-  <li>Botão <b>Pads: 4/6/8</b> divide os pads: 6 = cima e baixo em dois; 8 = todos os lados em dois. Em Ajustes, <b>Inclinar</b> liga a navegação por inclinação (precisa do sensor).</li>
+  <li><b>6 pads:</b> um em cima, um embaixo, dois à direita e dois à esquerda. <b>Toque</b> = o que está escrito na borda da tela, ao lado do pad.</li>
+  <li><b>Segurar 0,7 s:</b> pad de cima, da direita ou da esquerda faz o que está escrito no canto da tela (nordeste, sudeste, sudoeste). <b>Segurar o pad de baixo = voltar</b> (o canto noroeste mostra "Menu").</li>
+  <li>Nos apps de jogo os 4 pads laterais viram botões separados; nos demais, os dois do mesmo lado fazem a mesma coisa.</li>
+  <li>Teclado: setas = cima, baixo, direita-cima, esquerda-cima; <span class="kbd">.</span> = direita-baixo; <span class="kbd">,</span> = esquerda-baixo; <span class="kbd">Enter</span> = segurar cima; <span class="kbd">Esc</span> = Menu.</li>
+  <li>Em Ajustes, <b>Inclinar</b> liga a navegação por inclinação (4 direções, precisa do sensor).</li>
   <li>Chacoalhar: botão, <span class="kbd">espaço</span> ou o sensor do celular.</li>
  </ul></div>
 <div class="card"><h2>Sensor de movimento</h2>
@@ -139,7 +137,7 @@ body.full{padding-block:8px}
    <span>Dados salvos por app</span><span>até 512 bytes</span>
    <span>Tempo por quadro</span><span>aborta acima de 200 ms</span>
    <span>Som</span><span>1 voz, ondas simples</span>
-   <span>Entradas</span><span>8 (4 lados + 4 cantos) e chacoalhar</span>
+   <span>Entradas</span><span>6 pads (toque e segurar), inclinação e chacoalhar</span>
   </div>
   <p class="msg" style="margin-top:10px">O tempo por quadro aqui é de um celular. No ESP32 ele será várias vezes maior, então mantenha os apps leves.</p>
  </div>
@@ -401,13 +399,11 @@ function tiltStep(){
   if(now-pk.t<WAIT)return;
   const px=pk.dx,py=pk.dy;pk=null;
   let dir=null;
-  if(Math.abs(px)>T2&&Math.abs(py)>T2)dir=(py>0?'n':'s')+(px>0?'e':'w');
-  else if(Math.abs(px)>T&&Math.abs(px)>=Math.abs(py))dir=px>0?'e':'w';
+  if(Math.abs(px)>T&&Math.abs(px)>=Math.abs(py))dir=px>0?'e':'w';
   else if(Math.abs(py)>T)dir=py>0?'n':'s';
   if(!dir)return;
   armed=false;
-  if(dir.length===2)fireChord(dir);
-  else{flash[dir]=performance.now();const l=eff();const pd=dir==='n'?(l>=1?'nr':'n'):dir==='s'?(l>=1?'sr':'s'):dir==='e'?(l>=2?'en':'e'):(l>=2?'wn':'w');tap(pd,1);}
+  {flash[dir]=performance.now();const l=eff();const pd=dir==='e'?(l>=2?'en':'e'):dir==='w'?(l>=2?'wn':'w'):dir;tap(pd,1);}
 }
 const bMotion=$('bMotion'),motionMsg=$('motionMsg'),sInfo=$('sensorInfo'),sLive=$('sensorLive');
 sInfo.textContent=framed?'Aqui dentro do Claude o navegador bloqueia o sensor. Para usar a inclinação e o chacoalhar de verdade, abra o simulador direto no Chrome do celular (arquivo ou endereço próprio, com HTTPS).':'Ligue o sensor e, em Ajustes, ative Inclinar. Segure o celular na posição natural e toque em Calibrar.';
@@ -459,16 +455,12 @@ async function askPerms(){
 }
 $('bPerm').addEventListener('click',askPerms);$('bPerm2').addEventListener('click',askPerms);
 
-const bPads=$('bPads');
-function applyPads(){$('dev').dataset.pads=String(S.pads);bPads.textContent='Pads: '+S.pads;}
-applyPads();
-bPads.addEventListener('click',()=>{S.pads=S.pads===4?6:S.pads===6?8:4;saveSettings();applyPads();});
 
 /* ---------- pads e cantos ---------- */
 const els={n:$('pN'),e:$('pE'),s:$('pS'),w:$('pW'),nl:$('pNL'),nr:$('pNR'),sl:$('pSL'),sr:$('pSR'),en:$('pEN'),es:$('pES'),wn:$('pWN'),ws:$('pWS')};
 const SIDE_OF={n:'n',nl:'n',nr:'n',s:'s',sl:'s',sr:'s',e:'e',en:'e',es:'e',w:'w',wn:'w',ws:'w'};
-const eff=()=>Math.min(splitApp,({4:0,6:1,8:2})[S.pads]||0);
-const lg=d=>{const l=eff();if(l>=2)return d;if(l===1&&(d==='nl'||d==='nr'||d==='sl'||d==='sr'))return d;return SIDE_OF[d];};
+const eff=()=>splitApp>=2?2:0;
+const lg=d=>eff()>=2?d:SIDE_OF[d];
 const CORNER={};
 [['n','e','ne'],['e','s','se'],['s','w','sw'],['n','w','nw'],['nr','e','ne'],['sr','e','se'],['sl','w','sw'],['nl','w','nw'],['nr','en','ne'],['sr','es','se'],['sl','ws','sw'],['nl','wn','nw']].forEach(([a,b,c])=>{CORNER[a+'+'+b]=c;CORNER[b+'+'+a]=c;});
 const down={},pend={},rep={},chorded={},flash={};
@@ -480,22 +472,19 @@ function startRepeat(d){
   let n=1;rep[d]={t:setTimeout(()=>{rep[d].i=setInterval(()=>{n++;tap(d,n);},110);},430)};
 }
 function stopRepeat(d){if(rep[d]){clearTimeout(rep[d].t);clearInterval(rep[d].i);delete rep[d];}}
+const holdT={},held={};
+function holdFire(d){const sd=SIDE_OF[d];if(sd==='s'){flash.nw=performance.now();ensureAudio();goUp();}else fireChord(sd==='n'?'ne':sd==='e'?'se':'sw');}
 function press(d){
   if(down[d])return;ensureAudio();
-  const now=performance.now();down[d]=now;els[d].classList.add('on');
-  const others=Object.keys(down).filter(k=>k!==d&&now-down[k]<160&&!chorded[k]);
-  if(others.length){
-    const o=others[0];clearTimeout(pend[o]);delete pend[o];stopRepeat(o);
-    chorded[d]=chorded[o]=true;
-    const c=CORNER[d+'+'+o];if(c)fireChord(c);
-    return;
-  }
-  pend[d]=setTimeout(()=>{delete pend[d];tap(d,1);startRepeat(d);},50);
+  down[d]=performance.now();els[d].classList.add('on');
+  if(repOK(d))pend[d]=setTimeout(()=>{delete pend[d];tap(d,1);startRepeat(d);},50);
+  else holdT[d]=setTimeout(()=>{delete holdT[d];held[d]=1;holdFire(d);},650);
 }
 function release(d){
   if(!down[d])return;
   if(pend[d]){clearTimeout(pend[d]);delete pend[d];tap(d,1);}
-  stopRepeat(d);delete down[d];delete chorded[d];els[d].classList.remove('on');
+  else if(holdT[d]){clearTimeout(holdT[d]);delete holdT[d];tap(d,1);}
+  stopRepeat(d);delete down[d];delete held[d];els[d].classList.remove('on');
 }
 for(const d in els){
   const el=els[d];
@@ -509,15 +498,15 @@ for(const c of ['nw','ne','sw','se']){
   ['pointerup','pointercancel','pointerleave'].forEach(ev=>el.addEventListener(ev,()=>el.classList.remove('on')));
   el.addEventListener('contextmenu',e=>e.preventDefault());
 }
-const KEYS={ArrowUp:'n',ArrowRight:'e',ArrowDown:'s',ArrowLeft:'w'};
+const KEYS={ArrowUp:'n',ArrowRight:'en',ArrowDown:'s',ArrowLeft:'wn','.':'es',',':'ws'};
 addEventListener('keydown',e=>{
   if(e.repeat)return;
-  if(KEYS[e.key]){e.preventDefault();const k=KEYS[e.key];press(S.pads>=6&&(k==='n'||k==='s')?k+'r':(S.pads===8&&k==='e')?'en':(S.pads===8&&k==='w')?'wn':k);}
+  if(KEYS[e.key]){e.preventDefault();press(KEYS[e.key]);}
   else if(e.key===' '){e.preventDefault();ensureAudio();doShake();}
   else if(e.key==='Enter'){e.preventDefault();fireChord('ne');}
   else if(e.key==='Escape'){fireChord('nw');}
 });
-addEventListener('keyup',e=>{if(KEYS[e.key]){for(const k of [KEYS[e.key],KEYS[e.key]+'r','en','wn'])release(k);}});
+addEventListener('keyup',e=>{if(KEYS[e.key])release(KEYS[e.key]);});
 $('bShake').addEventListener('click',()=>{ensureAudio();doShake();});
 $('bHome').addEventListener('click',()=>{ensureAudio();goHome();});
 
@@ -581,7 +570,7 @@ function frame(t){
   if(!lastErr||cur){callLua('update',step);callLua('draw');}
   ms+=performance.now()-a;frames++;
   const l=eff();
-  if(l>=1){chip('nl',labs.nl||labs.n);chip('nr',labs.nr||labs.n);chip('sl',labs.sl||labs.s);chip('sr',labs.sr||labs.s);}else{chip('n',labs.n);chip('s',labs.s);}
+  chip('n',labs.n);chip('s',labs.s);
   if(l>=2){chip('en',labs.en||labs.e);chip('es',labs.es||labs.e);chip('wn',labs.wn||labs.w);chip('ws',labs.ws||labs.w);}else{chip('e',labs.e);chip('w',labs.w);}
   chip('ne',labs.ne);chip('se',labs.se);chip('sw',labs.sw);chip('nw',cur==='home'?'':'Menu');
   errorOverlay();

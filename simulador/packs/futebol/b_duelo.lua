@@ -9,7 +9,7 @@ local v={nil,nil}      -- 1 = lado de cima (azul), 2 = lado de baixo (laranja)
 local roll={0,0}
 local result=nil
 local function lab() labels("Rolar azul","Dado: d"..faces,"Rolar laranja","Dado: d"..faces,"Novo","","") split_pads(2)
-  labels_split("Azul","Azul","Laranja","Laranja") labels_side("d"..faces,"d"..faces,"d"..faces,"d"..faces) end
+  labels_side("d"..faces,"d"..faces,"d"..faces,"d"..faces) end
 function on_enter() repeat_pads("") lab() end
 local function try_result()
   if v[1] and v[2] and roll[1]<=0 and roll[2]<=0 then
@@ -24,8 +24,8 @@ local function start(i)
 end
 local TOP={n=1,nl=1,nr=1}
 function on_pad(d)
-  if d=="n" or d=="nl" or d=="nr" then start(1)
-  elseif d=="s" or d=="sl" or d=="sr" then start(2)
+  if d=="n" then start(1)
+  elseif d=="s" then start(2)
   else faces=(faces==6) and 12 or 6 v={nil,nil} result=nil sfx("tick") lab() end
 end
 function on_chord(c) if c=="ne" then v={nil,nil} result=nil sfx("tick") end end
