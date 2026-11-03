@@ -35,7 +35,7 @@ local function token(x,y,s,d)
   local r=s//2
   if d.t==2 or d.t==100 then circle(x,y,r,C.panel) ring(x,y,r,C.accent,2)
   else poly(x,y,math.floor(r*1.1),sh[1],sh[2],C.panel,true) poly(x,y,math.floor(r*1.1),sh[1],sh[2],C.accent,false,2) end
-  text(d.v and (d.t==2 and (d.v==1 and "C" or "K") or d.v) or "",x,y-8,C.fg,16,CENTER)
+  if d.v then if d.t==2 then text(d.v==1 and "C" or "K",x,y-8,C.fg,16,CENTER) else numtext(d.v,x,y-1,C.fg,16) end end
   text(d.t==2 and "" or ("d"..d.t),x,y+r-12,C.mute,8,CENTER)
 end
 function draw()

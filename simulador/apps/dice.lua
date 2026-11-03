@@ -7,7 +7,7 @@ local rolling,tick=0,0
 local PIPS={[1]={{.5,.5}},[2]={{.25,.25},{.75,.75}},[3]={{.25,.25},{.5,.5},{.75,.75}},[4]={{.25,.25},{.75,.25},{.25,.75},{.75,.75}},
 [5]={{.25,.25},{.75,.25},{.5,.5},{.25,.75},{.75,.75}},[6]={{.25,.25},{.75,.25},{.25,.5},{.75,.5},{.25,.75},{.75,.75}}}
 -- silhueta de cada dado: lados, rotação (graus), raio relativo, deslocamento do número
-local SHAPE={[3]={3,90,.62,-.12},[4]={3,-90,.62,.14},[8]={4,0,.58,0},[10]={5,-90,.54,.04},[12]={10,-90,.5,0},[20]={6,-90,.52,0}}
+local SHAPE={[3]={3,90,.62,-.12},[4]={3,-90,.62,.14},[8]={4,0,.58,0},[10]={5,-90,.54,0},[12]={10,-90,.5,0},[20]={6,-90,.52,0}}
 
 local function roll_values() for i=1,qty do vals[i]=math.random(1,TYPES[ti]) end end
 function on_enter()
@@ -47,14 +47,14 @@ local function die(x,y,s,v,t)
     text(v==1 and "CARA" or "COROA",cx,cy-(big and 9 or 6),C.fg,big and 18 or 12,CENTER)
   elseif t==100 then
     circle(cx,cy+3,s//2,C.mute) circle(cx,cy,s//2,C.panel) ring(cx,cy,s//2,C.accent,3)
-    text(v,cx,cy-fs//2-1,C.fg,fs,CENTER) text("%",cx,cy+s//2-16,C.mute,10,CENTER)
+    numtext(v,cx,cy-4,C.fg,fs) text("%",cx,cy+s//2-16,C.mute,10,CENTER)
   else
     local sh=SHAPE[t]
     local r=math.floor(s*sh[3])
     poly(cx,cy+3,r,sh[1],sh[2],C.mute,true)
     poly(cx,cy,r,sh[1],sh[2],C.panel,true)
     poly(cx,cy,r,sh[1],sh[2],C.accent,false,3)
-    text(v,cx,cy+math.floor(s*sh[4])-fs//2-1,C.fg,fs,CENTER)
+    numtext(v,cx,cy+math.floor(s*sh[4]),C.fg,fs)
   end
 end
 function draw()

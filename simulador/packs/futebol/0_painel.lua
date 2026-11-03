@@ -7,7 +7,7 @@ local di=1
 local state="set"   -- set, run, pause, done
 local left=DUR[di]*60
 local sc={0,0}
-local faces=6
+local faces=12   -- Futebol de Cartão usa só d12
 local v={nil,nil}
 local roll=0
 local flash=0
@@ -15,7 +15,7 @@ local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%02d:%02d
 local mode=1   -- 1 soma, 2 tira, 3 ajustes
 local MN={"soma","tira","ajustes"}
 local function lab()
-  if mode==3 then labels("Zerar tudo","Tempo","Modo soma","Tempo "..DUR[di%#DUR+1].." min","d"..(faces==6 and 12 or 6))
+  if mode==3 then labels("Zerar tudo","Tempo","Modo soma","Tempo "..DUR[di%#DUR+1].." min","")
   else labels("Rolar dados","Tempo","Modo "..MN[mode%3+1],mode==1 and "+1 azul" or "-1 azul",mode==1 and "+1 laranja" or "-1 laranja") end
 end
 function on_enter() repeat_pads("") lab() end
@@ -31,7 +31,7 @@ function on_pad(d)
   if mode==3 then
     if d=="up" then sc={0,0} v={nil,nil} state="set" left=DUR[di]*60 stop_sound() sfx("back")
     elseif d=="right" then if state=="set" then di=di%#DUR+1 left=DUR[di]*60 sfx("tick") lab() else sfx("back") end
-    elseif d=="ok" then faces=(faces==6) and 12 or 6 v={nil,nil} sfx("tick") lab() end
+    end
     return
   end
   if d=="up" then if roll<=0 then roll=0.8 sfx("roll") end
@@ -52,14 +52,9 @@ function update(dt)
 end
 local function die(cx,cy,col,val,win)
   local jit=roll>0 and math.random(-2,2) or 0
-  if faces==6 then
-    rect(cx-27+jit,cy-24,54,54,C.mute,12) rect(cx-27+jit,cy-27,54,54,col,12)
-    if win then frame(cx-31+jit,cy-31,62,62,C.fg,14,3) end
-  else
     poly(cx+jit,cy+3,30,10,-90,C.mute,true) poly(cx+jit,cy,30,10,-90,col,true)
     if win then poly(cx+jit,cy,34,10,-90,C.fg,false,3) end
-  end
-  if val then text(val,cx+jit,cy,rgb(255,255,255),28,CENTER) end
+  if val then numtext(val,cx+jit,cy,rgb(255,255,255),28) end
 end
 local function row(y,col,score,val,win)
   rect(X0,y,CW,74,col,16)

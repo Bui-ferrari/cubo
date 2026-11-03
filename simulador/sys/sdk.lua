@@ -14,6 +14,17 @@ function ring(x,y,r,c,t) _circle(x,y,r,c or C.fg,0,t or 2) end
 function line(x1,y1,x2,y2,c,t) _line(x1,y1,x2,y2,c or C.fg,t or 2) end
 function arc(x,y,r,a0,a1,c,t) _arc(x,y,r,a0,a1,c or C.fg,t or 6) end
 function text(s,x,y,c,size,align,rot) _text(tostring(s),x,y,c or C.fg,size or 16,align or 0,rot or 0) end
+-- número de dado centrado no ponto (cx,cy); sublinha 6 e 9 (e números que os contêm) para dar a orientação
+function numtext(v,cx,cy,c,size,rot)
+  local s=tostring(v) c=c or C.fg size=size or 16
+  local flip=((rot or 0)%360)==180
+  if flip then text(s,cx,cy,c,size,CENTER,rot) else text(s,cx,cy-size//2-1,c,size,CENTER) end
+  if s:find("[69]") then
+    local w=text_width(s,size) local t=math.max(2,size//10)
+    local y=flip and (cy-size//2-t-1) or (cy+size//2+1)
+    rect(cx-w//2,y,w,t,c)
+  end
+end
 function tri(x1,y1,x2,y2,x3,y3,c) _tri(x1,y1,x2,y2,x3,y3,c or C.fg) end
 function poly(x,y,r,n,rot,c,fill,t) _poly(x,y,r,n,rot or 0,c or C.fg,fill and 1 or 0,t or 2) end
 -- decoração de canto de cada skin (quarto de círculo, canto cortado, barras)
