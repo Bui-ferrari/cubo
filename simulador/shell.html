@@ -497,25 +497,80 @@ $('bHome').addEventListener('click',()=>{ensureAudio();goHome();});
 
 /* ---------- rótulos nas bordas ---------- */
 const CORN={ne:1,se:1,sw:1,nw:1};
+/* ---------- plaquinhas dos pads: do tamanho do pad vizinho, com símbolo ---------- */
+const norm=t=>String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const ICON_RULES=[
+ [/^(ok|abrir|confirmar|instalar|conectar|escolher|selecionar|entrar|salvar)/,'ok'],
+ [/^(voltar|sair|menu)/,'back'],
+ [/^(anterior|esquerda)/,'left'],[/^(proximo|direita)/,'right'],[/^(acima|cima)/,'up'],[/^(abaixo|baixo)/,'down'],
+ [/^(menos|tirar|tira|remover|diminuir)/,'minus'],[/^(mais|adiciona|adicionar|aumentar)/,'plus'],
+ [/^(rolar|dado|dados|girar|sortear)/,'dice'],
+ [/^(iniciar|seguir|comecar|tempo|jogar|continuar)/,'play'],[/^pausar/,'pause'],[/^parar/,'stop'],
+ [/^(zerar|novo|reiniciar|atualizar|limpar|recomecar)/,'reset'],[/^ler/,'speaker']];
+function iconFor(text){
+  const m=/^@(\w+)\s*/.exec(text);if(m)return[m[1],text.slice(m[0].length)];
+  const n=norm(text);for(const [re,ic] of ICON_RULES)if(re.test(n))return[ic,text];
+  return[null,text];
+}
+function drawIcon(ic,cx,cy,r){
+  ctx.save();ctx.translate(cx,cy);ctx.lineWidth=Math.max(2,r*.28);ctx.lineCap='round';ctx.lineJoin='round';
+  const tri=a=>{ctx.rotate(a);ctx.beginPath();ctx.moveTo(r*.9,0);ctx.lineTo(-r*.6,r*.8);ctx.lineTo(-r*.6,-r*.8);ctx.closePath();ctx.fill();};
+  if(ic==='right'||ic==='play')tri(0);
+  else if(ic==='left')tri(Math.PI);
+  else if(ic==='up')tri(-Math.PI/2);
+  else if(ic==='down')tri(Math.PI/2);
+  else if(ic==='ok'){ctx.beginPath();ctx.moveTo(-r*.8,0);ctx.lineTo(-r*.2,r*.6);ctx.lineTo(r*.85,-r*.6);ctx.stroke();}
+  else if(ic==='back'){ctx.beginPath();ctx.moveTo(-r*.2,-r*.8);ctx.lineTo(-r*.9,-r*.2);ctx.lineTo(-r*.2,r*.4);ctx.moveTo(-r*.8,-r*.2);ctx.lineTo(r*.2,-r*.2);ctx.quadraticCurveTo(r*.95,-r*.2,r*.95,r*.35);ctx.quadraticCurveTo(r*.95,r*.9,r*.2,r*.9);ctx.lineTo(-r*.3,r*.9);ctx.stroke();}
+  else if(ic==='plus'){ctx.beginPath();ctx.moveTo(-r*.8,0);ctx.lineTo(r*.8,0);ctx.moveTo(0,-r*.8);ctx.lineTo(0,r*.8);ctx.stroke();}
+  else if(ic==='minus'){ctx.beginPath();ctx.moveTo(-r*.8,0);ctx.lineTo(r*.8,0);ctx.stroke();}
+  else if(ic==='pause'){ctx.fillRect(-r*.7,-r*.8,r*.5,r*1.6);ctx.fillRect(r*.2,-r*.8,r*.5,r*1.6);}
+  else if(ic==='stop'){ctx.fillRect(-r*.7,-r*.7,r*1.4,r*1.4);}
+  else if(ic==='reset'){ctx.beginPath();ctx.arc(0,0,r*.7,-Math.PI*.15,Math.PI*1.55);ctx.stroke();ctx.beginPath();ctx.moveTo(r*.2,-r*1.05);ctx.lineTo(r*.9,-r*.55);ctx.lineTo(r*.1,-r*.25);ctx.closePath();ctx.fill();}
+  else if(ic==='dice'){ctx.beginPath();ctx.rect(-r*.8,-r*.8,r*1.6,r*1.6);ctx.stroke();for(const[a,b] of [[-.35,-.35],[.35,.35],[0,0]]){ctx.beginPath();ctx.arc(a*r,b*r,r*.14,0,7);ctx.fill();}}
+  else if(ic==='speaker'){ctx.beginPath();ctx.moveTo(-r*.8,-r*.3);ctx.lineTo(-r*.3,-r*.3);ctx.lineTo(r*.2,-r*.8);ctx.lineTo(r*.2,r*.8);ctx.lineTo(-r*.3,r*.3);ctx.lineTo(-r*.8,r*.3);ctx.closePath();ctx.fill();ctx.beginPath();ctx.arc(r*.2,0,r*.6,-.9,.9);ctx.stroke();}
+  ctx.restore();
+}
+/* retângulo (no espaço da tela de 240 × 320) e orientação de cada plaquinha */
+function plateRect(side){
+  if(side==='n')return[26,3,188,22,0];
+  if(side==='s')return[26,H-25,188,22,0];
+  const x=side[0]==='w'?3:W-25,y=side[1]==='n'?30:172;
+  return[x,y,22,118,side[0]==='w'?-1:1];
+}
 function chip(side,text){
   if(!text)return;
-  if(CORN[side])return quarter(side,text);
   const on=!!down[side]||performance.now()-(flash[side]||0)<180;
   const byPlayer=S.label===1;
-  ctx.font=FONT(12);
-  const tw=Math.ceil(ctx.measureText(text).width);
+  const [x,y,w0,h0,o]=plateRect(side);
+  const [ic,label]=iconFor(String(text));
+  const vertical=o!==0;
+  const L=vertical?h0:w0,T=vertical?w0:h0;              // L = lado de leitura, T = espessura
+  let rot=vertical?(byPlayer?-o:o)*Math.PI/2:((side==='n'&&byPlayer)?Math.PI:0);
+  const BASE=ctx.getTransform();
   ctx.save();
-  let cx,cy,w,h=20,rot=0;
-  if(side==='n'||side==='s'){w=Math.min(118,tw+18);cx=W/2;cy=side==='n'?13:H-13;rot=(side==='n'&&byPlayer)?Math.PI:0;}
-  else if(side[1]==='l'||side[1]==='r'){w=Math.min(68,tw+16);cx=W/2+(side[1]==='l'?-38:38);cy=side[0]==='n'?13:H-13;rot=(side[0]==='n'&&byPlayer)?Math.PI:0;}
-  else if(side.length===2){w=Math.min(100,tw+16);cx=side[0]==='e'?W-13:13;cy=H/2+(side[1]==='n'?-58:58);
-    rot=byPlayer?(side[0]==='e'?-Math.PI/2:Math.PI/2):(side[0]==='e'?Math.PI/2:-Math.PI/2);}
-  else{w=Math.min(150,tw+18);cy=H/2;cx=side==='e'?W-13:13;
-    rot=byPlayer?(side==='e'?-Math.PI/2:Math.PI/2):(side==='e'?Math.PI/2:-Math.PI/2);}
-  ctx.translate(cx,cy);ctx.rotate(rot);
-  path(-w/2,-h/2,w,h,h/2*TH().rscale);ctx.fillStyle=q(on?themeColor('accent'):themeColor('panel'));ctx.fill();
+  ctx.translate(x+w0/2,y+h0/2);ctx.rotate(rot);
+  path(-L/2,-T/2,L,T,Math.min(T/2,9)*TH().rscale);
+  ctx.fillStyle=q(on?themeColor('accent'):themeColor('panel'));ctx.fill();
   ctx.lineWidth=2;ctx.strokeStyle=q(themeColor('accent'));ctx.stroke();
-  ctx.fillStyle=q(on?themeColor('bg'):themeColor('fg'));ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,0,1);
+  const fg=q(on?themeColor('bg'):themeColor('fg'));
+  ctx.fillStyle=fg;ctx.strokeStyle=fg;
+  let size=12;ctx.font=FONT(size);
+  const avail=L-(ic?T+4:14);
+  while(ctx.measureText(label).width>avail&&size>8){size--;ctx.font=FONT(size);}
+  let txt=label;while(ctx.measureText(txt).width>avail&&txt.length>1)txt=txt.slice(0,-1);
+  if(txt!==label)txt=txt.slice(0,-1)+'…';
+  ctx.textBaseline='middle';
+  if(ic){
+    const tw=ctx.measureText(txt).width;
+    const total=T*.55+5+(txt?tw:0);
+    const x0=-total/2;
+    ctx.fillStyle=fg;ctx.strokeStyle=fg;
+    const dirIc=['left','right','up','down','play'].includes(ic);
+    if(dirIc){const m=ctx.getTransform(),pt=m.transformPoint(new DOMPoint(x0+T*.275,0));
+      ctx.save();ctx.setTransform(BASE);ctx.fillStyle=fg;drawIcon(ic,pt.x,pt.y,T*.3);ctx.restore();}
+    else{ctx.save();ctx.translate(x0+T*.275,0);drawIcon(ic,0,0,T*.3);ctx.restore();}
+    ctx.textAlign='left';if(txt)ctx.fillText(txt,x0+T*.55+5,1);
+  }else{ctx.textAlign='center';ctx.fillText(txt,0,1);}
   ctx.restore();
 }
 /* canto: quarto de círculo colado na quina da tela (dois pads vizinhos juntos) */
