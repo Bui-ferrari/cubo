@@ -1,0 +1,5 @@
+name: DeBater
+icon: ............/.ffffffffff./.fWWWWWWWWf./.fWffWWffWf./.fWWWWWWWWf./.ffffffffff./....ff....../...ff......./..ff......../.fff......../............/............
+desc: Companion do jogo
+skin: 1
+uses: timer

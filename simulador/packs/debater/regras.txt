@@ -1,0 +1,11 @@
+Como jogar
+EXEMPLO: troque este texto pelas regras reais do DeBater.
+---
+1. Montagem
+EXEMPLO: dois times se sentam em lados opostos da mesa. O cubo fica no meio.
+---
+2. Rodadas
+EXEMPLO: cada time tem um tempo para falar. Use o Relógio de turnos para passar a vez.
+---
+3. Fim
+EXEMPLO: ganha quem convencer mais o grupo.

@@ -1,0 +1,8 @@
+Como jogar
+EXEMPLO: este pacote mostra como um jogo de outra editora entra no cubo. As regras aqui são só de exemplo.
+---
+1. Preparação
+EXEMPLO: o texto é todo configurável: cada jogo traz suas regras e escolhe quais mini-apps usar.
+---
+2. Mini-apps
+EXEMPLO: aqui entram o Timer e o Quem começa, que já existem no cubo.

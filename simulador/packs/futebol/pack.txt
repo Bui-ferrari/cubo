@@ -1,0 +1,5 @@
+name: Futebol de Cartão
+icon: ............/.....ff...../...ffWWff.../..fWWffWWf../.fWfffffWWf./.fWffWWffWf./.fWffWWffWf./.fWfffffWWf./..fWWffWWf../...ffWWff.../.....ff...../............
+desc: Companion do jogo
+skin: 1
+uses: placar,dice

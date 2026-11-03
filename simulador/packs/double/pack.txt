@@ -1,0 +1,4 @@
+name: Double
+icon: ............/...ffffff..../..fWWWWWWf.../.fWaWWWWbWf../.fWWWWaWWWf../.fWbWWWWaWf../.fWWWaWWWWf../..fWWWWWWf.../...ffffff..../............/............/............
+desc: Exemplo de jogo de terceiros
+uses: timer,quem

@@ -1,0 +1,14 @@
+Como jogar
+EXEMPLO: troque este texto pelas regras reais do Futebol de Cartão. Cada slide mostra uma etapa e o cubo pode ler em voz alta.
+---
+1. Monte o time
+EXEMPLO: cada jogador escolhe suas cartas e forma o time antes da partida começar.
+---
+2. Duelo
+EXEMPLO: nas disputas, cada lado rola o seu dado. Quem tirar mais vence a jogada. O cubo já mostra os dois dados prontos.
+---
+3. Tempo de jogo
+EXEMPLO: a partida dura 20 ou 30 minutos. Use o Tempo de jogo para marcar o relógio.
+---
+4. Vitória
+EXEMPLO: vence quem marcar mais gols quando o tempo acabar.
