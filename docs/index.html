@@ -46,7 +46,7 @@ h1{font:700 28px/1.1 var(--font-d);margin:0 0 4px;letter-spacing:-.01em;text-wra
 #pSL svg,#pSR svg{transform:rotate(180deg)}
 #pEN{left:80.36%;top:22.05%;width:17.86%;height:25.9%}#pES{left:80.36%;top:52.05%;width:17.86%;height:25.9%}
 #pWN{left:1.79%;top:22.05%;width:17.86%;height:25.9%}#pWS{left:1.79%;top:52.05%;width:17.86%;height:25.9%}
-#pEN svg,#pES svg{transform:rotate(90deg)}#pWN svg,#pWS svg{transform:rotate(-90deg)}
+#pEN svg{transform:rotate(90deg)}#pWN svg{transform:rotate(-90deg)}#pES svg,#pWS svg{transform:none}
 .dev #pE,.dev #pW,.dev .sp,.dev .cor{display:none}
 .cor{position:absolute;width:9.4%;aspect-ratio:1;border:0;padding:0;border-radius:50%;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;
   background:linear-gradient(180deg,var(--pad-a),var(--pad-b));color:var(--pad-ink);font:700 3cqw var(--font-d);box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 1px 2px rgba(0,0,0,.25)}
@@ -84,18 +84,18 @@ body.full{padding-block:8px}
 <div>
  <div class="stage"><div class="dev" id="dev" data-pads="6">
   <div class="scr"><canvas id="cv" width="240" height="320" aria-label="Tela do cubo"></canvas></div>
-  <button class="pad" id="pN" aria-label="Pad norte"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad" id="pN" aria-label="Pad de cima"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad" id="pE" aria-label="Pad leste"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad" id="pS" aria-label="Pad sul"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad" id="pS" aria-label="Pad de baixo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad" id="pW" aria-label="Pad oeste"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pNL" aria-label="Pad norte esquerdo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pNR" aria-label="Pad norte direito"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pSL" aria-label="Pad sul esquerdo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pSR" aria-label="Pad sul direito"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pEN" aria-label="Pad leste de cima"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pES" aria-label="Pad leste de baixo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pWN" aria-label="Pad oeste de cima"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pWS" aria-label="Pad oeste de baixo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad sp2" id="pEN" aria-label="Pad direita de cima: direita"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad sp2" id="pES" aria-label="Pad direita de baixo: OK"><svg viewBox="0 0 10 10"><path d="M2 5.3l2.3 2.4L8.2 2.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <button class="pad sp2" id="pWN" aria-label="Pad esquerda de cima: esquerda"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad sp2" id="pWS" aria-label="Pad esquerda de baixo: voltar"><svg viewBox="0 0 10 10"><path d="M3.2 2.2L1.6 3.8l1.6 1.6M1.8 3.8h4.4a2.1 2.1 0 010 4.2H4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <button class="cor" id="cNW" aria-label="Canto noroeste: norte e oeste juntos">2×</button>
   <button class="cor" id="cNE" aria-label="Canto nordeste: norte e leste juntos">2×</button>
   <button class="cor" id="cSW" aria-label="Canto sudoeste: sul e oeste juntos">2×</button>
@@ -113,11 +113,11 @@ body.full{padding-block:8px}
 
 <div class="side">
  <div class="card"><h2>Como usar</h2><ul>
-  <li><b>6 pads:</b> um em cima, um embaixo, dois à direita e dois à esquerda. <b>Toque</b> = o que está escrito na borda da tela, ao lado do pad.</li>
-  <li><b>Segurar 0,7 s:</b> pad de cima, da direita ou da esquerda faz o que está escrito no canto da tela (nordeste, sudeste, sudoeste). <b>Segurar o pad de baixo = voltar</b> (o canto noroeste mostra "Menu").</li>
-  <li>Nos apps de jogo os 4 pads laterais viram botões separados; nos demais, os dois do mesmo lado fazem a mesma coisa.</li>
-  <li>Teclado: setas = cima, baixo, direita-cima, esquerda-cima; <span class="kbd">.</span> = direita-baixo; <span class="kbd">,</span> = esquerda-baixo; <span class="kbd">Enter</span> = segurar cima; <span class="kbd">Esc</span> = Menu.</li>
-  <li>Em Ajustes, <b>Inclinar</b> liga a navegação por inclinação (4 direções, precisa do sensor).</li>
+  <li><b>6 pads, sem combinar dois toques:</b> cima, baixo, esquerda (em cima), direita (em cima), OK (embaixo à direita) e Voltar (embaixo à esquerda).</li>
+  <li><b>Voltar</b> sempre sobe um nível: mini-app → menu do jogo → Menu. Ele é do sistema: nenhum app usa esse pad para outra coisa.</li>
+  <li>Os rótulos nas bordas da tela mostram o que cada pad faz agora. Pad sem rótulo não faz nada naquele app.</li>
+  <li>Teclado: setas, <span class="kbd">Enter</span> = OK, <span class="kbd">Esc</span> ou <span class="kbd">Backspace</span> = Voltar.</li>
+  <li>Em Ajustes, <b>Inclinar</b> liga a navegação por inclinação (cima, baixo, esquerda, direita; precisa do sensor).</li>
   <li>Chacoalhar: botão, <span class="kbd">espaço</span> ou o sensor do celular.</li>
  </ul></div>
 <div class="card"><h2>Sensor de movimento</h2>
@@ -137,7 +137,7 @@ body.full{padding-block:8px}
    <span>Dados salvos por app</span><span>até 512 bytes</span>
    <span>Tempo por quadro</span><span>aborta acima de 200 ms</span>
    <span>Som</span><span>1 voz, ondas simples</span>
-   <span>Entradas</span><span>6 pads (toque e segurar), inclinação e chacoalhar</span>
+   <span>Entradas</span><span>6 pads (um toque cada), inclinação e chacoalhar</span>
   </div>
   <p class="msg" style="margin-top:10px">O tempo por quadro aqui é de um celular. No ESP32 ele será várias vezes maior, então mantenha os apps leves.</p>
  </div>
@@ -169,17 +169,15 @@ end
 function on_enter()
   refresh_colors()
   if sel>_app_count() then sel=1 end
-  labels("Abrir","Próximo","Ajustes","Anterior","OK","Loja","") repeat_pads("")
+  labels("Ajustes","Loja","Anterior","Próximo","Abrir") repeat_pads("")
 end
 function on_pad(d)
   local n=_app_count()
-  if d=="w" then sel=(sel-2)%n+1 sfx("tick")
-  elseif d=="e" then sel=sel%n+1 sfx("tick")
-  elseif d=="n" then sfx("confirm") _launch(sel)
-  elseif d=="s" then sfx("tick") _launch_settings() end
-end
-function on_chord(c)
-  if c=="ne" then sfx("confirm") _launch(sel) elseif c=="se" then sfx("tick") _launch_store() end
+  if d=="left" then sel=(sel-2)%n+1 sfx("tick")
+  elseif d=="right" then sel=sel%n+1 sfx("tick")
+  elseif d=="ok" then sfx("confirm") _launch(sel)
+  elseif d=="up" then sfx("tick") _launch_settings()
+  elseif d=="down" then sfx("tick") _launch_store() end
 end
 function on_shake() shake_t=1.3 sfx("shake") end
 function update(dt) t=t+dt if shake_t>0 then shake_t=shake_t-dt end end
@@ -223,14 +221,13 @@ local function rows(i)
   for x in _pk_icon(i):gmatch("[^/]+") do r[#r+1]=x end
   return r
 end
-function on_enter() refresh_colors() labels("Abrir","Próximo","","Anterior","OK") repeat_pads("") end
+function on_enter() refresh_colors() labels("","","Anterior","Próximo","Abrir") repeat_pads("") end
 function on_pad(d)
   local n=_pk_count()
-  if d=="w" then sel=(sel-2)%n+1 sfx("tick")
-  elseif d=="e" then sel=sel%n+1 sfx("tick")
-  elseif d=="n" then sfx("confirm") _pk_launch(sel) end
+  if d=="left" then sel=(sel-2)%n+1 sfx("tick")
+  elseif d=="right" then sel=sel%n+1 sfx("tick")
+  elseif d=="ok" then sfx("confirm") _pk_launch(sel) end
 end
-function on_chord(c) if c=="ne" then sfx("confirm") _pk_launch(sel) end end
 function update(dt) t=t+dt end
 function draw()
   clear() decor()
@@ -246,7 +243,7 @@ function draw()
     local x=W//2-(n*14)//2+(i-1)*14+7
     circle(x,254,i==sel and 4 or 3,i==sel and C.accent or C.mute)
   end
-  text("canto NO volta",W//2,276,C.mute,10,CENTER)
+  text("Voltar: Menu",W//2,276,C.mute,10,CENTER)
 end
 </script>
 <script type="text/x-lua" id="sys-sdk">
@@ -275,8 +272,11 @@ function decor()
   elseif d==1 then tri(240,0,240,56,240-56*1.4466,0,C.deco)
   else rect(0,296,38,5,C.deco) rect(0,304,56,5,C.deco) rect(0,312,74,5,C.deco) end
 end
--- labels(norte, leste, sul, oeste, nordeste, sudeste, sudoeste). O noroeste é sempre "Menu" (sistema).
-function labels(n,e,s,w,ne,se,sw) _labels(n or "",e or "",s or "",w or "",ne or "",se or "",sw or "") end
+-- Pads (6, sem combinar toques). Nomes lógicos que o app recebe em on_pad(d): "up","down","left","right","ok".
+-- "back" (Voltar) é do sistema: sobe um nível e nunca chega ao app.
+-- labels(cima, baixo, esquerda, direita, ok): texto de cada pad na borda da tela. Vazio = pad sem função.
+function labels(up,down,left,right,ok,back) _labels(up or "",down or "",left or "",right or "",ok or "",back or "") end
+-- repeat_pads("left right"): nomes dos pads que repetem ao segurar
 function repeat_pads(s) _repeat(s or "") end
 function sfx(n) _sfx(n) end
 function play(song,bpm,loop,wave) _play(song,bpm or 160,loop and 1 or 0,wave or "square") end
@@ -285,10 +285,6 @@ function millis() return _millis() end
 function now() return _time() end
 function accel() return _accel() end
 function home() _home() end
--- 6 pads: o app pede os pads de cima/baixo divididos (nl, nr, sl, sr). Com 4 pads continua recebendo n e s.
--- nível 1: cima/baixo divididos (nl, nr, sl, sr). nível 2: todos os 8 pads (+ en, es, wn, ws).
-function split_pads(l) if l==true then l=1 elseif not l then l=0 end _split(l) end
-function labels_side(en,es,wn,ws) _lside(en or "",es or "",wn or "",ws or "") end
 function text_width(s,size) return _tw(s,size) end
 function wrap(s,size,maxw)
   local lines,line={},""
@@ -301,7 +297,6 @@ function wrap(s,size,maxw)
 end
 function speak(s) _speak(s) end
 function speak_stop() _speak_stop() end
-function labels_split(nl,nr,sl,sr) _lsplit(nl or "",nr or "",sl or "",sr or "") end
 function wifi_state() return _wifi() end
 function save(k,v) _save(k,tostring(v)) end
 function recall(k,d) local v=_load(k) if v=="" then return d end return v end
@@ -325,7 +320,7 @@ local ITEMS={"Skin","Rótulos","Inclinar","Volume","Brilho","Wi-Fi","Voltar"}
 local sel=1
 local SKINS={"Cubo","Criya","PokePlace","Obirô"}
 local LAB={"de frente","por jogador"}
-function on_enter() refresh_colors() labels("Acima","Mais","Abaixo","Menos","OK") repeat_pads("") end
+function on_enter() refresh_colors() labels("Acima","Abaixo","Menos","Mais","OK") repeat_pads("") end
 local function change(dir)
   local k=ITEMS[sel]
   if k=="Skin" then _set("theme",(_get("theme")+dir)%4) refresh_colors() sfx("tick")
@@ -338,12 +333,11 @@ local function change(dir)
   else sfx("back") end
 end
 function on_pad(d)
-  if d=="n" then sel=(sel-2)%#ITEMS+1 sfx("tick")
-  elseif d=="s" then sel=sel%#ITEMS+1 sfx("tick")
-  elseif d=="e" then change(1)
-  elseif d=="w" then change(-1) end
+  if d=="up" then sel=(sel-2)%#ITEMS+1 sfx("tick")
+  elseif d=="down" then sel=sel%#ITEMS+1 sfx("tick")
+  elseif d=="right" or d=="ok" then change(1)
+  elseif d=="left" then change(-1) end
 end
-function on_chord(c) if c=="ne" then change(1) end end
 local function value(k)
   if k=="Skin" then return SKINS[_get("theme")+1]
   elseif k=="Rótulos" then return LAB[_get("label")+1]
@@ -370,18 +364,15 @@ end
 -- Regras em slides, passo a passo, com leitura em voz alta
 local i=1
 local reading=false
-local function lab() labels("Ler","Próximo","Parar","Anterior","Ler","Parar","") end
+local function lab() labels("","Parar","Anterior","Próximo","Ler") end
 function on_enter() refresh_colors() lab() repeat_pads("") end
 local function read() reading=true speak(_sl_title(i)..". ".._sl_text(i)) sfx("tick") end
 function on_pad(d)
   local n=_sl_count()
-  if d=="e" then if i<n then i=i+1 reading=false speak_stop() sfx("tick") else sfx("back") end
-  elseif d=="w" then if i>1 then i=i-1 reading=false speak_stop() sfx("tick") else sfx("back") end
-  elseif d=="n" then read()
-  elseif d=="s" then reading=false speak_stop() end
-end
-function on_chord(c)
-  if c=="ne" then read() elseif c=="se" then reading=false speak_stop() end
+  if d=="right" then if i<n then i=i+1 reading=false speak_stop() sfx("tick") else sfx("back") end
+  elseif d=="left" then if i>1 then i=i-1 reading=false speak_stop() sfx("tick") else sfx("back") end
+  elseif d=="ok" then read()
+  elseif d=="down" then reading=false speak_stop() end
 end
 function draw()
   clear() decor()
@@ -405,27 +396,23 @@ local t=0
 function on_enter() refresh_colors() t=0 end
 local function lab()
   local w=_wifi()
-  if w=="off" or w=="fail" then labels("Conectar","","","","Conectar")
-  elseif w=="ready" then labels("Acima","Instalar","Abaixo","Remover","OK","Atualizar")
-  else labels("","","","") end
+  if w=="off" or w=="fail" then labels("","","","","Conectar")
+  elseif w=="ready" then labels("Acima","Abaixo","Remover","Instalar","Atualizar")
+  else labels("","","","","") end
   repeat_pads("")
 end
 local last=""
 local function toggle() if _store_count()>0 then _store_toggle(sel) sfx(_store_has(sel)==1 and "win" or "back") end end
 function on_pad(d)
   local w=_wifi()
-  if w=="off" or w=="fail" then if d=="n" then _wifi_go() sfx("confirm") end return end
+  if w=="off" or w=="fail" then if d=="ok" then _wifi_go() sfx("confirm") end return end
   if w~="ready" then return end
   local n=_store_count()
-  if d=="n" then sel=(sel-2)%n+1 sfx("tick")
-  elseif d=="s" then sel=sel%n+1 sfx("tick")
-  elseif d=="e" then if _store_has(sel)==0 then toggle() end
-  elseif d=="w" then if _store_has(sel)==1 then toggle() end end
-end
-function on_chord(c)
-  local w=_wifi()
-  if c=="ne" then if w=="off" then _wifi_go() sfx("confirm") elseif w=="ready" then toggle() end
-  elseif c=="se" and w=="ready" then _wifi_off() _wifi_go() sfx("tick") end
+  if d=="up" then sel=(sel-2)%n+1 sfx("tick")
+  elseif d=="down" then sel=sel%n+1 sfx("tick")
+  elseif d=="right" then if _store_has(sel)==0 then toggle() end
+  elseif d=="left" then if _store_has(sel)==1 then toggle() end
+  elseif d=="ok" then _wifi_off() _wifi_go() sfx("tick") end
 end
 function update(dt) t=t+dt local w=_wifi() if w~=last then last=w lab() end end
 function draw()
@@ -434,7 +421,7 @@ function draw()
   local w=_wifi()
   if w=="off" or w=="fail" then
     text("Wi-Fi desligado",W//2,130,C.fg,18,CENTER)
-    text("toque em Conectar",W//2,160,C.mute,12,CENTER)
+    text("aperte OK para conectar",W//2,160,C.mute,12,CENTER)
   elseif w=="scan" or w=="on" or w=="check" then
     local dots=string.rep(".",1+math.floor(t*3)%3)
     text(w=="scan" and "Procurando redes" or (w=="on" and "Conectado a Casa-Maker" or "Buscando atualizações"),W//2,120,C.fg,14,CENTER)
@@ -473,19 +460,19 @@ local SHAPE={[3]={3,90,.62,-.12},[4]={3,-90,.62,.14},[8]={4,0,.58,0},[10]={5,-90
 
 local function roll_values() for i=1,qty do vals[i]=math.random(1,TYPES[ti]) end end
 function on_enter()
-  labels("Rolar","+ dado","Tipo","- dado","")
+  labels("Tipo +","Tipo -","- dado","+ dado","Rolar") repeat_pads("")
   repeat_pads("")
   roll_values()
 end
 local function start_roll() rolling=0.9 tick=0 sfx("roll") end
 function on_pad(d)
   if rolling>0 then return end
-  if d=="n" then start_roll()
-  elseif d=="s" then ti=ti%#TYPES+1 sfx("tick") roll_values()
-  elseif d=="e" then if qty<6 then qty=qty+1 sfx("tick") roll_values() end
-  elseif d=="w" then if qty>1 then qty=qty-1 sfx("tick") roll_values() end end
+  if d=="ok" then start_roll()
+  elseif d=="up" then ti=ti%#TYPES+1 sfx("tick") roll_values()
+  elseif d=="down" then ti=(ti-2)%#TYPES+1 sfx("tick") roll_values()
+  elseif d=="right" then if qty<6 then qty=qty+1 sfx("tick") roll_values() end
+  elseif d=="left" then if qty>1 then qty=qty-1 sfx("tick") roll_values() end end
 end
-function on_chord(c) if c=="ne" and rolling<=0 then start_roll() end end
 function on_shake() if rolling<=0 then start_roll() end end
 function update(dt)
   if rolling>0 then
@@ -546,31 +533,26 @@ end
 -- name: Bandeja de dados
 -- icon: ............/.aaa..bbb..../.aWa..bWb..../.aaa..bbb..../............/...bb...aaa.../..bWWb..aWa.../...bb...aaa.../............/.ffffffffff./.f........f./.ffffffffff./............
 -- Cada pad adiciona um dado de um tipo. Monte a jogada, chacoalhe e pronto.
-local TYPES={4,6,8,10,12,20}
--- posição dos 8 pads (sentido horário a partir do topo esquerdo)
-local PAD={wn=1,ws=2,en=3,es=4,s=5,n=6}
+local TYPES={4,6,8,10,12,20,100,2}
 local SHAPE={[2]={0},[4]={3,-90},[6]={4,45},[8]={4,0},[10]={5,-90},[12]={10,-90},[20]={6,-90},[100]={0}}
 local tray={}
-local cur=2
+local cur=2   -- tipo selecionado
 local rolled=false
 local rolling=0
 local function nm(t) return t==2 and "Moeda" or ("d"..t) end
 local function lab()
-  split_pads(2)
-  labels(nm(TYPES[6]),"","d12","","Rolar","Tirar","Limpar")
-  labels_side(nm(TYPES[3]),nm(TYPES[4]),nm(TYPES[1]),nm(TYPES[2]))
+  labels("Rolar","Tirar","Tipo -","Tipo +","+ "..nm(TYPES[cur]))
   repeat_pads("")
 end
 function on_enter() lab() end
 local function add(t) if #tray<12 then tray[#tray+1]={t=t,v=nil} rolled=false sfx("tick") else sfx("back") end end
 local function roll() if #tray==0 then return end rolling=0.8 sfx("roll") end
 function on_pad(d)
-  if PAD[d] then add(TYPES[PAD[d]]) end
-end
-function on_chord(c)
-  if c=="ne" then roll()
-  elseif c=="se" then if #tray>0 then tray[#tray]=nil rolled=false sfx("back") end
-  elseif c=="sw" then tray={} rolled=false sfx("back") end
+  if d=="ok" then add(TYPES[cur])
+  elseif d=="left" then cur=(cur-2)%#TYPES+1 sfx("tick") lab()
+  elseif d=="right" then cur=cur%#TYPES+1 sfx("tick") lab()
+  elseif d=="up" then roll()
+  elseif d=="down" then if #tray>0 then tray[#tray]=nil rolled=false sfx("back") end end
 end
 function on_shake() roll() end
 function update(dt)
@@ -598,12 +580,12 @@ function draw()
     local j=rolling>0 and math.random(-2,2) or 0
     token(x+j,y,40,d)
   end
-  if n==0 then text("toque nos pads para",W//2,150,C.mute,12,CENTER) text("adicionar dados",W//2,168,C.mute,12,CENTER) end
+  if n==0 then text("escolha o tipo e toque",W//2,150,C.mute,12,CENTER) text("em OK para adicionar",W//2,168,C.mute,12,CENTER) end
   if rolled then
     local sum=0 for _,d in ipairs(tray) do sum=sum+(d.v or 0) end
     text("Total "..sum,W//2,262,C.accent,22,CENTER)
   else
-    text(n.." dado"..(n==1 and "" or "s"),W//2,264,C.mute,12,CENTER)
+    text(n.." dado"..(n==1 and "" or "s").." · tipo: "..nm(TYPES[cur]),W//2,264,C.mute,12,CENTER)
   end
 end
 </script>
@@ -624,26 +606,28 @@ local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%02d:%02d
 local function goto_set()
   state="set" stop_sound()
   if mode==3 then phase="foco" total=focus remaining=focus else total=setsecs remaining=setsecs end
-  labels("Iniciar","+10s","Zerar","-10s","Modo","","") repeat_pads("ew")
+  labels("Modo","Zerar","-10s","+10s","Iniciar") repeat_pads("left right")
 end
 function on_enter() goto_set() end
 local function music() if mode==2 then play(TENSE,150,true,"triangle") end end
 local function begin()
-  state="run" labels("Pausar","+10s","Zerar","-10s","Pausar","","") sfx("confirm") music()
+  state="run" labels("","Zerar","-10s","+10s","Pausar") sfx("confirm") music()
 end
 function on_pad(d,n)
   n=n or 1
   if state=="done" then goto_set() sfx("back") return end
-  if d=="n" then
+  if d=="up" then
+    if state=="set" then mode=mode%3+1 sfx("tick") goto_set() end
+  elseif d=="ok" then
     if state=="set" then begin()
-    elseif state=="run" then state="pause" stop_sound() labels("Seguir","+10s","Zerar","-10s","Seguir","","") sfx("tick")
-    elseif state=="pause" then state="run" labels("Pausar","+10s","Zerar","-10s","Pausar","","") sfx("tick") music() end
-  elseif d=="s" then
+    elseif state=="run" then state="pause" stop_sound() labels("","Zerar","-10s","+10s","Seguir") sfx("tick")
+    elseif state=="pause" then state="run" labels("","Zerar","-10s","+10s","Pausar") sfx("tick") music() end
+  elseif d=="down" then
     goto_set() sfx("back")
   else
     local step=(n>12) and 60 or 10
     if mode==3 and state=="set" then step=60 end
-    local delta=(d=="e") and step or -step
+    local delta=(d=="right") and step or -step
     if mode==3 and state=="set" then focus=clamp(focus+delta,60,90*60) total=focus remaining=focus
     elseif state=="set" then setsecs=clamp(setsecs+delta,10,99*60) total=setsecs remaining=setsecs
     else remaining=clamp(remaining+delta,1,99*60) total=math.max(total,remaining) end
@@ -657,11 +641,8 @@ local function finish()
   elseif mode==3 then
     phase="foco" total=focus remaining=focus sfx("confirm")
   else
-    state="done" labels("OK","","","","OK") repeat_pads("") play(ALARM,170,true) flash=0
+    state="done" labels("","","","","OK") repeat_pads("") play(ALARM,170,true) flash=0
   end
-end
-function on_chord(c)
-  if c=="ne" then if state=="set" then mode=mode%3+1 sfx("tick") goto_set() else on_pad("n") end end
 end
 function update(dt)
   if state=="run" then
@@ -693,15 +674,14 @@ local run=false
 local laps={}
 local function fmt(x) local m=math.floor(x/60) local s=math.floor(x%60) local c=math.floor((x*100)%100) return string.format("%02d:%02d.%02d",m,s,c) end
 local function lab()
-  labels(run and "Pausar" or "Iniciar","Volta","Zerar","","Iniciar","","")
+  labels("",run and "" or "Zerar","","Volta",run and "Pausar" or "Iniciar")
 end
 function on_enter() repeat_pads("") lab() end
 function on_pad(d)
-  if d=="n" then run=not run sfx(run and "confirm" or "tick") lab()
-  elseif d=="e" then if run then table.insert(laps,1,t) if #laps>4 then laps[5]=nil end sfx("tick") end
-  elseif d=="s" then if not run then t=0 laps={} sfx("back") end end
+  if d=="ok" then run=not run sfx(run and "confirm" or "tick") lab()
+  elseif d=="right" then if run then table.insert(laps,1,t) if #laps>4 then laps[5]=nil end sfx("tick") end
+  elseif d=="down" then if not run then t=0 laps={} sfx("back") end end
 end
-function on_chord(c) if c=="ne" then on_pad("n") end end
 function on_shake() if run then table.insert(laps,1,t) if #laps>4 then laps[5]=nil end sfx("tick") end end
 function update(dt) if run then t=t+dt end end
 function draw()
@@ -715,7 +695,7 @@ function draw()
     text(fmt(l),X1-10,y+4,C.fg,14,RIGHT)
   end
   if #laps==0 then text(run and "correndo" or "pronto",W//2,170,C.mute,14,CENTER) end
-  text("Volta = lado leste",W//2,276,C.mute,10,CENTER)
+  text("Volta = pad da direita",W//2,276,C.mute,10,CENTER)
 end
 </script>
 <script type="text/x-lua" id="app-poke" data-name="Dano Pokémon" data-icon="...ffffff.../..frrrrrrf../.frrrrrrrrf./frrrrrrrrrrf/ffffffffffff/fWWWWffWWWWf/fWWWWWWWWWWf/.fWWWWWWWWf./..fWWWWWWf.../...ffffff.../............/............">
@@ -732,22 +712,19 @@ local function store() save("d",table.concat(dmg,",")) end
 function on_enter()
   local s=recall("d","")
   if s~="" then local i=1 for v in s:gmatch("%d+") do dmg[i]=tonumber(v) i=i+1 end end
-  labels("Anterior","+10","Próximo","-10","Zerar","","") repeat_pads("ew")
+  labels("Anterior","Próximo","-10","+10","Zerar") repeat_pads("left right")
 end
 function on_pad(d,n)
   n=n or 1
-  if d=="n" then sel=(sel-2)%6+1 sfx("tick")
-  elseif d=="s" then sel=sel%6+1 sfx("tick")
+  if d=="up" then sel=(sel-2)%6+1 sfx("tick")
+  elseif d=="down" then sel=sel%6+1 sfx("tick")
+  elseif d=="ok" then dmg[sel]=0 store() sfx("back")
   else
     local step=(n>14) and 50 or 10
-    dmg[sel]=clamp(dmg[sel]+(d=="e" and step or -step),0,990)
+    dmg[sel]=clamp(dmg[sel]+(d=="right" and step or -step),0,990)
     if n==1 then sfx("tick") end
     store()
   end
-end
-function on_chord(c)
-  if c=="ne" then dmg[sel]=0 store() sfx("back")
-  elseif c=="sw" then for i=1,6 do dmg[i]=0 end store() sfx("back") end
 end
 function draw()
   clear()
@@ -760,36 +737,31 @@ function draw()
     text(dmg[i],s.x+s.w//2,s.y+s.h//2-s.sz//2+4,dmg[i]>=100 and C.bad or C.fg,s.sz,CENTER)
   end
   text("dano",W//2,272,C.mute,12,CENTER)
-  text("cantos zeram",W//2,284,C.mute,10,CENTER)
+  text("OK zera o selecionado",W//2,284,C.mute,10,CENTER)
 end
 </script>
 <script type="text/x-lua" id="app-placar" data-name="Placar" data-icon=".....ff.....f/....f..f.../...f....f.../....f..f..../.....ff...../.ff.......ff./f..f.....f..f/f..f.....f..f/.ff.......ff./.....ff...../....f..f..../.....ff.....">
 -- name: Placar
 -- icon: .....ff.....f/....f..f.../...f....f.../....f..f..../.....ff...../.ff.......ff./f..f.....f..f/f..f.....f..f/.ff.......ff./.....ff...../....f..f..../.....ff.....
 -- Um jogador por lado do cubo. Cada número fica virado para o seu jogador.
-local sc={0,0,0,0}   -- n, e, s, w
-local minus=false
-local hist={}
-local SIDE={"n","e","s","w"}
+local sc={0,0,0,0}   -- up, right, down, left
+local mode=1           -- 1 = +1, 2 = -1, 3 = zerar jogador
+local SIDE={"up","right","down","left"}
 local POS={{120,78,180},{192,160,-90},{120,250,0},{48,160,90}}
 local COL={"accent","ok","warn","bad"}
-local function lab() labels("+1","+1","+1","+1",minus and "Modo +" or "Modo -","Desfazer","Zerar") end
+local MN={"+1","-1","Zerar"}
+local function lab() local m=MN[mode] labels(m,m,m,m,"Modo "..MN[mode%3+1]) end
 function on_enter() local s=recall("p","") if s~="" then local i=1 for v in s:gmatch("-?%d+") do sc[i]=tonumber(v) i=i+1 end end repeat_pads("") lab() end
 local function store() save("p",table.concat(sc,",")) end
 function on_pad(d,n)
+  if d=="ok" then mode=mode%3+1 sfx("tick") lab() return end
   for i,k in ipairs(SIDE) do
     if k==d then
-      table.insert(hist,{i,sc[i]}) if #hist>20 then table.remove(hist,1) end
-      sc[i]=clamp(sc[i]+(minus and -1 or 1),-99,999)
-      if n==1 then sfx(minus and "back" or "tick") end
+      if mode==3 then sc[i]=0 sfx("back")
+      else sc[i]=clamp(sc[i]+(mode==2 and -1 or 1),-99,999) sfx(mode==2 and "back" or "tick") end
       store()
     end
   end
-end
-function on_chord(c)
-  if c=="ne" then minus=not minus sfx("tick") lab()
-  elseif c=="se" then local h=table.remove(hist) if h then sc[h[1]]=h[2] store() sfx("back") end
-  elseif c=="sw" then sc={0,0,0,0} hist={} store() sfx("back") end
 end
 function draw()
   clear() decor()
@@ -797,7 +769,7 @@ function draw()
     text(sc[i],p[1],p[2],C[COL[i]],40,CENTER,p[3])
   end
   rect(W//2-26,H//2-13,52,26,C.panel,13)
-  text(minus and "−1" or "+1",W//2,H//2,minus and C.bad or C.ok,16,CENTER,0)
+  text(mode==1 and "+1" or (mode==2 and "−1" or "0"),W//2,H//2,mode==2 and C.bad or (mode==3 and C.warn or C.ok),16,CENTER,0)
 end
 </script>
 <script type="text/x-lua" id="app-quem" data-name="Quem começa" data-icon="............/.....aa...../....aaaa..../...aaaaaa.../.....aa...../.....aa...../.....aa...../.....aa...../.....aa...../.....aa...../............/............">
@@ -810,7 +782,7 @@ local ANG={n=-90,e=0,s=90,w=180}
 local ang=-90
 local from,to,t,dur=-90,-90,0,0
 local winner=nil
-local function lab() labels("Girar","+ jogador","","- jogador","Girar","","") end
+local function lab() labels("","","- jogador","+ jogador","Girar") end
 function on_enter() repeat_pads("") lab() end
 local function spin()
   if t<dur then return end
@@ -822,11 +794,10 @@ local function spin()
   sfx("roll")
 end
 function on_pad(d)
-  if d=="n" then spin()
-  elseif t>=dur and d=="e" then players=math.min(4,players+1) winner=nil sfx("tick")
-  elseif t>=dur and d=="w" then players=math.max(2,players-1) winner=nil sfx("tick") end
+  if d=="ok" then spin()
+  elseif t>=dur and d=="right" then players=math.min(4,players+1) winner=nil sfx("tick")
+  elseif t>=dur and d=="left" then players=math.max(2,players-1) winner=nil sfx("tick") end
 end
-function on_chord(c) if c=="ne" then spin() end end
 function on_shake() spin() end
 local last_tick=0
 function update(dt)
@@ -873,7 +844,7 @@ local dizzy=0
 local last=0
 local PER_MIN=3
 local function save_all() save("s",string.format("%d,%d,%d,%d",math.floor(food),math.floor(joy),math.floor(energy),now())) end
-local function sleep_labels() labels("Comer","Brincar",sleeping and "Acordar" or "Dormir","Carinho","","","") end
+local function sleep_labels() labels("Comer",sleeping and "Acordar" or "Dormir","Carinho","Brincar","") end
 function on_enter()
   local s=recall("s","")
   last=now()
@@ -889,10 +860,10 @@ function on_enter()
 end
 local function do_act(a) act=a actt=1.1 end
 function on_pad(d)
-  if d=="n" then food=clamp(food+25,0,100) do_act("eat") sfx("eat")
-  elseif d=="e" then if energy>10 then joy=clamp(joy+22,0,100) energy=clamp(energy-12,0,100) do_act("play") sfx("happy") else do_act("tired") sfx("back") end
-  elseif d=="s" then sleeping=not sleeping sleep_labels() sfx("tick")
-  elseif d=="w" then joy=clamp(joy+10,0,100) do_act("love") sfx("happy") end
+  if d=="up" then food=clamp(food+25,0,100) do_act("eat") sfx("eat")
+  elseif d=="right" then if energy>10 then joy=clamp(joy+22,0,100) energy=clamp(energy-12,0,100) do_act("play") sfx("happy") else do_act("tired") sfx("back") end
+  elseif d=="down" then sleeping=not sleeping sleep_labels() sfx("tick")
+  elseif d=="left" then joy=clamp(joy+10,0,100) do_act("love") sfx("happy") end
   save_all()
 end
 function on_shake() dizzy=1.5 sfx("shake") end
@@ -966,11 +937,10 @@ local state="idle"
 local total,left=0,0
 local nt=0
 local boom=0
-local function lab() labels(state=="run" and "Passar" or "Iniciar","Passar","Passar","Passar","Iniciar","","") end
+local function lab() if state=="run" then labels("Passar","Passar","Passar","Passar","") else labels("","","","","Iniciar") end end
 function on_enter() repeat_pads("") lab() end
 local function start() state="run" total=math.random(8,25) left=total nt=0 boom=0 sfx("confirm") lab() end
-function on_pad(d) if state=="idle" or state=="done" then if d=="n" then start() end elseif state=="run" then sfx("shake") end end
-function on_chord(c) if c=="ne" and state~="run" then start() end end
+function on_pad(d) if state=="idle" or state=="done" then if d=="ok" then start() end elseif state=="run" then sfx("shake") end end
 function on_shake() if state=="run" then sfx("shake") end end
 function update(dt)
   if state=="run" then
@@ -1003,11 +973,13 @@ local t,delay=0,0
 local out={n=false,e=false,s=false,w=false}
 local winner=nil
 local POS={n={120,70,180},e={196,160,-90},s={120,250,0},w={44,160,90}}
-local function lab() labels("Pronto","","","","Iniciar","","") end
+local PM={up="n",right="e",down="s",left="w"}
+local function lab() labels("","","","","Iniciar") end
 function on_enter() repeat_pads("") lab() end
-local function start() state="wait" t=0 delay=2+math.random()*4 out={n=false,e=false,s=false,w=false} winner=nil sfx("tick") labels("","","","") end
-function on_chord(c) if c=="ne" and (state=="idle" or state=="done") then start() end end
+local function start() state="wait" t=0 delay=2+math.random()*4 out={n=false,e=false,s=false,w=false} winner=nil sfx("tick") labels("","","","","") end
 function on_pad(d)
+  if d=="ok" then if state=="idle" or state=="done" then start() end return end
+  d=PM[d]
   if state=="wait" then if not out[d] then out[d]=true sfx("back") end
   elseif state=="go" then if not out[d] then winner=d state="done" sfx("win") lab() end
   end
@@ -1033,8 +1005,8 @@ function draw()
   if state=="idle" then text("cada jogador toca no seu lado",W//2,H//2+22,C.mute,10,CENTER) end
 end
 </script>
-<script type="application/json" id="pack-futebol">{"name": "Futebol de Cartão", "icon": "............/.....ff...../...ffWWff.../..fWWffWWf../.fWfffffWWf./.fWffWWffWf./.fWffWWffWf./.fWfffffWWf./..fWWffWWf../...ffWWff.../.....ff...../............", "desc": "Companion do jogo", "uses": ["placar", "dice"], "micros": [{"name": "Painel de jogo", "icon": "............/.ffffffffff./.f..ffff..f./.ffffffffff./............/.bbbb..W.a..a/.bbbb..W.a..a/............/.oooo..W.aaaa/.oooo..W.a..a/.oooo..W.a..a/............", "src": "-- name: Painel de jogo\n-- icon: ............/.ffffffffff./.f..ffff..f./.ffffffffff./............/.bbbb..W.a..a/.bbbb..W.a..a/............/.oooo..W.aaaa/.oooo..W.a..a/.oooo..W.a..a/............\n-- Tudo numa tela: tempo da partida, placar azul x laranja e os dois dados.\nlocal BLUE,ORANGE=rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B)\nlocal DUR={20,30}\nlocal di=1\nlocal state=\"set\"   -- set, run, pause, done\nlocal left=DUR[di]*60\nlocal sc={0,0}\nlocal faces=6\nlocal v={nil,nil}\nlocal roll=0\nlocal flash=0\nlocal function fmt(s) s=math.max(0,math.ceil(s)) return string.format(\"%02d:%02d\",s//60,s%60) end\nfunction on_enter()\n  split_pads(2) repeat_pads(\"\")\n  labels(\"Rolar\",\"\",\"Tempo\",\"\",\"d6 / d12\",\"20 / 30\",\"Zerar\")\n  labels_side(\"+1\",\"+1\",\"-1\",\"-1\")\nend\nlocal function tempo()\n  if state==\"set\" or state==\"pause\" then state=\"run\" sfx(\"confirm\")\n  elseif state==\"run\" then state=\"pause\" sfx(\"tick\")\n  else state=\"set\" left=DUR[di]*60 stop_sound() sfx(\"tick\") end\nend\nfunction on_pad(d)\n  if d==\"n\" then if roll<=0 then roll=0.8 sfx(\"roll\") end\n  elseif d==\"s\" then tempo()\n  elseif d==\"en\" then sc[1]=clamp(sc[1]+1,0,99) sfx(\"tick\")\n  elseif d==\"es\" then sc[2]=clamp(sc[2]+1,0,99) sfx(\"tick\")\n  elseif d==\"wn\" then sc[1]=clamp(sc[1]-1,0,99) sfx(\"back\")\n  elseif d==\"ws\" then sc[2]=clamp(sc[2]-1,0,99) sfx(\"back\") end\nend\nfunction on_chord(c)\n  if c==\"ne\" then faces=(faces==6) and 12 or 6 v={nil,nil} sfx(\"tick\")\n  elseif c==\"se\" then if state==\"set\" then di=di%#DUR+1 left=DUR[di]*60 sfx(\"tick\") else sfx(\"back\") end\n  elseif c==\"sw\" then sc={0,0} v={nil,nil} state=\"set\" left=DUR[di]*60 stop_sound() sfx(\"back\") end\nend\nfunction on_shake() if roll<=0 then roll=0.8 sfx(\"roll\") end end\nfunction update(dt)\n  if state==\"run\" then\n    left=left-dt\n    if left<=0 then left=0 state=\"done\" flash=0 play(\"a5:16 r:16 a5:16 r:16 a5:16 r:16 a5:8\",170,true) end\n  elseif state==\"done\" then flash=flash+dt end\n  if roll>0 then\n    roll=roll-dt\n    v={math.random(1,faces),math.random(1,faces)}\n    if roll<=0 then sfx(\"thunk\") end\n  end\nend\nlocal function die(cx,cy,col,val,win)\n  local jit=roll>0 and math.random(-2,2) or 0\n  if faces==6 then\n    rect(cx-27+jit,cy-24,54,54,C.mute,12) rect(cx-27+jit,cy-27,54,54,col,12)\n    if win then frame(cx-31+jit,cy-31,62,62,C.fg,14,3) end\n  else\n    poly(cx+jit,cy+3,30,10,-90,C.mute,true) poly(cx+jit,cy,30,10,-90,col,true)\n    if win then poly(cx+jit,cy,34,10,-90,C.fg,false,3) end\n  end\n  if val then text(val,cx+jit,cy,rgb(255,255,255),28,CENTER) end\nend\nlocal function row(y,col,score,val,win)\n  rect(X0,y,CW,74,col,16)\n  text(score,X0+50,y+37,rgb(255,255,255),44,CENTER)\n  die(X1-44,y+37,col==BLUE and rgb(0x2B,0x5A,0x80) or rgb(0xC4,0x4A,0x22),val,win)\nend\nfunction draw()\n  clear() decor()\n  local blink=(state==\"done\" and math.floor(flash*3)%2==0)\n  rect(X0,26,CW,70,blink and C.accent or C.panel,16)\n  text(fmt(left),W//2,48,blink and C.bg or C.fg,44,CENTER)\n  local st=({set=\"Parado · \"..DUR[di]..\" min\",run=\"Rolando\",pause=\"Pausado\",done=\"Fim de jogo!\"})[state]\n  text(st,W//2,82,blink and C.bg or C.mute,12,CENTER)\n  local w1,w2=false,false\n  if v[1] and v[2] and roll<=0 then w1=v[1]>v[2] w2=v[2]>v[1] end\n  row(104,BLUE,sc[1],v[1],w1)\n  row(184,ORANGE,sc[2],v[2],w2)\n  text(\"segure o pad de baixo: Menu\",W//2,274,C.mute,10,CENTER)\nend\n"}, {"name": "Tempo de jogo", "icon": "....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............", "src": "-- name: Tempo de jogo\n-- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............\nlocal DUR={20,30}\nlocal di=1\nlocal state=\"set\"   -- set, run, pause, done\nlocal left=20*60\nlocal flash=0\nlocal function fmt(s) s=math.max(0,math.ceil(s)) return string.format(\"%02d:%02d\",s//60,s%60) end\nlocal function set_labels()\n  if state==\"set\" then labels(\"Iniciar\",\"Tempo +\",\"\",\"Tempo -\",\"Iniciar\",\"\",\"\")\n  elseif state==\"run\" then labels(\"Pausar\",\"\",\"Zerar\",\"\",\"Pausar\",\"\",\"\")\n  elseif state==\"pause\" then labels(\"Seguir\",\"\",\"Zerar\",\"\",\"Seguir\",\"\",\"\")\n  else labels(\"OK\",\"\",\"\",\"\",\"OK\",\"\",\"\") end\n  repeat_pads(\"\")\nend\nlocal function reset() state=\"set\" left=DUR[di]*60 stop_sound() set_labels() end\nfunction on_enter() reset() end\nlocal function go() state=\"run\" sfx(\"confirm\") set_labels() end\nfunction on_pad(d)\n  if state==\"done\" then reset() sfx(\"back\") return end\n  if d==\"n\" then\n    if state==\"set\" then go() elseif state==\"run\" then state=\"pause\" sfx(\"tick\") set_labels() else state=\"run\" sfx(\"tick\") set_labels() end\n  elseif d==\"s\" then if state~=\"set\" then reset() sfx(\"back\") end\n  elseif state==\"set\" and (d==\"e\" or d==\"w\") then di=di%#DUR+1 left=DUR[di]*60 sfx(\"tick\") end\nend\nfunction on_chord(c) if c==\"ne\" then on_pad(\"n\") end end\nfunction update(dt)\n  if state==\"run\" then left=left-dt if left<=0 then state=\"done\" flash=0 play(\"a5:16 r:16 a5:16 r:16 a5:16 r:16 a5:8\",170,true) set_labels() end\n  elseif state==\"done\" then flash=flash+dt end\nend\nfunction draw()\n  local bg=C.bg\n  if state==\"done\" and math.floor(flash*3)%2==0 then bg=C.accent end\n  clear(bg) if bg==C.bg then decor() end\n  text(\"Tempo de jogo\",W//2,34,C.mute,14,CENTER)\n  text(fmt(left),W//2,110,C.fg,56,CENTER)\n  text(state==\"set\" and (DUR[di]..\" minutos\") or (state==\"run\" and \"valendo\" or (state==\"pause\" and \"em pausa\" or \"apito final!\")),W//2,190,state==\"done\" and C.fg or C.accent,16,CENTER)\nend\n"}, {"name": "Duelo de dados", "icon": "............/.bbbbbb....../.bWbbbb....../.bbbWbb....../.bbbbbb....../.bbbbbb.oooooo/........oWoooo/........oooWoo/........oooooo/........oooooo/............/............", "src": "-- name: Duelo de dados\n-- icon: ............/.bbbbbb....../.bWbbbb....../.bbbWbb....../.bbbbbb....../.bbbbbb.oooooo/........oWoooo/........oooWoo/........oooooo/........oooooo/............/............\n-- Dois dados prontos, um em cada ponta. Cada jogador toca no seu lado e o maior vence.\nlocal BLUE,ORANGE=rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B)\nlocal PIPS={[1]={{.5,.5}},[2]={{.25,.25},{.75,.75}},[3]={{.25,.25},{.5,.5},{.75,.75}},[4]={{.25,.25},{.75,.25},{.25,.75},{.75,.75}},\n[5]={{.25,.25},{.75,.25},{.5,.5},{.25,.75},{.75,.75}},[6]={{.25,.25},{.75,.25},{.25,.5},{.75,.5},{.25,.75},{.75,.75}}}\nlocal faces=6\nlocal v={nil,nil}      -- 1 = lado de cima (azul), 2 = lado de baixo (laranja)\nlocal roll={0,0}\nlocal result=nil\nlocal function lab() labels(\"Rolar azul\",\"Dado: d\"..faces,\"Rolar laranja\",\"Dado: d\"..faces,\"Novo\",\"\",\"\") split_pads(2)\n  labels_side(\"d\"..faces,\"d\"..faces,\"d\"..faces,\"d\"..faces) end\nfunction on_enter() repeat_pads(\"\") lab() end\nlocal function try_result()\n  if v[1] and v[2] and roll[1]<=0 and roll[2]<=0 then\n    result=(v[1]>v[2]) and 1 or ((v[2]>v[1]) and 2 or 0)\n    sfx(result==0 and \"back\" or \"win\")\n  end\nend\nlocal function start(i)\n  if result then v={nil,nil} result=nil end\n  if roll[i]>0 then return end\n  roll[i]=0.7 sfx(\"roll\")\nend\nlocal TOP={n=1,nl=1,nr=1}\nfunction on_pad(d)\n  if d==\"n\" then start(1)\n  elseif d==\"s\" then start(2)\n  else faces=(faces==6) and 12 or 6 v={nil,nil} result=nil sfx(\"tick\") lab() end\nend\nfunction on_chord(c) if c==\"ne\" then v={nil,nil} result=nil sfx(\"tick\") end end\nfunction on_shake() end\nfunction update(dt)\n  for i=1,2 do\n    if roll[i]>0 then\n      roll[i]=roll[i]-dt\n      v[i]=math.random(1,faces)\n      if roll[i]<=0 then v[i]=math.random(1,faces) sfx(\"thunk\") try_result() end\n    end\n  end\nend\nlocal function die(i,cy,rot)\n  local s=92\n  local x=W//2-s//2\n  local y=cy-s//2\n  local col=(i==1) and BLUE or ORANGE\n  local jit=roll[i]>0 and math.random(-3,3) or 0\n  x=x+jit\n  local win=(result==i)\n  if faces==6 then\n    rect(x,y+3,s,s,C.mute,14) rect(x,y,s,s,col,14)\n    if win then frame(x-3,y-3,s+6,s+6,C.fg,16,4) end\n    if v[i] then for _,p in ipairs(PIPS[v[i]]) do circle(x+math.floor(p[1]*s),y+math.floor(p[2]*s),9,rgb(255,255,255)) end end\n  else\n    poly(W//2+jit,cy+3,50,10,-90,C.mute,true)\n    poly(W//2+jit,cy,50,10,-90,col,true)\n    if win then poly(W//2+jit,cy,56,10,-90,C.fg,false,4) end\n    if v[i] then text(v[i],W//2+jit,cy,rgb(255,255,255),36,CENTER,rot) end\n  end\n  if win then text(\"VENCEU\",W//2,cy+(i==1 and -66 or 66),C.accent,14,CENTER,rot) end\nend\nfunction draw()\n  clear() decor()\n  die(1,92,180)\n  die(2,228,0)\n  local msg=result==0 and \"empate\" or (result and \"\" or \"toque no seu lado\")\n  if msg~=\"\" then text(msg,W//2,160,C.mute,12,CENTER) end\nend\n"}], "slides": "Como jogar\nEXEMPLO: troque este texto pelas regras reais do Futebol de Cartão. Cada slide mostra uma etapa e o cubo pode ler em voz alta.\n---\n1. Monte o time\nEXEMPLO: cada jogador escolhe suas cartas e forma o time antes da partida começar.\n---\n2. Duelo\nEXEMPLO: nas disputas, cada lado rola o seu dado. Quem tirar mais vence a jogada. O cubo já mostra os dois dados prontos.\n---\n3. Tempo de jogo\nEXEMPLO: a partida dura 20 ou 30 minutos. Use o Tempo de jogo para marcar o relógio.\n---\n4. Vitória\nEXEMPLO: vence quem marcar mais gols quando o tempo acabar.\n", "skin": 1}</script>
-<script type="application/json" id="pack-debater">{"name": "DeBater", "icon": "............/.ffffffffff./.fWWWWWWWWf./.fWffWWffWf./.fWWWWWWWWf./.ffffffffff./....ff....../...ff......./..ff......../.fff......../............/............", "desc": "Companion do jogo", "uses": ["timer"], "micros": [{"name": "Relógio de turnos", "icon": "....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............", "src": "-- name: Relógio de turnos\n-- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............\n-- Como relógio de xadrez: cada time tem o seu tempo. Toque no seu lado para passar a vez.\nlocal total=180\nlocal t={180,180}      -- 1 = lado de cima, 2 = lado de baixo\nlocal active=0         -- 0 = parado\nlocal over=0\nlocal function lab()\n  if active==0 then labels(\"Começa\",\"+30s\",\"Começa\",\"-30s\",\"Zerar\",\"\",\"\")\n  else labels(\"Passar\",\"\",\"Passar\",\"\",\"Pausar\",\"Zerar\",\"\") end\n  repeat_pads(\"\")\nend\nfunction on_enter() lab() end\nfunction on_pad(d)\n  local side=(d==\"n\") and 1 or ((d==\"s\") and 2 or 0)\n  if over>0 then return end\n  if active==0 then\n    if side>0 then active=side sfx(\"confirm\") lab()\n    elseif d==\"e\" then total=clamp(total+30,30,3600) t={total,total} sfx(\"tick\")\n    elseif d==\"w\" then total=clamp(total-30,30,3600) t={total,total} sfx(\"tick\") end\n  elseif side==active then active=3-active sfx(\"tick\") end\nend\nfunction on_chord(c)\n  if c==\"ne\" then if active==0 then t={total,total} sfx(\"back\") else active=0 lab() sfx(\"tick\") end\n  elseif c==\"se\" then t={total,total} active=0 over=0 lab() sfx(\"back\") end\nend\nfunction update(dt)\n  if active>0 then\n    t[active]=t[active]-dt\n    if t[active]<=0 then t[active]=0 over=active active=0 play(\"a5:16 r:16 a5:16 r:16 a5:8\",170,false) lab() end\n  end\nend\nlocal function fmt(s) s=math.max(0,math.ceil(s)) return string.format(\"%d:%02d\",s//60,s%60) end\nfunction draw()\n  clear() decor()\n  for i=1,2 do\n    local cy=(i==1) and 80 or 240\n    local rot=(i==1) and 180 or 0\n    local on=(active==i)\n    local col=on and C.accent or C.fg\n    if over==i then col=C.bad end\n    rect(X0,cy-34,CW,68,on and C.panel or C.bg,14)\n    if on then frame(X0,cy-34,CW,68,C.accent,14,3) end\n    text(fmt(t[i]),W//2,cy,col,40,CENTER,rot)\n  end\n  text(over>0 and \"tempo esgotado\" or (active==0 and \"toque no seu lado para começar\" or \"\"),W//2,160,C.mute,11,CENTER)\nend\n"}], "slides": "Como jogar\nEXEMPLO: troque este texto pelas regras reais do DeBater.\n---\n1. Montagem\nEXEMPLO: dois times se sentam em lados opostos da mesa. O cubo fica no meio.\n---\n2. Rodadas\nEXEMPLO: cada time tem um tempo para falar. Use o Relógio de turnos para passar a vez.\n---\n3. Fim\nEXEMPLO: ganha quem convencer mais o grupo.\n", "skin": 1}</script>
+<script type="application/json" id="pack-futebol">{"name": "Futebol de Cartão", "icon": "............/.....ff...../...ffWWff.../..fWWffWWf../.fWfffffWWf./.fWffWWffWf./.fWffWWffWf./.fWfffffWWf./..fWWffWWf../...ffWWff.../.....ff...../............", "desc": "Companion do jogo", "uses": ["placar", "dice"], "micros": [{"name": "Painel de jogo", "icon": "............/.ffffffffff./.f..ffff..f./.ffffffffff./............/.bbbb..W.a..a/.bbbb..W.a..a/............/.oooo..W.aaaa/.oooo..W.a..a/.oooo..W.a..a/............", "src": "-- name: Painel de jogo\n-- icon: ............/.ffffffffff./.f..ffff..f./.ffffffffff./............/.bbbb..W.a..a/.bbbb..W.a..a/............/.oooo..W.aaaa/.oooo..W.a..a/.oooo..W.a..a/............\n-- Tudo numa tela: tempo da partida, placar azul x laranja e os dois dados.\nlocal BLUE,ORANGE=rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B)\nlocal DUR={20,30}\nlocal di=1\nlocal state=\"set\"   -- set, run, pause, done\nlocal left=DUR[di]*60\nlocal sc={0,0}\nlocal faces=6\nlocal v={nil,nil}\nlocal roll=0\nlocal flash=0\nlocal function fmt(s) s=math.max(0,math.ceil(s)) return string.format(\"%02d:%02d\",s//60,s%60) end\nlocal mode=1   -- 1 soma, 2 tira, 3 ajustes\nlocal MN={\"soma\",\"tira\",\"ajustes\"}\nlocal function lab()\n  if mode==3 then labels(\"Zerar tudo\",\"Tempo\",\"Modo soma\",\"Tempo \"..DUR[di%#DUR+1]..\" min\",\"d\"..(faces==6 and 12 or 6))\n  else labels(\"Rolar dados\",\"Tempo\",\"Modo \"..MN[mode%3+1],mode==1 and \"+1 azul\" or \"-1 azul\",mode==1 and \"+1 laranja\" or \"-1 laranja\") end\nend\nfunction on_enter() repeat_pads(\"\") lab() end\nlocal function tempo()\n  if state==\"set\" or state==\"pause\" then state=\"run\" sfx(\"confirm\")\n  elseif state==\"run\" then state=\"pause\" sfx(\"tick\")\n  else state=\"set\" left=DUR[di]*60 stop_sound() sfx(\"tick\") end\nend\nfunction on_pad(d)\n  local k=(mode==2) and -1 or 1\n  if d==\"left\" then mode=mode%3+1 sfx(\"tick\") lab() return end\n  if d==\"down\" then tempo() return end\n  if mode==3 then\n    if d==\"up\" then sc={0,0} v={nil,nil} state=\"set\" left=DUR[di]*60 stop_sound() sfx(\"back\")\n    elseif d==\"right\" then if state==\"set\" then di=di%#DUR+1 left=DUR[di]*60 sfx(\"tick\") lab() else sfx(\"back\") end\n    elseif d==\"ok\" then faces=(faces==6) and 12 or 6 v={nil,nil} sfx(\"tick\") lab() end\n    return\n  end\n  if d==\"up\" then if roll<=0 then roll=0.8 sfx(\"roll\") end\n  elseif d==\"right\" then sc[1]=clamp(sc[1]+k,0,99) sfx(k<0 and \"back\" or \"tick\")\n  elseif d==\"ok\" then sc[2]=clamp(sc[2]+k,0,99) sfx(k<0 and \"back\" or \"tick\") end\nend\nfunction on_shake() if roll<=0 then roll=0.8 sfx(\"roll\") end end\nfunction update(dt)\n  if state==\"run\" then\n    left=left-dt\n    if left<=0 then left=0 state=\"done\" flash=0 play(\"a5:16 r:16 a5:16 r:16 a5:16 r:16 a5:8\",170,true) end\n  elseif state==\"done\" then flash=flash+dt end\n  if roll>0 then\n    roll=roll-dt\n    v={math.random(1,faces),math.random(1,faces)}\n    if roll<=0 then sfx(\"thunk\") end\n  end\nend\nlocal function die(cx,cy,col,val,win)\n  local jit=roll>0 and math.random(-2,2) or 0\n  if faces==6 then\n    rect(cx-27+jit,cy-24,54,54,C.mute,12) rect(cx-27+jit,cy-27,54,54,col,12)\n    if win then frame(cx-31+jit,cy-31,62,62,C.fg,14,3) end\n  else\n    poly(cx+jit,cy+3,30,10,-90,C.mute,true) poly(cx+jit,cy,30,10,-90,col,true)\n    if win then poly(cx+jit,cy,34,10,-90,C.fg,false,3) end\n  end\n  if val then text(val,cx+jit,cy,rgb(255,255,255),28,CENTER) end\nend\nlocal function row(y,col,score,val,win)\n  rect(X0,y,CW,74,col,16)\n  text(score,X0+50,y+37,rgb(255,255,255),44,CENTER)\n  die(X1-44,y+37,col==BLUE and rgb(0x2B,0x5A,0x80) or rgb(0xC4,0x4A,0x22),val,win)\nend\nfunction draw()\n  clear() decor()\n  local blink=(state==\"done\" and math.floor(flash*3)%2==0)\n  rect(X0,26,CW,70,blink and C.accent or C.panel,16)\n  text(fmt(left),W//2,46,blink and C.bg or C.fg,36,CENTER)\n  local st=({set=\"Parado · \"..DUR[di]..\" min\",run=\"Rolando\",pause=\"Pausado\",done=\"Fim de jogo!\"})[state]\n  text(st,W//2,80,blink and C.bg or C.mute,12,CENTER)\n  local w1,w2=false,false\n  if v[1] and v[2] and roll<=0 then w1=v[1]>v[2] w2=v[2]>v[1] end\n  row(104,BLUE,sc[1],v[1],w1)\n  row(184,ORANGE,sc[2],v[2],w2)\n  text(\"modo: \"..MN[mode],W//2,274,mode==2 and C.bad or C.mute,11,CENTER)\nend\n"}, {"name": "Tempo de jogo", "icon": "....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............", "src": "-- name: Tempo de jogo\n-- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............\nlocal DUR={20,30}\nlocal di=1\nlocal state=\"set\"   -- set, run, pause, done\nlocal left=20*60\nlocal flash=0\nlocal function fmt(s) s=math.max(0,math.ceil(s)) return string.format(\"%02d:%02d\",s//60,s%60) end\nlocal function set_labels()\n  if state==\"set\" then labels(\"\",\"\",\"Tempo -\",\"Tempo +\",\"Iniciar\")\n  elseif state==\"run\" then labels(\"\",\"Zerar\",\"\",\"\",\"Pausar\")\n  elseif state==\"pause\" then labels(\"\",\"Zerar\",\"\",\"\",\"Seguir\")\n  else labels(\"\",\"\",\"\",\"\",\"OK\") end\n  repeat_pads(\"\")\nend\nlocal function reset() state=\"set\" left=DUR[di]*60 stop_sound() set_labels() end\nfunction on_enter() reset() end\nlocal function go() state=\"run\" sfx(\"confirm\") set_labels() end\nfunction on_pad(d)\n  if state==\"done\" then reset() sfx(\"back\") return end\n  if d==\"ok\" then\n    if state==\"set\" then go() elseif state==\"run\" then state=\"pause\" sfx(\"tick\") set_labels() else state=\"run\" sfx(\"tick\") set_labels() end\n  elseif d==\"down\" then if state~=\"set\" then reset() sfx(\"back\") end\n  elseif state==\"set\" and (d==\"right\" or d==\"left\") then di=di%#DUR+1 left=DUR[di]*60 sfx(\"tick\") end\nend\nfunction update(dt)\n  if state==\"run\" then left=left-dt if left<=0 then state=\"done\" flash=0 play(\"a5:16 r:16 a5:16 r:16 a5:16 r:16 a5:8\",170,true) set_labels() end\n  elseif state==\"done\" then flash=flash+dt end\nend\nfunction draw()\n  local bg=C.bg\n  if state==\"done\" and math.floor(flash*3)%2==0 then bg=C.accent end\n  clear(bg) if bg==C.bg then decor() end\n  text(\"Tempo de jogo\",W//2,34,C.mute,14,CENTER)\n  text(fmt(left),W//2,110,C.fg,56,CENTER)\n  text(state==\"set\" and (DUR[di]..\" minutos\") or (state==\"run\" and \"valendo\" or (state==\"pause\" and \"em pausa\" or \"apito final!\")),W//2,190,state==\"done\" and C.fg or C.accent,16,CENTER)\nend\n"}, {"name": "Duelo de dados", "icon": "............/.bbbbbb....../.bWbbbb....../.bbbWbb....../.bbbbbb....../.bbbbbb.oooooo/........oWoooo/........oooWoo/........oooooo/........oooooo/............/............", "src": "-- name: Duelo de dados\n-- icon: ............/.bbbbbb....../.bWbbbb....../.bbbWbb....../.bbbbbb....../.bbbbbb.oooooo/........oWoooo/........oooWoo/........oooooo/........oooooo/............/............\n-- Dois dados prontos, um em cada ponta. Cada jogador toca no seu lado e o maior vence.\nlocal BLUE,ORANGE=rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B)\nlocal PIPS={[1]={{.5,.5}},[2]={{.25,.25},{.75,.75}},[3]={{.25,.25},{.5,.5},{.75,.75}},[4]={{.25,.25},{.75,.25},{.25,.75},{.75,.75}},\n[5]={{.25,.25},{.75,.25},{.5,.5},{.25,.75},{.75,.75}},[6]={{.25,.25},{.75,.25},{.25,.5},{.75,.5},{.25,.75},{.75,.75}}}\nlocal faces=6\nlocal v={nil,nil}      -- 1 = lado de cima (azul), 2 = lado de baixo (laranja)\nlocal roll={0,0}\nlocal result=nil\nlocal function lab() labels(\"Rolar azul\",\"Rolar laranja\",\"Dado d6\",\"Dado d12\",\"Novo\") repeat_pads(\"\") end\nfunction on_enter() repeat_pads(\"\") lab() end\nlocal function try_result()\n  if v[1] and v[2] and roll[1]<=0 and roll[2]<=0 then\n    result=(v[1]>v[2]) and 1 or ((v[2]>v[1]) and 2 or 0)\n    sfx(result==0 and \"back\" or \"win\")\n  end\nend\nlocal function start(i)\n  if result then v={nil,nil} result=nil end\n  if roll[i]>0 then return end\n  roll[i]=0.7 sfx(\"roll\")\nend\nfunction on_pad(d)\n  if d==\"up\" then start(1)\n  elseif d==\"down\" then start(2)\n  elseif d==\"ok\" then v={nil,nil} result=nil sfx(\"tick\")\n  elseif d==\"left\" or d==\"right\" then faces=(d==\"left\") and 6 or 12 v={nil,nil} result=nil sfx(\"tick\") end\nend\nfunction on_shake() end\nfunction update(dt)\n  for i=1,2 do\n    if roll[i]>0 then\n      roll[i]=roll[i]-dt\n      v[i]=math.random(1,faces)\n      if roll[i]<=0 then v[i]=math.random(1,faces) sfx(\"thunk\") try_result() end\n    end\n  end\nend\nlocal function die(i,cy,rot)\n  local s=92\n  local x=W//2-s//2\n  local y=cy-s//2\n  local col=(i==1) and BLUE or ORANGE\n  local jit=roll[i]>0 and math.random(-3,3) or 0\n  x=x+jit\n  local win=(result==i)\n  if faces==6 then\n    rect(x,y+3,s,s,C.mute,14) rect(x,y,s,s,col,14)\n    if win then frame(x-3,y-3,s+6,s+6,C.fg,16,4) end\n    if v[i] then for _,p in ipairs(PIPS[v[i]]) do circle(x+math.floor(p[1]*s),y+math.floor(p[2]*s),9,rgb(255,255,255)) end end\n  else\n    poly(W//2+jit,cy+3,50,10,-90,C.mute,true)\n    poly(W//2+jit,cy,50,10,-90,col,true)\n    if win then poly(W//2+jit,cy,56,10,-90,C.fg,false,4) end\n    if v[i] then text(v[i],W//2+jit,cy,rgb(255,255,255),36,CENTER,rot) end\n  end\n  if win then text(\"VENCEU\",W//2,cy+(i==1 and -66 or 66),C.accent,14,CENTER,rot) end\nend\nfunction draw()\n  clear() decor()\n  die(1,92,180)\n  die(2,228,0)\n  local msg=result==0 and \"empate\" or (result and \"\" or \"toque no seu lado\")\n  if msg~=\"\" then text(msg,W//2,160,C.mute,12,CENTER) end\nend\n"}], "slides": "Como jogar\nEXEMPLO: troque este texto pelas regras reais do Futebol de Cartão. Cada slide mostra uma etapa e o cubo pode ler em voz alta.\n---\n1. Monte o time\nEXEMPLO: cada jogador escolhe suas cartas e forma o time antes da partida começar.\n---\n2. Duelo\nEXEMPLO: nas disputas, cada lado rola o seu dado. Quem tirar mais vence a jogada. O cubo já mostra os dois dados prontos.\n---\n3. Tempo de jogo\nEXEMPLO: a partida dura 20 ou 30 minutos. Use o Tempo de jogo para marcar o relógio.\n---\n4. Vitória\nEXEMPLO: vence quem marcar mais gols quando o tempo acabar.\n", "skin": 1}</script>
+<script type="application/json" id="pack-debater">{"name": "DeBater", "icon": "............/.ffffffffff./.fWWWWWWWWf./.fWffWWffWf./.fWWWWWWWWf./.ffffffffff./....ff....../...ff......./..ff......../.fff......../............/............", "desc": "Companion do jogo", "uses": ["timer"], "micros": [{"name": "Relógio de turnos", "icon": "....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............", "src": "-- name: Relógio de turnos\n-- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............\n-- Como relógio de xadrez: cada time tem o seu tempo. Toque no seu lado para passar a vez.\nlocal total=180\nlocal t={180,180}      -- 1 = lado de cima, 2 = lado de baixo\nlocal active=0         -- 0 = parado\nlocal over=0\nlocal function lab()\n  if active==0 then labels(\"Começa\",\"Começa\",\"-30s\",\"+30s\",\"Zerar\")\n  else labels(\"Passar\",\"Passar\",\"\",\"\",\"Pausar\") end\n  repeat_pads(\"\")\nend\nfunction on_enter() lab() end\nfunction on_pad(d)\n  if d==\"ok\" then\n    if active==0 then t={total,total} over=0 sfx(\"back\") else active=0 lab() sfx(\"tick\") end\n    return\n  end\n  local side=(d==\"up\") and 1 or ((d==\"down\") and 2 or 0)\n  if over>0 then return end\n  if active==0 then\n    if side>0 then active=side sfx(\"confirm\") lab()\n    elseif d==\"right\" then total=clamp(total+30,30,3600) t={total,total} sfx(\"tick\")\n    elseif d==\"left\" then total=clamp(total-30,30,3600) t={total,total} sfx(\"tick\") end\n  elseif side==active then active=3-active sfx(\"tick\") end\nend\nfunction update(dt)\n  if active>0 then\n    t[active]=t[active]-dt\n    if t[active]<=0 then t[active]=0 over=active active=0 play(\"a5:16 r:16 a5:16 r:16 a5:8\",170,false) lab() end\n  end\nend\nlocal function fmt(s) s=math.max(0,math.ceil(s)) return string.format(\"%d:%02d\",s//60,s%60) end\nfunction draw()\n  clear() decor()\n  for i=1,2 do\n    local cy=(i==1) and 80 or 240\n    local rot=(i==1) and 180 or 0\n    local on=(active==i)\n    local col=on and C.accent or C.fg\n    if over==i then col=C.bad end\n    rect(X0,cy-34,CW,68,on and C.panel or C.bg,14)\n    if on then frame(X0,cy-34,CW,68,C.accent,14,3) end\n    text(fmt(t[i]),W//2,cy,col,40,CENTER,rot)\n  end\n  text(over>0 and \"tempo esgotado\" or (active==0 and \"cima ou baixo: quem começa\" or \"\"),W//2,160,C.mute,11,CENTER)\nend\n"}], "slides": "Como jogar\nEXEMPLO: troque este texto pelas regras reais do DeBater.\n---\n1. Montagem\nEXEMPLO: dois times se sentam em lados opostos da mesa. O cubo fica no meio.\n---\n2. Rodadas\nEXEMPLO: cada time tem um tempo para falar. Use o Relógio de turnos para passar a vez.\n---\n3. Fim\nEXEMPLO: ganha quem convencer mais o grupo.\n", "skin": 1}</script>
 <script type="application/json" id="pack-double">{"name": "Double", "icon": "............/...ffffff..../..fWWWWWWf.../.fWaWWWWbWf../.fWWWWaWWWf../.fWbWWWWaWf../.fWWWaWWWWf../..fWWWWWWf.../...ffffff..../............/............/............", "desc": "Exemplo de jogo de terceiros", "uses": ["timer", "quem"], "micros": [], "slides": "Como jogar\nEXEMPLO: este pacote mostra como um jogo de outra editora entra no cubo. As regras aqui são só de exemplo.\n---\n1. Preparação\nEXEMPLO: o texto é todo configurável: cada jogo traz suas regras e escolhe quais mini-apps usar.\n---\n2. Mini-apps\nEXEMPLO: aqui entram o Timer e o Quem começa, que já existem no cubo.\n"}</script>
 <script src="https://cdn.jsdelivr.net/npm/fengari-web@0.1.4/dist/fengari-web.js"></script>
 <script>
@@ -1166,7 +1138,7 @@ function bindApi(){
   reg('_split',Ls=>{splitApp=n_(Ls,1)|0;return 0;});
   reg('_lside',Ls=>{labs.en=lstr(Ls,1);labs.es=lstr(Ls,2);labs.wn=lstr(Ls,3);labs.ws=lstr(Ls,4);return 0;});
   reg('_lsplit',Ls=>{labs.nl=lstr(Ls,1);labs.nr=lstr(Ls,2);labs.sl=lstr(Ls,3);labs.sr=lstr(Ls,4);return 0;});
-  reg('_labels',Ls=>{labs.n=lstr(Ls,1);labs.e=lstr(Ls,2);labs.s=lstr(Ls,3);labs.w=lstr(Ls,4);labs.ne=lstr(Ls,5);labs.se=lstr(Ls,6);labs.sw=lstr(Ls,7);return 0;});
+  reg('_labels',Ls=>{labs.n=lstr(Ls,1);labs.s=lstr(Ls,2);labs.wn=lstr(Ls,3);labs.en=lstr(Ls,4);labs.es=lstr(Ls,5);const b=lstr(Ls,6);labs.ws=b===''?'Voltar':b;return 0;});
   reg('_repeat',Ls=>{repeatSet=lstr(Ls,1);return 0;});
   reg('_theme',Ls=>pnum(Ls,themeColor(lstr(Ls,1))||0));
   reg('_sfx',Ls=>{ensureAudio();const s=SFX[lstr(Ls,1)];if(s&&!(songTimer&&loopActive))playSong(s,200,false,'square');return 0;});
@@ -1228,7 +1200,7 @@ function callLua(fn,...args){
 let appBytes=0;
 function startApp(id,srcOverride,nameOverride){
   stopSound();loopActive=false;
-  for(const k in labs)labs[k]='';splitApp=0;repeatSet='';lastErr='';
+  for(const k in labs)labs[k]='';labs.ws='Voltar';splitApp=0;repeatSet='';lastErr='';
   L=lauxlib.luaL_newstate();lualib.luaL_openlibs(L);
   try{lua.lua_sethook(L,function(Ls){if(performance.now()-tStart>LIMITS.frameMs){lauxlib.luaL_error(Ls,to_luastring('app demorou mais de '+LIMITS.frameMs+' ms'));}},lua.LUA_MASKCOUNT,4000);}catch(e){}
   bindApi();
@@ -1281,7 +1253,7 @@ function tiltStep(){
   else if(Math.abs(py)>T)dir=py>0?'n':'s';
   if(!dir)return;
   armed=false;
-  {flash[dir]=performance.now();const l=eff();const pd=dir==='e'?(l>=2?'en':'e'):dir==='w'?(l>=2?'wn':'w'):dir;tap(pd,1);}
+  {const pd=dir==='e'?'en':dir==='w'?'wn':dir;flash[pd]=performance.now();tap(pd,1);}
 }
 const bMotion=$('bMotion'),motionMsg=$('motionMsg'),sInfo=$('sensorInfo'),sLive=$('sensorLive');
 sInfo.textContent=framed?'Aqui dentro do Claude o navegador bloqueia o sensor. Para usar a inclinação e o chacoalhar de verdade, abra o simulador direto no Chrome do celular (arquivo ou endereço próprio, com HTTPS).':'Ligue o sensor e, em Ajustes, ative Inclinar. Segure o celular na posição natural e toque em Calibrar.';
@@ -1337,32 +1309,25 @@ $('bPerm').addEventListener('click',askPerms);$('bPerm2').addEventListener('clic
 /* ---------- pads e cantos ---------- */
 const els={n:$('pN'),e:$('pE'),s:$('pS'),w:$('pW'),nl:$('pNL'),nr:$('pNR'),sl:$('pSL'),sr:$('pSR'),en:$('pEN'),es:$('pES'),wn:$('pWN'),ws:$('pWS')};
 const SIDE_OF={n:'n',nl:'n',nr:'n',s:'s',sl:'s',sr:'s',e:'e',en:'e',es:'e',w:'w',wn:'w',ws:'w'};
-const eff=()=>splitApp>=2?2:0;
-const lg=d=>eff()>=2?d:SIDE_OF[d];
-const CORNER={};
-[['n','e','ne'],['e','s','se'],['s','w','sw'],['n','w','nw'],['nr','e','ne'],['sr','e','se'],['sl','w','sw'],['nl','w','nw'],['nr','en','ne'],['sr','es','se'],['sl','ws','sw'],['nl','wn','nw']].forEach(([a,b,c])=>{CORNER[a+'+'+b]=c;CORNER[b+'+'+a]=c;});
+
+const LOG={n:'up',s:'down',wn:'left',en:'right',es:'ok',ws:'back'};
+const lg=d=>LOG[d]||d;
 const down={},pend={},rep={},chorded={},flash={};
-function tap(d,n){callLua('on_pad',lg(d),n);}
-function fireChord(c){flash[c]=performance.now();ensureAudio();if(c==='nw'){goUp();}else callLua('on_chord',c);}
-function repOK(d){const l=lg(d);const list=/^[nesw]{1,4}$/.test(repeatSet)?repeatSet.split(''):repeatSet.split(/[ ,]+/);return list.indexOf(l)>=0;}
+function tap(d,n){if(d==='ws'){flash.ws=performance.now();goUp();return;}callLua('on_pad',lg(d),n);}
+function repOK(d){return repeatSet.split(/[ ,]+/).indexOf(lg(d))>=0;}
 function startRepeat(d){
   if(!repOK(d))return;
   let n=1;rep[d]={t:setTimeout(()=>{rep[d].i=setInterval(()=>{n++;tap(d,n);},110);},430)};
 }
 function stopRepeat(d){if(rep[d]){clearTimeout(rep[d].t);clearInterval(rep[d].i);delete rep[d];}}
-const holdT={},held={};
-function holdFire(d){const sd=SIDE_OF[d];if(sd==='s'){flash.nw=performance.now();ensureAudio();goUp();}else fireChord(sd==='n'?'ne':sd==='e'?'se':'sw');}
 function press(d){
   if(down[d])return;ensureAudio();
   down[d]=performance.now();els[d].classList.add('on');
-  if(repOK(d))pend[d]=setTimeout(()=>{delete pend[d];tap(d,1);startRepeat(d);},50);
-  else holdT[d]=setTimeout(()=>{delete holdT[d];held[d]=1;holdFire(d);},650);
+  tap(d,1);if(d!=='ws'&&repOK(d))startRepeat(d);
 }
 function release(d){
   if(!down[d])return;
-  if(pend[d]){clearTimeout(pend[d]);delete pend[d];tap(d,1);}
-  else if(holdT[d]){clearTimeout(holdT[d]);delete holdT[d];tap(d,1);}
-  stopRepeat(d);delete down[d];delete held[d];els[d].classList.remove('on');
+  stopRepeat(d);delete down[d];els[d].classList.remove('on');
 }
 for(const d in els){
   const el=els[d];
@@ -1370,19 +1335,11 @@ for(const d in els){
   ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>el.addEventListener(ev,()=>release(d)));
   el.addEventListener('contextmenu',e=>e.preventDefault());
 }
-for(const c of ['nw','ne','sw','se']){
-  const el=$('c'+c.toUpperCase());
-  el.addEventListener('pointerdown',e=>{e.preventDefault();el.classList.add('on');fireChord(c);});
-  ['pointerup','pointercancel','pointerleave'].forEach(ev=>el.addEventListener(ev,()=>el.classList.remove('on')));
-  el.addEventListener('contextmenu',e=>e.preventDefault());
-}
-const KEYS={ArrowUp:'n',ArrowRight:'en',ArrowDown:'s',ArrowLeft:'wn','.':'es',',':'ws'};
+const KEYS={ArrowUp:'n',ArrowRight:'en',ArrowDown:'s',ArrowLeft:'wn',Enter:'es',Escape:'ws',Backspace:'ws'};
 addEventListener('keydown',e=>{
   if(e.repeat)return;
   if(KEYS[e.key]){e.preventDefault();press(KEYS[e.key]);}
   else if(e.key===' '){e.preventDefault();ensureAudio();doShake();}
-  else if(e.key==='Enter'){e.preventDefault();fireChord('ne');}
-  else if(e.key==='Escape'){fireChord('nw');}
 });
 addEventListener('keyup',e=>{if(KEYS[e.key])release(KEYS[e.key]);});
 $('bShake').addEventListener('click',()=>{ensureAudio();doShake();});
@@ -1447,10 +1404,7 @@ function frame(t){
   const a=performance.now();
   if(!lastErr||cur){callLua('update',step);callLua('draw');}
   ms+=performance.now()-a;frames++;
-  const l=eff();
-  chip('n',labs.n);chip('s',labs.s);
-  if(l>=2){chip('en',labs.en||labs.e);chip('es',labs.es||labs.e);chip('wn',labs.wn||labs.w);chip('ws',labs.ws||labs.w);}else{chip('e',labs.e);chip('w',labs.w);}
-  chip('ne',labs.ne);chip('se',labs.se);chip('sw',labs.sw);chip('nw',cur==='home'?'':'Menu');
+  chip('n',labs.n);chip('s',labs.s);chip('wn',labs.wn);chip('en',labs.en);chip('es',labs.es);chip('ws',cur==='home'?'':labs.ws);
   errorOverlay();
   if(performance.now()<noticeUntil){ctx.save();path(20,128,200,56,14*TH().rscale);ctx.fillStyle=q(themeColor('accent'));ctx.fill();ctx.fillStyle=q(themeColor('bg'));ctx.textAlign='center';ctx.textBaseline='middle';const ln=notice.split('|');ln.forEach((t,i)=>{ctx.font=FONT(i?15:11);ctx.fillText(t,120,ln.length>1?(i?165:143):156);});ctx.restore();}
   if(t-statT>1000){
@@ -1460,6 +1414,6 @@ function frame(t){
   }
 }
 Promise.race([Promise.all(THEMES.map(k=>document.fonts.load(k.wt+' 16px "'+k.font+'"'))),new Promise(r=>setTimeout(r,1500))]).then(()=>{goHome();requestAnimationFrame(frame);});
-window.__cubo={startApp,onMotion,tiltStep,S,get splitApp(){return splitApp;},qr:id=>qrInstall(packs.find(p=>p.id===id)),packs,get curPack(){return curPack&&curPack.id;},goUp,press,release,doShake,fireChord,setTheme:i=>{S.theme=i;cc.clear();saveSettings();},wifiGo,installed,get err(){return lastErr;},get cur(){return cur;},S,apps};
+window.__cubo={startApp,onMotion,tiltStep,S,get splitApp(){return splitApp;},qr:id=>qrInstall(packs.find(p=>p.id===id)),packs,get curPack(){return curPack&&curPack.id;},goUp,press,release,doShake,setTheme:i=>{S.theme=i;cc.clear();saveSettings();},wifiGo,installed,get err(){return lastErr;},get cur(){return cur;},S,apps};
 })();
 </script>

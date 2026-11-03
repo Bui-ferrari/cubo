@@ -7,11 +7,13 @@ local t,delay=0,0
 local out={n=false,e=false,s=false,w=false}
 local winner=nil
 local POS={n={120,70,180},e={196,160,-90},s={120,250,0},w={44,160,90}}
-local function lab() labels("Pronto","","","","Iniciar","","") end
+local PM={up="n",right="e",down="s",left="w"}
+local function lab() labels("","","","","Iniciar") end
 function on_enter() repeat_pads("") lab() end
-local function start() state="wait" t=0 delay=2+math.random()*4 out={n=false,e=false,s=false,w=false} winner=nil sfx("tick") labels("","","","") end
-function on_chord(c) if c=="ne" and (state=="idle" or state=="done") then start() end end
+local function start() state="wait" t=0 delay=2+math.random()*4 out={n=false,e=false,s=false,w=false} winner=nil sfx("tick") labels("","","","","") end
 function on_pad(d)
+  if d=="ok" then if state=="idle" or state=="done" then start() end return end
+  d=PM[d]
   if state=="wait" then if not out[d] then out[d]=true sfx("back") end
   elseif state=="go" then if not out[d] then winner=d state="done" sfx("win") lab() end
   end

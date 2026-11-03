@@ -1,18 +1,15 @@
 -- Regras em slides, passo a passo, com leitura em voz alta
 local i=1
 local reading=false
-local function lab() labels("Ler","Próximo","Parar","Anterior","Ler","Parar","") end
+local function lab() labels("","Parar","Anterior","Próximo","Ler") end
 function on_enter() refresh_colors() lab() repeat_pads("") end
 local function read() reading=true speak(_sl_title(i)..". ".._sl_text(i)) sfx("tick") end
 function on_pad(d)
   local n=_sl_count()
-  if d=="e" then if i<n then i=i+1 reading=false speak_stop() sfx("tick") else sfx("back") end
-  elseif d=="w" then if i>1 then i=i-1 reading=false speak_stop() sfx("tick") else sfx("back") end
-  elseif d=="n" then read()
-  elseif d=="s" then reading=false speak_stop() end
-end
-function on_chord(c)
-  if c=="ne" then read() elseif c=="se" then reading=false speak_stop() end
+  if d=="right" then if i<n then i=i+1 reading=false speak_stop() sfx("tick") else sfx("back") end
+  elseif d=="left" then if i>1 then i=i-1 reading=false speak_stop() sfx("tick") else sfx("back") end
+  elseif d=="ok" then read()
+  elseif d=="down" then reading=false speak_stop() end
 end
 function draw()
   clear() decor()

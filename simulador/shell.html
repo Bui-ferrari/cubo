@@ -46,7 +46,7 @@ h1{font:700 28px/1.1 var(--font-d);margin:0 0 4px;letter-spacing:-.01em;text-wra
 #pSL svg,#pSR svg{transform:rotate(180deg)}
 #pEN{left:80.36%;top:22.05%;width:17.86%;height:25.9%}#pES{left:80.36%;top:52.05%;width:17.86%;height:25.9%}
 #pWN{left:1.79%;top:22.05%;width:17.86%;height:25.9%}#pWS{left:1.79%;top:52.05%;width:17.86%;height:25.9%}
-#pEN svg,#pES svg{transform:rotate(90deg)}#pWN svg,#pWS svg{transform:rotate(-90deg)}
+#pEN svg{transform:rotate(90deg)}#pWN svg{transform:rotate(-90deg)}#pES svg,#pWS svg{transform:none}
 .dev #pE,.dev #pW,.dev .sp,.dev .cor{display:none}
 .cor{position:absolute;width:9.4%;aspect-ratio:1;border:0;padding:0;border-radius:50%;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;
   background:linear-gradient(180deg,var(--pad-a),var(--pad-b));color:var(--pad-ink);font:700 3cqw var(--font-d);box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 1px 2px rgba(0,0,0,.25)}
@@ -84,18 +84,18 @@ body.full{padding-block:8px}
 <div>
  <div class="stage"><div class="dev" id="dev" data-pads="6">
   <div class="scr"><canvas id="cv" width="240" height="320" aria-label="Tela do cubo"></canvas></div>
-  <button class="pad" id="pN" aria-label="Pad norte"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad" id="pN" aria-label="Pad de cima"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad" id="pE" aria-label="Pad leste"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad" id="pS" aria-label="Pad sul"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad" id="pS" aria-label="Pad de baixo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad" id="pW" aria-label="Pad oeste"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pNL" aria-label="Pad norte esquerdo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pNR" aria-label="Pad norte direito"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pSL" aria-label="Pad sul esquerdo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
   <button class="pad sp" id="pSR" aria-label="Pad sul direito"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pEN" aria-label="Pad leste de cima"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pES" aria-label="Pad leste de baixo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pWN" aria-label="Pad oeste de cima"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
-  <button class="pad sp2" id="pWS" aria-label="Pad oeste de baixo"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad sp2" id="pEN" aria-label="Pad direita de cima: direita"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad sp2" id="pES" aria-label="Pad direita de baixo: OK"><svg viewBox="0 0 10 10"><path d="M2 5.3l2.3 2.4L8.2 2.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <button class="pad sp2" id="pWN" aria-label="Pad esquerda de cima: esquerda"><svg viewBox="0 0 10 10"><path d="M5 2l4 6H1z"/></svg></button>
+  <button class="pad sp2" id="pWS" aria-label="Pad esquerda de baixo: voltar"><svg viewBox="0 0 10 10"><path d="M3.2 2.2L1.6 3.8l1.6 1.6M1.8 3.8h4.4a2.1 2.1 0 010 4.2H4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <button class="cor" id="cNW" aria-label="Canto noroeste: norte e oeste juntos">2×</button>
   <button class="cor" id="cNE" aria-label="Canto nordeste: norte e leste juntos">2×</button>
   <button class="cor" id="cSW" aria-label="Canto sudoeste: sul e oeste juntos">2×</button>
@@ -113,11 +113,11 @@ body.full{padding-block:8px}
 
 <div class="side">
  <div class="card"><h2>Como usar</h2><ul>
-  <li><b>6 pads:</b> um em cima, um embaixo, dois à direita e dois à esquerda. <b>Toque</b> = o que está escrito na borda da tela, ao lado do pad.</li>
-  <li><b>Segurar 0,7 s:</b> pad de cima, da direita ou da esquerda faz o que está escrito no canto da tela (nordeste, sudeste, sudoeste). <b>Segurar o pad de baixo = voltar</b> (o canto noroeste mostra "Menu").</li>
-  <li>Nos apps de jogo os 4 pads laterais viram botões separados; nos demais, os dois do mesmo lado fazem a mesma coisa.</li>
-  <li>Teclado: setas = cima, baixo, direita-cima, esquerda-cima; <span class="kbd">.</span> = direita-baixo; <span class="kbd">,</span> = esquerda-baixo; <span class="kbd">Enter</span> = segurar cima; <span class="kbd">Esc</span> = Menu.</li>
-  <li>Em Ajustes, <b>Inclinar</b> liga a navegação por inclinação (4 direções, precisa do sensor).</li>
+  <li><b>6 pads, sem combinar dois toques:</b> cima, baixo, esquerda (em cima), direita (em cima), OK (embaixo à direita) e Voltar (embaixo à esquerda).</li>
+  <li><b>Voltar</b> sempre sobe um nível: mini-app → menu do jogo → Menu. Ele é do sistema: nenhum app usa esse pad para outra coisa.</li>
+  <li>Os rótulos nas bordas da tela mostram o que cada pad faz agora. Pad sem rótulo não faz nada naquele app.</li>
+  <li>Teclado: setas, <span class="kbd">Enter</span> = OK, <span class="kbd">Esc</span> ou <span class="kbd">Backspace</span> = Voltar.</li>
+  <li>Em Ajustes, <b>Inclinar</b> liga a navegação por inclinação (cima, baixo, esquerda, direita; precisa do sensor).</li>
   <li>Chacoalhar: botão, <span class="kbd">espaço</span> ou o sensor do celular.</li>
  </ul></div>
 <div class="card"><h2>Sensor de movimento</h2>
@@ -137,7 +137,7 @@ body.full{padding-block:8px}
    <span>Dados salvos por app</span><span>até 512 bytes</span>
    <span>Tempo por quadro</span><span>aborta acima de 200 ms</span>
    <span>Som</span><span>1 voz, ondas simples</span>
-   <span>Entradas</span><span>6 pads (toque e segurar), inclinação e chacoalhar</span>
+   <span>Entradas</span><span>6 pads (um toque cada), inclinação e chacoalhar</span>
   </div>
   <p class="msg" style="margin-top:10px">O tempo por quadro aqui é de um celular. No ESP32 ele será várias vezes maior, então mantenha os apps leves.</p>
  </div>
@@ -288,7 +288,7 @@ function bindApi(){
   reg('_split',Ls=>{splitApp=n_(Ls,1)|0;return 0;});
   reg('_lside',Ls=>{labs.en=lstr(Ls,1);labs.es=lstr(Ls,2);labs.wn=lstr(Ls,3);labs.ws=lstr(Ls,4);return 0;});
   reg('_lsplit',Ls=>{labs.nl=lstr(Ls,1);labs.nr=lstr(Ls,2);labs.sl=lstr(Ls,3);labs.sr=lstr(Ls,4);return 0;});
-  reg('_labels',Ls=>{labs.n=lstr(Ls,1);labs.e=lstr(Ls,2);labs.s=lstr(Ls,3);labs.w=lstr(Ls,4);labs.ne=lstr(Ls,5);labs.se=lstr(Ls,6);labs.sw=lstr(Ls,7);return 0;});
+  reg('_labels',Ls=>{labs.n=lstr(Ls,1);labs.s=lstr(Ls,2);labs.wn=lstr(Ls,3);labs.en=lstr(Ls,4);labs.es=lstr(Ls,5);const b=lstr(Ls,6);labs.ws=b===''?'Voltar':b;return 0;});
   reg('_repeat',Ls=>{repeatSet=lstr(Ls,1);return 0;});
   reg('_theme',Ls=>pnum(Ls,themeColor(lstr(Ls,1))||0));
   reg('_sfx',Ls=>{ensureAudio();const s=SFX[lstr(Ls,1)];if(s&&!(songTimer&&loopActive))playSong(s,200,false,'square');return 0;});
@@ -350,7 +350,7 @@ function callLua(fn,...args){
 let appBytes=0;
 function startApp(id,srcOverride,nameOverride){
   stopSound();loopActive=false;
-  for(const k in labs)labs[k]='';splitApp=0;repeatSet='';lastErr='';
+  for(const k in labs)labs[k]='';labs.ws='Voltar';splitApp=0;repeatSet='';lastErr='';
   L=lauxlib.luaL_newstate();lualib.luaL_openlibs(L);
   try{lua.lua_sethook(L,function(Ls){if(performance.now()-tStart>LIMITS.frameMs){lauxlib.luaL_error(Ls,to_luastring('app demorou mais de '+LIMITS.frameMs+' ms'));}},lua.LUA_MASKCOUNT,4000);}catch(e){}
   bindApi();
@@ -403,7 +403,7 @@ function tiltStep(){
   else if(Math.abs(py)>T)dir=py>0?'n':'s';
   if(!dir)return;
   armed=false;
-  {flash[dir]=performance.now();const l=eff();const pd=dir==='e'?(l>=2?'en':'e'):dir==='w'?(l>=2?'wn':'w'):dir;tap(pd,1);}
+  {const pd=dir==='e'?'en':dir==='w'?'wn':dir;flash[pd]=performance.now();tap(pd,1);}
 }
 const bMotion=$('bMotion'),motionMsg=$('motionMsg'),sInfo=$('sensorInfo'),sLive=$('sensorLive');
 sInfo.textContent=framed?'Aqui dentro do Claude o navegador bloqueia o sensor. Para usar a inclinação e o chacoalhar de verdade, abra o simulador direto no Chrome do celular (arquivo ou endereço próprio, com HTTPS).':'Ligue o sensor e, em Ajustes, ative Inclinar. Segure o celular na posição natural e toque em Calibrar.';
@@ -459,32 +459,25 @@ $('bPerm').addEventListener('click',askPerms);$('bPerm2').addEventListener('clic
 /* ---------- pads e cantos ---------- */
 const els={n:$('pN'),e:$('pE'),s:$('pS'),w:$('pW'),nl:$('pNL'),nr:$('pNR'),sl:$('pSL'),sr:$('pSR'),en:$('pEN'),es:$('pES'),wn:$('pWN'),ws:$('pWS')};
 const SIDE_OF={n:'n',nl:'n',nr:'n',s:'s',sl:'s',sr:'s',e:'e',en:'e',es:'e',w:'w',wn:'w',ws:'w'};
-const eff=()=>splitApp>=2?2:0;
-const lg=d=>eff()>=2?d:SIDE_OF[d];
-const CORNER={};
-[['n','e','ne'],['e','s','se'],['s','w','sw'],['n','w','nw'],['nr','e','ne'],['sr','e','se'],['sl','w','sw'],['nl','w','nw'],['nr','en','ne'],['sr','es','se'],['sl','ws','sw'],['nl','wn','nw']].forEach(([a,b,c])=>{CORNER[a+'+'+b]=c;CORNER[b+'+'+a]=c;});
+
+const LOG={n:'up',s:'down',wn:'left',en:'right',es:'ok',ws:'back'};
+const lg=d=>LOG[d]||d;
 const down={},pend={},rep={},chorded={},flash={};
-function tap(d,n){callLua('on_pad',lg(d),n);}
-function fireChord(c){flash[c]=performance.now();ensureAudio();if(c==='nw'){goUp();}else callLua('on_chord',c);}
-function repOK(d){const l=lg(d);const list=/^[nesw]{1,4}$/.test(repeatSet)?repeatSet.split(''):repeatSet.split(/[ ,]+/);return list.indexOf(l)>=0;}
+function tap(d,n){if(d==='ws'){flash.ws=performance.now();goUp();return;}callLua('on_pad',lg(d),n);}
+function repOK(d){return repeatSet.split(/[ ,]+/).indexOf(lg(d))>=0;}
 function startRepeat(d){
   if(!repOK(d))return;
   let n=1;rep[d]={t:setTimeout(()=>{rep[d].i=setInterval(()=>{n++;tap(d,n);},110);},430)};
 }
 function stopRepeat(d){if(rep[d]){clearTimeout(rep[d].t);clearInterval(rep[d].i);delete rep[d];}}
-const holdT={},held={};
-function holdFire(d){const sd=SIDE_OF[d];if(sd==='s'){flash.nw=performance.now();ensureAudio();goUp();}else fireChord(sd==='n'?'ne':sd==='e'?'se':'sw');}
 function press(d){
   if(down[d])return;ensureAudio();
   down[d]=performance.now();els[d].classList.add('on');
-  if(repOK(d))pend[d]=setTimeout(()=>{delete pend[d];tap(d,1);startRepeat(d);},50);
-  else holdT[d]=setTimeout(()=>{delete holdT[d];held[d]=1;holdFire(d);},650);
+  tap(d,1);if(d!=='ws'&&repOK(d))startRepeat(d);
 }
 function release(d){
   if(!down[d])return;
-  if(pend[d]){clearTimeout(pend[d]);delete pend[d];tap(d,1);}
-  else if(holdT[d]){clearTimeout(holdT[d]);delete holdT[d];tap(d,1);}
-  stopRepeat(d);delete down[d];delete held[d];els[d].classList.remove('on');
+  stopRepeat(d);delete down[d];els[d].classList.remove('on');
 }
 for(const d in els){
   const el=els[d];
@@ -492,19 +485,11 @@ for(const d in els){
   ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>el.addEventListener(ev,()=>release(d)));
   el.addEventListener('contextmenu',e=>e.preventDefault());
 }
-for(const c of ['nw','ne','sw','se']){
-  const el=$('c'+c.toUpperCase());
-  el.addEventListener('pointerdown',e=>{e.preventDefault();el.classList.add('on');fireChord(c);});
-  ['pointerup','pointercancel','pointerleave'].forEach(ev=>el.addEventListener(ev,()=>el.classList.remove('on')));
-  el.addEventListener('contextmenu',e=>e.preventDefault());
-}
-const KEYS={ArrowUp:'n',ArrowRight:'en',ArrowDown:'s',ArrowLeft:'wn','.':'es',',':'ws'};
+const KEYS={ArrowUp:'n',ArrowRight:'en',ArrowDown:'s',ArrowLeft:'wn',Enter:'es',Escape:'ws',Backspace:'ws'};
 addEventListener('keydown',e=>{
   if(e.repeat)return;
   if(KEYS[e.key]){e.preventDefault();press(KEYS[e.key]);}
   else if(e.key===' '){e.preventDefault();ensureAudio();doShake();}
-  else if(e.key==='Enter'){e.preventDefault();fireChord('ne');}
-  else if(e.key==='Escape'){fireChord('nw');}
 });
 addEventListener('keyup',e=>{if(KEYS[e.key])release(KEYS[e.key]);});
 $('bShake').addEventListener('click',()=>{ensureAudio();doShake();});
@@ -569,10 +554,7 @@ function frame(t){
   const a=performance.now();
   if(!lastErr||cur){callLua('update',step);callLua('draw');}
   ms+=performance.now()-a;frames++;
-  const l=eff();
-  chip('n',labs.n);chip('s',labs.s);
-  if(l>=2){chip('en',labs.en||labs.e);chip('es',labs.es||labs.e);chip('wn',labs.wn||labs.w);chip('ws',labs.ws||labs.w);}else{chip('e',labs.e);chip('w',labs.w);}
-  chip('ne',labs.ne);chip('se',labs.se);chip('sw',labs.sw);chip('nw',cur==='home'?'':'Menu');
+  chip('n',labs.n);chip('s',labs.s);chip('wn',labs.wn);chip('en',labs.en);chip('es',labs.es);chip('ws',cur==='home'?'':labs.ws);
   errorOverlay();
   if(performance.now()<noticeUntil){ctx.save();path(20,128,200,56,14*TH().rscale);ctx.fillStyle=q(themeColor('accent'));ctx.fill();ctx.fillStyle=q(themeColor('bg'));ctx.textAlign='center';ctx.textBaseline='middle';const ln=notice.split('|');ln.forEach((t,i)=>{ctx.font=FONT(i?15:11);ctx.fillText(t,120,ln.length>1?(i?165:143):156);});ctx.restore();}
   if(t-statT>1000){
@@ -582,6 +564,6 @@ function frame(t){
   }
 }
 Promise.race([Promise.all(THEMES.map(k=>document.fonts.load(k.wt+' 16px "'+k.font+'"'))),new Promise(r=>setTimeout(r,1500))]).then(()=>{goHome();requestAnimationFrame(frame);});
-window.__cubo={startApp,onMotion,tiltStep,S,get splitApp(){return splitApp;},qr:id=>qrInstall(packs.find(p=>p.id===id)),packs,get curPack(){return curPack&&curPack.id;},goUp,press,release,doShake,fireChord,setTheme:i=>{S.theme=i;cc.clear();saveSettings();},wifiGo,installed,get err(){return lastErr;},get cur(){return cur;},S,apps};
+window.__cubo={startApp,onMotion,tiltStep,S,get splitApp(){return splitApp;},qr:id=>qrInstall(packs.find(p=>p.id===id)),packs,get curPack(){return curPack&&curPack.id;},goUp,press,release,doShake,setTheme:i=>{S.theme=i;cc.clear();saveSettings();},wifiGo,installed,get err(){return lastErr;},get cur(){return cur;},S,apps};
 })();
 </script>

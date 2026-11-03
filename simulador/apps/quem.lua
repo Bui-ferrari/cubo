@@ -7,7 +7,7 @@ local ANG={n=-90,e=0,s=90,w=180}
 local ang=-90
 local from,to,t,dur=-90,-90,0,0
 local winner=nil
-local function lab() labels("Girar","+ jogador","","- jogador","Girar","","") end
+local function lab() labels("","","- jogador","+ jogador","Girar") end
 function on_enter() repeat_pads("") lab() end
 local function spin()
   if t<dur then return end
@@ -19,11 +19,10 @@ local function spin()
   sfx("roll")
 end
 function on_pad(d)
-  if d=="n" then spin()
-  elseif t>=dur and d=="e" then players=math.min(4,players+1) winner=nil sfx("tick")
-  elseif t>=dur and d=="w" then players=math.max(2,players-1) winner=nil sfx("tick") end
+  if d=="ok" then spin()
+  elseif t>=dur and d=="right" then players=math.min(4,players+1) winner=nil sfx("tick")
+  elseif t>=dur and d=="left" then players=math.max(2,players-1) winner=nil sfx("tick") end
 end
-function on_chord(c) if c=="ne" then spin() end end
 function on_shake() spin() end
 local last_tick=0
 function update(dt)

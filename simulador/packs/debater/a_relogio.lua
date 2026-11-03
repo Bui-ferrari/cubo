@@ -6,23 +6,23 @@ local t={180,180}      -- 1 = lado de cima, 2 = lado de baixo
 local active=0         -- 0 = parado
 local over=0
 local function lab()
-  if active==0 then labels("Começa","+30s","Começa","-30s","Zerar","","")
-  else labels("Passar","","Passar","","Pausar","Zerar","") end
+  if active==0 then labels("Começa","Começa","-30s","+30s","Zerar")
+  else labels("Passar","Passar","","","Pausar") end
   repeat_pads("")
 end
 function on_enter() lab() end
 function on_pad(d)
-  local side=(d=="n") and 1 or ((d=="s") and 2 or 0)
+  if d=="ok" then
+    if active==0 then t={total,total} over=0 sfx("back") else active=0 lab() sfx("tick") end
+    return
+  end
+  local side=(d=="up") and 1 or ((d=="down") and 2 or 0)
   if over>0 then return end
   if active==0 then
     if side>0 then active=side sfx("confirm") lab()
-    elseif d=="e" then total=clamp(total+30,30,3600) t={total,total} sfx("tick")
-    elseif d=="w" then total=clamp(total-30,30,3600) t={total,total} sfx("tick") end
+    elseif d=="right" then total=clamp(total+30,30,3600) t={total,total} sfx("tick")
+    elseif d=="left" then total=clamp(total-30,30,3600) t={total,total} sfx("tick") end
   elseif side==active then active=3-active sfx("tick") end
-end
-function on_chord(c)
-  if c=="ne" then if active==0 then t={total,total} sfx("back") else active=0 lab() sfx("tick") end
-  elseif c=="se" then t={total,total} active=0 over=0 lab() sfx("back") end
 end
 function update(dt)
   if active>0 then
@@ -43,5 +43,5 @@ function draw()
     if on then frame(X0,cy-34,CW,68,C.accent,14,3) end
     text(fmt(t[i]),W//2,cy,col,40,CENTER,rot)
   end
-  text(over>0 and "tempo esgotado" or (active==0 and "toque no seu lado para começar" or ""),W//2,160,C.mute,11,CENTER)
+  text(over>0 and "tempo esgotado" or (active==0 and "cima ou baixo: quem começa" or ""),W//2,160,C.mute,11,CENTER)
 end

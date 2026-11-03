@@ -4,27 +4,23 @@ local t=0
 function on_enter() refresh_colors() t=0 end
 local function lab()
   local w=_wifi()
-  if w=="off" or w=="fail" then labels("Conectar","","","","Conectar")
-  elseif w=="ready" then labels("Acima","Instalar","Abaixo","Remover","OK","Atualizar")
-  else labels("","","","") end
+  if w=="off" or w=="fail" then labels("","","","","Conectar")
+  elseif w=="ready" then labels("Acima","Abaixo","Remover","Instalar","Atualizar")
+  else labels("","","","","") end
   repeat_pads("")
 end
 local last=""
 local function toggle() if _store_count()>0 then _store_toggle(sel) sfx(_store_has(sel)==1 and "win" or "back") end end
 function on_pad(d)
   local w=_wifi()
-  if w=="off" or w=="fail" then if d=="n" then _wifi_go() sfx("confirm") end return end
+  if w=="off" or w=="fail" then if d=="ok" then _wifi_go() sfx("confirm") end return end
   if w~="ready" then return end
   local n=_store_count()
-  if d=="n" then sel=(sel-2)%n+1 sfx("tick")
-  elseif d=="s" then sel=sel%n+1 sfx("tick")
-  elseif d=="e" then if _store_has(sel)==0 then toggle() end
-  elseif d=="w" then if _store_has(sel)==1 then toggle() end end
-end
-function on_chord(c)
-  local w=_wifi()
-  if c=="ne" then if w=="off" then _wifi_go() sfx("confirm") elseif w=="ready" then toggle() end
-  elseif c=="se" and w=="ready" then _wifi_off() _wifi_go() sfx("tick") end
+  if d=="up" then sel=(sel-2)%n+1 sfx("tick")
+  elseif d=="down" then sel=sel%n+1 sfx("tick")
+  elseif d=="right" then if _store_has(sel)==0 then toggle() end
+  elseif d=="left" then if _store_has(sel)==1 then toggle() end
+  elseif d=="ok" then _wifi_off() _wifi_go() sfx("tick") end
 end
 function update(dt) t=t+dt local w=_wifi() if w~=last then last=w lab() end end
 function draw()
@@ -33,7 +29,7 @@ function draw()
   local w=_wifi()
   if w=="off" or w=="fail" then
     text("Wi-Fi desligado",W//2,130,C.fg,18,CENTER)
-    text("toque em Conectar",W//2,160,C.mute,12,CENTER)
+    text("aperte OK para conectar",W//2,160,C.mute,12,CENTER)
   elseif w=="scan" or w=="on" or w=="check" then
     local dots=string.rep(".",1+math.floor(t*3)%3)
     text(w=="scan" and "Procurando redes" or (w=="on" and "Conectado a Casa-Maker" or "Buscando atualizações"),W//2,120,C.fg,14,CENTER)

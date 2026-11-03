@@ -14,26 +14,28 @@ local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%02d:%02d
 local function goto_set()
   state="set" stop_sound()
   if mode==3 then phase="foco" total=focus remaining=focus else total=setsecs remaining=setsecs end
-  labels("Iniciar","+10s","Zerar","-10s","Modo","","") repeat_pads("ew")
+  labels("Modo","Zerar","-10s","+10s","Iniciar") repeat_pads("left right")
 end
 function on_enter() goto_set() end
 local function music() if mode==2 then play(TENSE,150,true,"triangle") end end
 local function begin()
-  state="run" labels("Pausar","+10s","Zerar","-10s","Pausar","","") sfx("confirm") music()
+  state="run" labels("","Zerar","-10s","+10s","Pausar") sfx("confirm") music()
 end
 function on_pad(d,n)
   n=n or 1
   if state=="done" then goto_set() sfx("back") return end
-  if d=="n" then
+  if d=="up" then
+    if state=="set" then mode=mode%3+1 sfx("tick") goto_set() end
+  elseif d=="ok" then
     if state=="set" then begin()
-    elseif state=="run" then state="pause" stop_sound() labels("Seguir","+10s","Zerar","-10s","Seguir","","") sfx("tick")
-    elseif state=="pause" then state="run" labels("Pausar","+10s","Zerar","-10s","Pausar","","") sfx("tick") music() end
-  elseif d=="s" then
+    elseif state=="run" then state="pause" stop_sound() labels("","Zerar","-10s","+10s","Seguir") sfx("tick")
+    elseif state=="pause" then state="run" labels("","Zerar","-10s","+10s","Pausar") sfx("tick") music() end
+  elseif d=="down" then
     goto_set() sfx("back")
   else
     local step=(n>12) and 60 or 10
     if mode==3 and state=="set" then step=60 end
-    local delta=(d=="e") and step or -step
+    local delta=(d=="right") and step or -step
     if mode==3 and state=="set" then focus=clamp(focus+delta,60,90*60) total=focus remaining=focus
     elseif state=="set" then setsecs=clamp(setsecs+delta,10,99*60) total=setsecs remaining=setsecs
     else remaining=clamp(remaining+delta,1,99*60) total=math.max(total,remaining) end
@@ -47,11 +49,8 @@ local function finish()
   elseif mode==3 then
     phase="foco" total=focus remaining=focus sfx("confirm")
   else
-    state="done" labels("OK","","","","OK") repeat_pads("") play(ALARM,170,true) flash=0
+    state="done" labels("","","","","OK") repeat_pads("") play(ALARM,170,true) flash=0
   end
-end
-function on_chord(c)
-  if c=="ne" then if state=="set" then mode=mode%3+1 sfx("tick") goto_set() else on_pad("n") end end
 end
 function update(dt)
   if state=="run" then

@@ -11,22 +11,19 @@ local function store() save("d",table.concat(dmg,",")) end
 function on_enter()
   local s=recall("d","")
   if s~="" then local i=1 for v in s:gmatch("%d+") do dmg[i]=tonumber(v) i=i+1 end end
-  labels("Anterior","+10","Próximo","-10","Zerar","","") repeat_pads("ew")
+  labels("Anterior","Próximo","-10","+10","Zerar") repeat_pads("left right")
 end
 function on_pad(d,n)
   n=n or 1
-  if d=="n" then sel=(sel-2)%6+1 sfx("tick")
-  elseif d=="s" then sel=sel%6+1 sfx("tick")
+  if d=="up" then sel=(sel-2)%6+1 sfx("tick")
+  elseif d=="down" then sel=sel%6+1 sfx("tick")
+  elseif d=="ok" then dmg[sel]=0 store() sfx("back")
   else
     local step=(n>14) and 50 or 10
-    dmg[sel]=clamp(dmg[sel]+(d=="e" and step or -step),0,990)
+    dmg[sel]=clamp(dmg[sel]+(d=="right" and step or -step),0,990)
     if n==1 then sfx("tick") end
     store()
   end
-end
-function on_chord(c)
-  if c=="ne" then dmg[sel]=0 store() sfx("back")
-  elseif c=="sw" then for i=1,6 do dmg[i]=0 end store() sfx("back") end
 end
 function draw()
   clear()
@@ -39,5 +36,5 @@ function draw()
     text(dmg[i],s.x+s.w//2,s.y+s.h//2-s.sz//2+4,dmg[i]>=100 and C.bad or C.fg,s.sz,CENTER)
   end
   text("dano",W//2,272,C.mute,12,CENTER)
-  text("cantos zeram",W//2,284,C.mute,10,CENTER)
+  text("OK zera o selecionado",W//2,284,C.mute,10,CENTER)
 end

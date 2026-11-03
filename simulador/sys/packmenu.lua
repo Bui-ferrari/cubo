@@ -6,14 +6,13 @@ local function rows(i)
   for x in _pk_icon(i):gmatch("[^/]+") do r[#r+1]=x end
   return r
 end
-function on_enter() refresh_colors() labels("Abrir","Próximo","","Anterior","OK") repeat_pads("") end
+function on_enter() refresh_colors() labels("","","Anterior","Próximo","Abrir") repeat_pads("") end
 function on_pad(d)
   local n=_pk_count()
-  if d=="w" then sel=(sel-2)%n+1 sfx("tick")
-  elseif d=="e" then sel=sel%n+1 sfx("tick")
-  elseif d=="n" then sfx("confirm") _pk_launch(sel) end
+  if d=="left" then sel=(sel-2)%n+1 sfx("tick")
+  elseif d=="right" then sel=sel%n+1 sfx("tick")
+  elseif d=="ok" then sfx("confirm") _pk_launch(sel) end
 end
-function on_chord(c) if c=="ne" then sfx("confirm") _pk_launch(sel) end end
 function update(dt) t=t+dt end
 function draw()
   clear() decor()
@@ -29,5 +28,5 @@ function draw()
     local x=W//2-(n*14)//2+(i-1)*14+7
     circle(x,254,i==sel and 4 or 3,i==sel and C.accent or C.mute)
   end
-  text("canto NO volta",W//2,276,C.mute,10,CENTER)
+  text("Voltar: Menu",W//2,276,C.mute,10,CENTER)
 end

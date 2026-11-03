@@ -8,7 +8,7 @@ local dizzy=0
 local last=0
 local PER_MIN=3
 local function save_all() save("s",string.format("%d,%d,%d,%d",math.floor(food),math.floor(joy),math.floor(energy),now())) end
-local function sleep_labels() labels("Comer","Brincar",sleeping and "Acordar" or "Dormir","Carinho","","","") end
+local function sleep_labels() labels("Comer",sleeping and "Acordar" or "Dormir","Carinho","Brincar","") end
 function on_enter()
   local s=recall("s","")
   last=now()
@@ -24,10 +24,10 @@ function on_enter()
 end
 local function do_act(a) act=a actt=1.1 end
 function on_pad(d)
-  if d=="n" then food=clamp(food+25,0,100) do_act("eat") sfx("eat")
-  elseif d=="e" then if energy>10 then joy=clamp(joy+22,0,100) energy=clamp(energy-12,0,100) do_act("play") sfx("happy") else do_act("tired") sfx("back") end
-  elseif d=="s" then sleeping=not sleeping sleep_labels() sfx("tick")
-  elseif d=="w" then joy=clamp(joy+10,0,100) do_act("love") sfx("happy") end
+  if d=="up" then food=clamp(food+25,0,100) do_act("eat") sfx("eat")
+  elseif d=="right" then if energy>10 then joy=clamp(joy+22,0,100) energy=clamp(energy-12,0,100) do_act("play") sfx("happy") else do_act("tired") sfx("back") end
+  elseif d=="down" then sleeping=not sleeping sleep_labels() sfx("tick")
+  elseif d=="left" then joy=clamp(joy+10,0,100) do_act("love") sfx("happy") end
   save_all()
 end
 function on_shake() dizzy=1.5 sfx("shake") end

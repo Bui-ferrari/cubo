@@ -7,10 +7,10 @@ local left=20*60
 local flash=0
 local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%02d:%02d",s//60,s%60) end
 local function set_labels()
-  if state=="set" then labels("Iniciar","Tempo +","","Tempo -","Iniciar","","")
-  elseif state=="run" then labels("Pausar","","Zerar","","Pausar","","")
-  elseif state=="pause" then labels("Seguir","","Zerar","","Seguir","","")
-  else labels("OK","","","","OK","","") end
+  if state=="set" then labels("","","Tempo -","Tempo +","Iniciar")
+  elseif state=="run" then labels("","Zerar","","","Pausar")
+  elseif state=="pause" then labels("","Zerar","","","Seguir")
+  else labels("","","","","OK") end
   repeat_pads("")
 end
 local function reset() state="set" left=DUR[di]*60 stop_sound() set_labels() end
@@ -18,12 +18,11 @@ function on_enter() reset() end
 local function go() state="run" sfx("confirm") set_labels() end
 function on_pad(d)
   if state=="done" then reset() sfx("back") return end
-  if d=="n" then
+  if d=="ok" then
     if state=="set" then go() elseif state=="run" then state="pause" sfx("tick") set_labels() else state="run" sfx("tick") set_labels() end
-  elseif d=="s" then if state~="set" then reset() sfx("back") end
-  elseif state=="set" and (d=="e" or d=="w") then di=di%#DUR+1 left=DUR[di]*60 sfx("tick") end
+  elseif d=="down" then if state~="set" then reset() sfx("back") end
+  elseif state=="set" and (d=="right" or d=="left") then di=di%#DUR+1 left=DUR[di]*60 sfx("tick") end
 end
-function on_chord(c) if c=="ne" then on_pad("n") end end
 function update(dt)
   if state=="run" then left=left-dt if left<=0 then state="done" flash=0 play("a5:16 r:16 a5:16 r:16 a5:16 r:16 a5:8",170,true) set_labels() end
   elseif state=="done" then flash=flash+dt end

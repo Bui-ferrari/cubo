@@ -12,28 +12,31 @@ local v={nil,nil}
 local roll=0
 local flash=0
 local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%02d:%02d",s//60,s%60) end
-function on_enter()
-  split_pads(2) repeat_pads("")
-  labels("Rolar","","Tempo","","d6 / d12","20 / 30","Zerar")
-  labels_side("+1","+1","-1","-1")
+local mode=1   -- 1 soma, 2 tira, 3 ajustes
+local MN={"soma","tira","ajustes"}
+local function lab()
+  if mode==3 then labels("Zerar tudo","Tempo","Modo soma","Tempo "..DUR[di%#DUR+1].." min","d"..(faces==6 and 12 or 6))
+  else labels("Rolar dados","Tempo","Modo "..MN[mode%3+1],mode==1 and "+1 azul" or "-1 azul",mode==1 and "+1 laranja" or "-1 laranja") end
 end
+function on_enter() repeat_pads("") lab() end
 local function tempo()
   if state=="set" or state=="pause" then state="run" sfx("confirm")
   elseif state=="run" then state="pause" sfx("tick")
   else state="set" left=DUR[di]*60 stop_sound() sfx("tick") end
 end
 function on_pad(d)
-  if d=="n" then if roll<=0 then roll=0.8 sfx("roll") end
-  elseif d=="s" then tempo()
-  elseif d=="en" then sc[1]=clamp(sc[1]+1,0,99) sfx("tick")
-  elseif d=="es" then sc[2]=clamp(sc[2]+1,0,99) sfx("tick")
-  elseif d=="wn" then sc[1]=clamp(sc[1]-1,0,99) sfx("back")
-  elseif d=="ws" then sc[2]=clamp(sc[2]-1,0,99) sfx("back") end
-end
-function on_chord(c)
-  if c=="ne" then faces=(faces==6) and 12 or 6 v={nil,nil} sfx("tick")
-  elseif c=="se" then if state=="set" then di=di%#DUR+1 left=DUR[di]*60 sfx("tick") else sfx("back") end
-  elseif c=="sw" then sc={0,0} v={nil,nil} state="set" left=DUR[di]*60 stop_sound() sfx("back") end
+  local k=(mode==2) and -1 or 1
+  if d=="left" then mode=mode%3+1 sfx("tick") lab() return end
+  if d=="down" then tempo() return end
+  if mode==3 then
+    if d=="up" then sc={0,0} v={nil,nil} state="set" left=DUR[di]*60 stop_sound() sfx("back")
+    elseif d=="right" then if state=="set" then di=di%#DUR+1 left=DUR[di]*60 sfx("tick") lab() else sfx("back") end
+    elseif d=="ok" then faces=(faces==6) and 12 or 6 v={nil,nil} sfx("tick") lab() end
+    return
+  end
+  if d=="up" then if roll<=0 then roll=0.8 sfx("roll") end
+  elseif d=="right" then sc[1]=clamp(sc[1]+k,0,99) sfx(k<0 and "back" or "tick")
+  elseif d=="ok" then sc[2]=clamp(sc[2]+k,0,99) sfx(k<0 and "back" or "tick") end
 end
 function on_shake() if roll<=0 then roll=0.8 sfx("roll") end end
 function update(dt)
@@ -67,12 +70,12 @@ function draw()
   clear() decor()
   local blink=(state=="done" and math.floor(flash*3)%2==0)
   rect(X0,26,CW,70,blink and C.accent or C.panel,16)
-  text(fmt(left),W//2,48,blink and C.bg or C.fg,44,CENTER)
+  text(fmt(left),W//2,46,blink and C.bg or C.fg,36,CENTER)
   local st=({set="Parado · "..DUR[di].." min",run="Rolando",pause="Pausado",done="Fim de jogo!"})[state]
-  text(st,W//2,82,blink and C.bg or C.mute,12,CENTER)
+  text(st,W//2,80,blink and C.bg or C.mute,12,CENTER)
   local w1,w2=false,false
   if v[1] and v[2] and roll<=0 then w1=v[1]>v[2] w2=v[2]>v[1] end
   row(104,BLUE,sc[1],v[1],w1)
   row(184,ORANGE,sc[2],v[2],w2)
-  text("segure o pad de baixo: Menu",W//2,274,C.mute,10,CENTER)
+  text("modo: "..MN[mode],W//2,274,mode==2 and C.bad or C.mute,11,CENTER)
 end

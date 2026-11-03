@@ -23,8 +23,11 @@ function decor()
   elseif d==1 then tri(240,0,240,56,240-56*1.4466,0,C.deco)
   else rect(0,296,38,5,C.deco) rect(0,304,56,5,C.deco) rect(0,312,74,5,C.deco) end
 end
--- labels(norte, leste, sul, oeste, nordeste, sudeste, sudoeste). O noroeste é sempre "Menu" (sistema).
-function labels(n,e,s,w,ne,se,sw) _labels(n or "",e or "",s or "",w or "",ne or "",se or "",sw or "") end
+-- Pads (6, sem combinar toques). Nomes lógicos que o app recebe em on_pad(d): "up","down","left","right","ok".
+-- "back" (Voltar) é do sistema: sobe um nível e nunca chega ao app.
+-- labels(cima, baixo, esquerda, direita, ok): texto de cada pad na borda da tela. Vazio = pad sem função.
+function labels(up,down,left,right,ok,back) _labels(up or "",down or "",left or "",right or "",ok or "",back or "") end
+-- repeat_pads("left right"): nomes dos pads que repetem ao segurar
 function repeat_pads(s) _repeat(s or "") end
 function sfx(n) _sfx(n) end
 function play(song,bpm,loop,wave) _play(song,bpm or 160,loop and 1 or 0,wave or "square") end
@@ -33,10 +36,6 @@ function millis() return _millis() end
 function now() return _time() end
 function accel() return _accel() end
 function home() _home() end
--- 6 pads: o app pede os pads de cima/baixo divididos (nl, nr, sl, sr). Com 4 pads continua recebendo n e s.
--- nível 1: cima/baixo divididos (nl, nr, sl, sr). nível 2: todos os 8 pads (+ en, es, wn, ws).
-function split_pads(l) if l==true then l=1 elseif not l then l=0 end _split(l) end
-function labels_side(en,es,wn,ws) _lside(en or "",es or "",wn or "",ws or "") end
 function text_width(s,size) return _tw(s,size) end
 function wrap(s,size,maxw)
   local lines,line={},""
@@ -49,7 +48,6 @@ function wrap(s,size,maxw)
 end
 function speak(s) _speak(s) end
 function speak_stop() _speak_stop() end
-function labels_split(nl,nr,sl,sr) _lsplit(nl or "",nr or "",sl or "",sr or "") end
 function wifi_state() return _wifi() end
 function save(k,v) _save(k,tostring(v)) end
 function recall(k,d) local v=_load(k) if v=="" then return d end return v end

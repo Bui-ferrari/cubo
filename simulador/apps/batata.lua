@@ -6,11 +6,10 @@ local state="idle"
 local total,left=0,0
 local nt=0
 local boom=0
-local function lab() labels(state=="run" and "Passar" or "Iniciar","Passar","Passar","Passar","Iniciar","","") end
+local function lab() if state=="run" then labels("Passar","Passar","Passar","Passar","") else labels("","","","","Iniciar") end end
 function on_enter() repeat_pads("") lab() end
 local function start() state="run" total=math.random(8,25) left=total nt=0 boom=0 sfx("confirm") lab() end
-function on_pad(d) if state=="idle" or state=="done" then if d=="n" then start() end elseif state=="run" then sfx("shake") end end
-function on_chord(c) if c=="ne" and state~="run" then start() end end
+function on_pad(d) if state=="idle" or state=="done" then if d=="ok" then start() end elseif state=="run" then sfx("shake") end end
 function on_shake() if state=="run" then sfx("shake") end end
 function update(dt)
   if state=="run" then

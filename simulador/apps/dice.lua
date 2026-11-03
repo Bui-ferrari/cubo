@@ -11,19 +11,19 @@ local SHAPE={[3]={3,90,.62,-.12},[4]={3,-90,.62,.14},[8]={4,0,.58,0},[10]={5,-90
 
 local function roll_values() for i=1,qty do vals[i]=math.random(1,TYPES[ti]) end end
 function on_enter()
-  labels("Rolar","+ dado","Tipo","- dado","")
+  labels("Tipo +","Tipo -","- dado","+ dado","Rolar") repeat_pads("")
   repeat_pads("")
   roll_values()
 end
 local function start_roll() rolling=0.9 tick=0 sfx("roll") end
 function on_pad(d)
   if rolling>0 then return end
-  if d=="n" then start_roll()
-  elseif d=="s" then ti=ti%#TYPES+1 sfx("tick") roll_values()
-  elseif d=="e" then if qty<6 then qty=qty+1 sfx("tick") roll_values() end
-  elseif d=="w" then if qty>1 then qty=qty-1 sfx("tick") roll_values() end end
+  if d=="ok" then start_roll()
+  elseif d=="up" then ti=ti%#TYPES+1 sfx("tick") roll_values()
+  elseif d=="down" then ti=(ti-2)%#TYPES+1 sfx("tick") roll_values()
+  elseif d=="right" then if qty<6 then qty=qty+1 sfx("tick") roll_values() end
+  elseif d=="left" then if qty>1 then qty=qty-1 sfx("tick") roll_values() end end
 end
-function on_chord(c) if c=="ne" and rolling<=0 then start_roll() end end
 function on_shake() if rolling<=0 then start_roll() end end
 function update(dt)
   if rolling>0 then

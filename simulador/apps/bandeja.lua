@@ -1,31 +1,26 @@
 -- name: Bandeja de dados
 -- icon: ............/.aaa..bbb..../.aWa..bWb..../.aaa..bbb..../............/...bb...aaa.../..bWWb..aWa.../...bb...aaa.../............/.ffffffffff./.f........f./.ffffffffff./............
 -- Cada pad adiciona um dado de um tipo. Monte a jogada, chacoalhe e pronto.
-local TYPES={4,6,8,10,12,20}
--- posição dos 8 pads (sentido horário a partir do topo esquerdo)
-local PAD={wn=1,ws=2,en=3,es=4,s=5,n=6}
+local TYPES={4,6,8,10,12,20,100,2}
 local SHAPE={[2]={0},[4]={3,-90},[6]={4,45},[8]={4,0},[10]={5,-90},[12]={10,-90},[20]={6,-90},[100]={0}}
 local tray={}
-local cur=2
+local cur=2   -- tipo selecionado
 local rolled=false
 local rolling=0
 local function nm(t) return t==2 and "Moeda" or ("d"..t) end
 local function lab()
-  split_pads(2)
-  labels(nm(TYPES[6]),"","d12","","Rolar","Tirar","Limpar")
-  labels_side(nm(TYPES[3]),nm(TYPES[4]),nm(TYPES[1]),nm(TYPES[2]))
+  labels("Rolar","Tirar","Tipo -","Tipo +","+ "..nm(TYPES[cur]))
   repeat_pads("")
 end
 function on_enter() lab() end
 local function add(t) if #tray<12 then tray[#tray+1]={t=t,v=nil} rolled=false sfx("tick") else sfx("back") end end
 local function roll() if #tray==0 then return end rolling=0.8 sfx("roll") end
 function on_pad(d)
-  if PAD[d] then add(TYPES[PAD[d]]) end
-end
-function on_chord(c)
-  if c=="ne" then roll()
-  elseif c=="se" then if #tray>0 then tray[#tray]=nil rolled=false sfx("back") end
-  elseif c=="sw" then tray={} rolled=false sfx("back") end
+  if d=="ok" then add(TYPES[cur])
+  elseif d=="left" then cur=(cur-2)%#TYPES+1 sfx("tick") lab()
+  elseif d=="right" then cur=cur%#TYPES+1 sfx("tick") lab()
+  elseif d=="up" then roll()
+  elseif d=="down" then if #tray>0 then tray[#tray]=nil rolled=false sfx("back") end end
 end
 function on_shake() roll() end
 function update(dt)
@@ -53,11 +48,11 @@ function draw()
     local j=rolling>0 and math.random(-2,2) or 0
     token(x+j,y,40,d)
   end
-  if n==0 then text("toque nos pads para",W//2,150,C.mute,12,CENTER) text("adicionar dados",W//2,168,C.mute,12,CENTER) end
+  if n==0 then text("escolha o tipo e toque",W//2,150,C.mute,12,CENTER) text("em OK para adicionar",W//2,168,C.mute,12,CENTER) end
   if rolled then
     local sum=0 for _,d in ipairs(tray) do sum=sum+(d.v or 0) end
     text("Total "..sum,W//2,262,C.accent,22,CENTER)
   else
-    text(n.." dado"..(n==1 and "" or "s"),W//2,264,C.mute,12,CENTER)
+    text(n.." dado"..(n==1 and "" or "s").." · tipo: "..nm(TYPES[cur]),W//2,264,C.mute,12,CENTER)
   end
 end

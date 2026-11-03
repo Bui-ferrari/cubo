@@ -9,17 +9,15 @@ end
 function on_enter()
   refresh_colors()
   if sel>_app_count() then sel=1 end
-  labels("Abrir","Próximo","Ajustes","Anterior","OK","Loja","") repeat_pads("")
+  labels("Ajustes","Loja","Anterior","Próximo","Abrir") repeat_pads("")
 end
 function on_pad(d)
   local n=_app_count()
-  if d=="w" then sel=(sel-2)%n+1 sfx("tick")
-  elseif d=="e" then sel=sel%n+1 sfx("tick")
-  elseif d=="n" then sfx("confirm") _launch(sel)
-  elseif d=="s" then sfx("tick") _launch_settings() end
-end
-function on_chord(c)
-  if c=="ne" then sfx("confirm") _launch(sel) elseif c=="se" then sfx("tick") _launch_store() end
+  if d=="left" then sel=(sel-2)%n+1 sfx("tick")
+  elseif d=="right" then sel=sel%n+1 sfx("tick")
+  elseif d=="ok" then sfx("confirm") _launch(sel)
+  elseif d=="up" then sfx("tick") _launch_settings()
+  elseif d=="down" then sfx("tick") _launch_store() end
 end
 function on_shake() shake_t=1.3 sfx("shake") end
 function update(dt) t=t+dt if shake_t>0 then shake_t=shake_t-dt end end

@@ -2,7 +2,7 @@ local ITEMS={"Skin","Rótulos","Inclinar","Volume","Brilho","Wi-Fi","Voltar"}
 local sel=1
 local SKINS={"Cubo","Criya","PokePlace","Obirô"}
 local LAB={"de frente","por jogador"}
-function on_enter() refresh_colors() labels("Acima","Mais","Abaixo","Menos","OK") repeat_pads("") end
+function on_enter() refresh_colors() labels("Acima","Abaixo","Menos","Mais","OK") repeat_pads("") end
 local function change(dir)
   local k=ITEMS[sel]
   if k=="Skin" then _set("theme",(_get("theme")+dir)%4) refresh_colors() sfx("tick")
@@ -15,12 +15,11 @@ local function change(dir)
   else sfx("back") end
 end
 function on_pad(d)
-  if d=="n" then sel=(sel-2)%#ITEMS+1 sfx("tick")
-  elseif d=="s" then sel=sel%#ITEMS+1 sfx("tick")
-  elseif d=="e" then change(1)
-  elseif d=="w" then change(-1) end
+  if d=="up" then sel=(sel-2)%#ITEMS+1 sfx("tick")
+  elseif d=="down" then sel=sel%#ITEMS+1 sfx("tick")
+  elseif d=="right" or d=="ok" then change(1)
+  elseif d=="left" then change(-1) end
 end
-function on_chord(c) if c=="ne" then change(1) end end
 local function value(k)
   if k=="Skin" then return SKINS[_get("theme")+1]
   elseif k=="Rótulos" then return LAB[_get("label")+1]
