@@ -19,7 +19,7 @@ for n in order+[k for k in files if k not in order]:
     if meta.get('desc'): a+=f' data-desc="{html.escape(meta["desc"])}"'
     blocks.append(f'<script type="text/x-lua" id="app-{n}" {a}>\n{src}</script>')
 import json
-for pd in sorted(glob.glob(d+'/packs/*/'),key=lambda x:(['futebol','debater','double'].index(os.path.basename(x.rstrip('/'))) if os.path.basename(x.rstrip('/')) in ['futebol','debater','double'] else 99)):
+for pd in sorted(glob.glob(d+'/packs/*/'),key=lambda x:(['futebol','debater','double','catan','dixit','dnd','mtg','xadrez'].index(os.path.basename(x.rstrip('/'))) if os.path.basename(x.rstrip('/')) in ['futebol','debater','double','catan','dixit','dnd','mtg','xadrez'] else 99)):
     pid=os.path.basename(pd.rstrip('/'))
     meta=dict(re.findall(r'^(\w+): (.*)$',open(pd+'pack.txt').read(),re.M))
     p={'name':meta['name'],'icon':meta['icon'],'desc':meta.get('desc',''),'uses':[u.strip() for u in meta.get('uses','').split(',') if u.strip()],'micros':[],'slides':''}

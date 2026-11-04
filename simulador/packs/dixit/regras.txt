@@ -1,0 +1,17 @@
+Como jogar
+DEMONSTRAÇÃO: resumo livre, só para mostrar o pacote. Para jogar de verdade, use o manual oficial do Dixit. Jogo de cartas ilustradas para 3 a 6 pessoas.
+---
+1. Preparação
+Cada pessoa recebe 6 cartas e um peão no zero da trilha; a meta é 30 pontos. O narrador escolhe uma carta e diz uma pista: palavra, frase ou som. Nem óbvia, nem impossível.
+---
+2. As cartas
+Cada outra pessoa escolhe, da própria mão, a carta que melhor combina com a pista. As cartas são embaralhadas e viradas na mesa.
+---
+3. Votação
+Todos, menos o narrador, apontam qual carta acham que é a dele. No cubo, use Contar votos e anote quem acertou e quantos votos cada carta recebeu.
+---
+4. Pontos
+Se todos ou ninguém acertarem: narrador 0 e os outros 2 pontos. Senão: narrador e quem acertou ganham 3. Cada voto na carta de outra pessoa vale 1 ponto extra, até 3.
+---
+5. Fim
+Passa a vez do narrador para a esquerda. Vence quem chegar primeiro à meta. O cubo mantém a trilha e o rodízio.

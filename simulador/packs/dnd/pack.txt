@@ -1,0 +1,5 @@
+name: D&D
+icon: ............/.....ff...../....ffff..../...ffWWff.../..ffWaaWff../.ffWaaaaWff./.ffWaaaaWff./..ffWaaWff../...ffWWff.../....ffff..../.....ff...../............
+desc: Demonstração
+skin: 2
+uses: dice

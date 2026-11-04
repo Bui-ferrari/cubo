@@ -1,0 +1,4 @@
+name: Dixit
+icon: ............/..ffffffff../..fWWWWWWf../..fWWaaWWf../..fWaWWWWf../..fWaWWbWf../..fWaWWWWf../..fWWaaWWf../..fWWWWWWf../..ffffffff../............/............
+desc: Demonstração · jogo de cartas
+skin: 1

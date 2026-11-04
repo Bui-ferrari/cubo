@@ -1,0 +1,14 @@
+Demonstração
+Este pacote é um EXEMPLO do cubo, com um resumo livre das ideias de Catan. Não substitui o livro de regras do jogo.
+---
+Objetivo
+Construir e crescer no tabuleiro para ser o primeiro a chegar a 10 pontos de vitória. Colônias valem 1 ponto, cidades valem 2.
+---
+Seu turno
+Role os dois dados: quem tem construção ao lado de uma região com aquele número recebe o recurso. Depois você pode trocar e construir.
+---
+Ladrão
+Se a soma for 7, ninguém recebe recursos. Quem tem mais de 7 cartas descarta metade, e o jogador da vez move o ladrão e rouba uma carta.
+---
+Prêmios
+Maior estrada e maior exército valem 2 pontos cada e mudam de dono quando alguém passa o atual. O app Pontos soma tudo para você.

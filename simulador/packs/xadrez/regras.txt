@@ -1,0 +1,17 @@
+Como jogar
+DEMONSTRAÇÃO: pacote de exemplo do cubo. O relógio cuida do tempo dos dois lados: as pretas ficam em cima e as brancas embaixo.
+---
+1. O relógio
+Cada jogador tem um tempo total. Ao terminar o lance, aperta o botão do seu lado: o seu relógio para e o do adversário começa. Quem zera o tempo perde (bandeira caída).
+---
+2. Acréscimo
+Fischer: a cada lance feito, o jogador ganha alguns segundos de volta. Atraso: o relógio espera alguns segundos antes de começar a descontar em cada lance.
+---
+3. Ritmos
+Bullet é 1 minuto. Blitz 3+2: 3 minutos mais 2 segundos por lance. Rápida 10 ou 15+10. Clássica 90+30. O primeiro número é o tempo, o segundo o acréscimo.
+---
+4. Empates
+Sem captura nem lance de peão em 50 lances, quem está na vez pode pedir empate. O mesmo vale se a mesma posição se repetir 3 vezes. O app Regra dos 50 ajuda a contar.
+---
+5. Cores
+As brancas começam. O app Sorteio de cor aponta com a seta quem joga de brancas.

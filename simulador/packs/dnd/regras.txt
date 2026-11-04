@@ -1,0 +1,17 @@
+D&D em 1 minuto
+DEMONSTRAÇÃO: resumo livre e simplificado, feito só para mostrar o cubo. Consulte o livro oficial para as regras de verdade.
+---
+1. A história
+DEMONSTRAÇÃO: uma pessoa, o mestre, descreve o mundo e os desafios. As outras interpretam heróis e dizem o que seus personagens tentam fazer.
+---
+2. O d20 decide
+DEMONSTRAÇÃO: quando o resultado é incerto, o jogador rola um d20, soma o modificador do herói e compara com uma dificuldade definida pelo mestre.
+---
+3. Vantagem e desvantagem
+DEMONSTRAÇÃO: com vantagem rola-se dois d20 e vale o maior. Com desvantagem vale o menor. O cubo faz isso no app D20.
+---
+4. Combate
+DEMONSTRAÇÃO: todos rolam iniciativa para definir a ordem. Na sua vez, cada um age; o dano reduz os pontos de vida do alvo.
+---
+5. Pontos de vida
+DEMONSTRAÇÃO: ao chegar a zero, o personagem cai. Use o app Pontos de vida para somar dano e cura sem papel.

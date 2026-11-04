@@ -1,0 +1,4 @@
+name: Xadrez
+icon: ............/.....ff...../....ffff..../....ffff..../.....ff...../....ffff..../.....ff...../....ffff..../...ffffff.../..ffffffff../..ffffffff../............
+desc: Demonstração: relógio de partida
+skin: 2

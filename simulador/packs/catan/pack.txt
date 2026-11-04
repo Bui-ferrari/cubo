@@ -1,0 +1,5 @@
+name: Catan
+icon: ............/....ffff..../..ffaaaaff../.faaaaaaaaf./faaaaWWaaaaf/faaaWWWWaaaf/faaaaWWaaaaf/.faaaaaaaaf./..ffaaaaff../....ffff..../............/............
+desc: Demonstração: companion de Catan
+skin: 0
+uses: quem

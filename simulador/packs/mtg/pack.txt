@@ -1,0 +1,5 @@
+name: Magic (MTG)
+icon: ....ffff..../..ffaaaaff../.ffaaaaaaff./.faaaWWaaaf./ffaaWWWWaaff/faaaWWWWaaaf/faaaWWWWaaaf/ffaaWWWWaaff/.faaaWWaaaf./.ffaaaaaaff./..ffaaaaff../....ffff....
+desc: Demonstração
+skin: 2
+uses: timer

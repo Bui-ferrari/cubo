@@ -17,12 +17,14 @@ function text(s,x,y,c,size,align,rot) _text(tostring(s),x,y,c or C.fg,size or 16
 -- número de dado centrado no ponto (cx,cy); sublinha 6 e 9 (e números que os contêm) para dar a orientação
 function numtext(v,cx,cy,c,size,rot)
   local s=tostring(v) c=c or C.fg size=size or 16
-  local flip=((rot or 0)%360)==180
-  if flip then text(s,cx,cy,c,size,CENTER,rot) else text(s,cx,cy-size//2-1,c,size,CENTER) end
+  local r=((rot or 0)%360)
+  if r==0 then text(s,cx,cy-size//2-1,c,size,CENTER) else text(s,cx,cy,c,size,CENTER,r) end
   if s:find("[69]") then
-    local w=text_width(s,size) local t=math.max(2,size//10)
-    local y=flip and (cy-size//2-t-1) or (cy+size//2+1)
-    rect(cx-w//2,y,w,t,c)
+    local w=text_width(s,size) local t=math.max(2,size//10) local d=size//2+1
+    if r==0 then rect(cx-w//2,cy+d,w,t,c)
+    elseif r==180 then rect(cx-w//2,cy-d-t,w,t,c)
+    elseif r==90 then rect(cx-d-t,cy-w//2,t,w,c)
+    elseif r==270 then rect(cx+d,cy-w//2,t,w,c) end
   end
 end
 function tri(x1,y1,x2,y2,x3,y3,c) _tri(x1,y1,x2,y2,x3,y3,c or C.fg) end

@@ -1,0 +1,14 @@
+Magic (demo)
+DEMONSTRAÇÃO: este pacote é um exemplo do que o cubo faz. As regras abaixo são um resumo livre, não oficial. Use o livro de regras de verdade.
+---
+Objetivo
+Cada jogador começa com 20 de vida (40 no Commander). Você perde se a vida chegar a 0, se comprar de um grimório vazio, ou ao receber 10 marcadores de veneno.
+---
+Estrutura do turno
+Todo turno tem sete etapas, sempre na mesma ordem: desvirar, manutenção, compra, fase principal 1, combate, fase principal 2 e final. O app Fases acompanha isso.
+---
+Combate
+Quem joga o turno ataca com criaturas. Quem defende escolhe bloqueadores. Depois o dano é causado ao mesmo tempo. O dano em jogador tira vida.
+---
+Commander
+Quatro jogadores, 40 de vida. Cada deck tem um comandante. Se um mesmo comandante causar 21 de dano a um jogador, esse jogador perde. O app Commander registra isso.
