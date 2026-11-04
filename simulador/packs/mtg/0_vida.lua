@@ -1,5 +1,6 @@
 -- name: Vida 1x1
 -- icon: ............/.rrrr..rrrr./rrrrrrrrrrrr/rrrrrrrrrrrr/rrrrrrrrrrrr/.rrrrrrrrrr./..rrrrrrrr../...rrrrrr.../....rrrr..../.....rr...../............/............
+-- orient: fixed
 -- Duelo de dois: azul em cima, vermelho embaixo. Cima/baixo aplicam o passo no jogador daquele lado.
 local BLUE,RED=rgb(0x3E,0x7A,0xA7),rgb(0xD6,0x45,0x45)
 local PC={BLUE,RED}

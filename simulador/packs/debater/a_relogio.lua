@@ -1,5 +1,6 @@
 -- name: Rodadas
 -- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............
+-- orient: fixed
 -- DeBater: 3 turnos. Em cada turno um jogador fala (20 ou 30 s) e depois o outro; a plateia vota.
 -- Jogador de cima = azul, jogador de baixo = vermelho. Antes do 3º turno: carta de KO.
 -- Ganha quem somar mais votos nos 3 turnos.

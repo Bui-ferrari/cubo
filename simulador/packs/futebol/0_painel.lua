@@ -1,5 +1,6 @@
 -- name: Painel de jogo
 -- icon: ............/.ffffffffff./.f..ffff..f./.ffffffffff./............/.bbbb..W.a..a/.bbbb..W.a..a/............/.oooo..W.aaaa/.oooo..W.a..a/.oooo..W.a..a/............
+-- orient: fixed
 -- Tudo numa tela: tempo da partida, placar azul x laranja e os dois dados.
 local BLUE,ORANGE=rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B)
 local DUR={20,30}

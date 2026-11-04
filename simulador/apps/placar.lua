@@ -1,5 +1,6 @@
 -- name: Placar
 -- icon: .....ff.....f/....f..f.../...f....f.../....f..f..../.....ff...../.ff.......ff./f..f.....f..f/f..f.....f..f/.ff.......ff./.....ff...../....f..f..../.....ff.....
+-- orient: fixed
 -- Um jogador por lado do cubo. Cada número fica virado para o seu jogador.
 local sc={0,0,0,0}   -- up, right, down, left
 local mode=1           -- 1 = +1, 2 = -1, 3 = zerar jogador

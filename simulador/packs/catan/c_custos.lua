@@ -1,5 +1,6 @@
 -- name: Custos
 -- icon: ............/.....aa...../....aaaa..../...aaaaaa.../..aaaaaaaa../..a.aaaa.a../..a.a..a.a../..aaaaaaaa../............/............/............/............
+-- layout: both
 -- Cartinha de consulta: quanto custa construir. Toque em Ler para ouvir.
 local R={mad={"Madeira",rgb(0x2E,0x7D,0x32)},tij={"Tijolo",rgb(0xC0,0x50,0x2D)},la={"Lã",rgb(0x8C,0xC6,0x3F)},tri={"Trigo",rgb(0xD9,0xA8,0x1E)},min={"Minério",rgb(0x6E,0x7B,0x88)}}
 local ITEMS={
@@ -25,21 +26,27 @@ local function icon(k,cx,cy)
 end
 function draw()
   clear() decor()
+  local P=portrait()
   local it=ITEMS[i]
-  text(it[1],W//2,34,C.fg,(#it[1]>12) and 16 or 22,CENTER)
-  icon(it[5],W//2,92)
   local c=it[2]
-  local tw,gap=42,6
-  local x0=W//2-(#c*tw+(#c-1)*gap)//2
+  local tw,gap=P and 42 or 36,P and 6 or 4
+  local tx=P and W//2 or X0+60
+  text(it[1],tx,P and 34 or Y0+6,C.fg,(#it[1]>12) and 16 or 22,CENTER)
+  icon(it[5],tx,P and 92 or Y0+72)
+  local x0,yc
+  if P then x0=W//2-(#c*tw+(#c-1)*gap)//2 yc=150
+  else x0=X0+CW-(4*tw+3*gap)+(4-#c)*(tw+gap)//2 yc=Y0+44 end
   for k=1,#c do
     local r=R[c[k][1]]
     local x=x0+(k-1)*(tw+gap)
-    rect(x,150,tw,tw,r[2],10)
-    numtext(c[k][2],x+tw//2,171,rgb(255,255,255),24)
-    text(r[1],x+tw//2,196,C.fg,10,CENTER)
+    rect(x,yc,tw,tw,r[2],10)
+    numtext(c[k][2],x+tw//2,yc+tw//2,rgb(255,255,255),P and 24 or 20)
+    text(r[1],x+tw//2,yc+tw+4,C.fg,P and 10 or 9,CENTER)
   end
-  text(it[3],W//2,222,C.mute,11,CENTER)
+  text(it[3],P and W//2 or X0+CW//2,P and 222 or Y1-42,C.mute,11,CENTER)
+  local dy=P and 262 or Y1-12
   for k=1,#ITEMS do
-    if k==i then circle(W//2+(k-2.5)*16,262,5,C.accent) else ring(W//2+(k-2.5)*16,262,4,C.mute,2) end
+    local dx=(P and W//2 or X0+CW//2)+(k-2.5)*16
+    if k==i then circle(dx,dy,5,C.accent) else ring(dx,dy,4,C.mute,2) end
   end
 end

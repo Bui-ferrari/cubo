@@ -1,5 +1,6 @@
 -- name: Batata quente
 -- icon: ............/............/....kkkkk...../...krrrrrk..../..krrrrrrrk.../..krrrrrrrk.../..krrrrrrrk.../...krrrrrk..../....kkkkk...../............/............/............
+-- layout: both
 -- store: 1
 -- Passe o cubo de mão em mão. Quem estiver com ele quando estourar, perde.
 local state="idle"
@@ -22,12 +23,21 @@ function draw()
   local hot=state=="run" and 1-left/total or 0
   clear(state=="done" and (math.floor(boom*6)%2==0 and C.bad or C.bg) or C.bg)
   if state~="done" then decor() end
-  text("Batata quente",W//2,34,C.fg,20,CENTER)
+  local port=portrait()
+  local cx,cy
+  if port then cx,cy=W//2,160 else cx,cy=X0+104,Y0+CH//2+4 end
+  if port then text("Batata quente",W//2,34,C.fg,20,CENTER)
+  else text("Batata quente",X1-66,Y0+4,C.fg,16,CENTER) end
   local r=50+math.floor(hot*26)+((state=="run") and math.floor(math.sin(left*(6+hot*30))*3) or 0)
-  circle(W//2,160,r,state=="done" and C.warn or (hot>0.66 and C.bad or (hot>0.33 and C.warn or C.accent)))
-  ring(W//2,160,r,C.fg,3)
-  if state=="idle" then text("toque em Iniciar",W//2,150,C.bg,14,CENTER)
-  elseif state=="run" then text("passa!",W//2,148,C.bg,22,CENTER)
-  else text("BUM!",W//2,140,C.fg,34,CENTER) end
-  text(state=="done" and "quem estava com ele perdeu" or "tempo escondido",W//2,262,C.mute,12,CENTER)
+  circle(cx,cy,r,state=="done" and C.warn or (hot>0.66 and C.bad or (hot>0.33 and C.warn or C.accent)))
+  ring(cx,cy,r,C.fg,3)
+  if state=="idle" then text("toque em Iniciar",cx,cy-10,C.bg,14,CENTER)
+  elseif state=="run" then text("passa!",cx,cy-12,C.bg,22,CENTER)
+  else text("BUM!",cx,cy-20,C.fg,34,CENTER) end
+  local foot=state=="done" and "quem estava com ele perdeu" or "tempo escondido"
+  if port then text(foot,W//2,262,C.mute,12,CENTER)
+  else
+    if state=="done" then text("quem estava com",X1-66,Y0+96,C.mute,12,CENTER) text("ele perdeu",X1-66,Y0+112,C.mute,12,CENTER)
+    else text(foot,X1-66,Y0+104,C.mute,12,CENTER) end
+  end
 end

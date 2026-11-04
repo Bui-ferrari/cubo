@@ -1,5 +1,6 @@
 -- name: Fases do turno
 -- icon: ............/.ffffffffff./............/.aaaaaaaaaa./............/.ffffffffff./............/.ffffffffff./............/.ffffffffff./............/............
+-- layout: both
 -- Sete etapas do turno, uma vez para cada jogador. Direita avança, esquerda volta, OK passa o turno.
 local BLUE,RED=rgb(0x3E,0x7A,0xA7),rgb(0xD6,0x45,0x45)
 local PC={BLUE,RED}
@@ -32,14 +33,18 @@ end
 function update(dt) if armed>0 then armed=armed-dt if armed<=0 then armed=0 lab() end end end
 function draw()
   clear() decor()
-  rect(X0,30,CW,34,PC[who],12)
+  local land=landscape()
   local w=rgb(255,255,255)
-  text("Turno "..turn.." · vez do "..PN[who],W//2,38,w,14,CENTER)
+  rect(X0,land and Y0 or 30,CW,34,PC[who],12)
+  text("Turno "..turn.." · vez do "..PN[who],W//2,(land and Y0 or 30)+8,w,14,CENTER)
+  local cw=land and (CW-8)//2 or CW
   for r=1,7 do
-    local y=70+(r-1)*32
+    local x,y
+    if land then x=X0+((r-1)//4)*(cw+8) y=Y0+40+((r-1)%4)*36
+    else x=X0 y=70+(r-1)*32 end
     local on=(r==ph)
-    if on then rect(X0,y,CW,28,PC[who],10) else frame(X0,y,CW,28,C.mute,10,1) end
-    text(r,X0+16,y+6,on and w or C.mute,16,CENTER)
-    text(PH[r],X0+36,y+6,on and w or C.fg,16,LEFT)
+    if on then rect(x,y,cw,28,PC[who],10) else frame(x,y,cw,28,C.mute,10,1) end
+    text(r,x+16,y+6,on and w or C.mute,16,CENTER)
+    text(PH[r],x+36,y+6,on and w or C.fg,land and 14 or 16,LEFT)
   end
 end

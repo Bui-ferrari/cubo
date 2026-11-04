@@ -1,6 +1,7 @@
 W,H=240,320
 X0,Y0,X1,Y1=26,26,214,294
 CW,CH=188,268
+ROT=0   -- para quem o texto está virado: 0, 90, 180 ou 270 (só muda em apps '-- layout: both')
 LEFT,CENTER,RIGHT=0,1,2
 C=setmetatable({},{__index=function(t,k) local v=_theme(k) rawset(t,k,v) return v end})
 function refresh_colors() for k in pairs(C) do C[k]=nil end end
@@ -32,10 +33,12 @@ function poly(x,y,r,n,rot,c,fill,t) _poly(x,y,r,n,rot or 0,c or C.fg,fill and 1 
 -- decoração de canto de cada skin (quarto de círculo, canto cortado, barras)
 function decor()
   local d=_theme("decor")
-  if d==0 then circle(0,320,58,C.deco)
-  elseif d==1 then tri(240,0,240,56,240-56*1.4466,0,C.deco)
-  else rect(0,296,38,5,C.deco) rect(0,304,56,5,C.deco) rect(0,312,74,5,C.deco) end
+  if d==0 then circle(0,H,58,C.deco)
+  elseif d==1 then tri(W,0,W,56,W-56*1.4466,0,C.deco)
+  else rect(0,H-24,38,5,C.deco) rect(0,H-16,56,5,C.deco) rect(0,H-8,74,5,C.deco) end
 end
+function portrait() return H>=W end
+function landscape() return W>H end
 -- Pads (6, sem combinar toques). Nomes lógicos que o app recebe em on_pad(d): "up","down","left","right","ok".
 -- "back" (Voltar) é do sistema: sobe um nível e nunca chega ao app.
 -- labels(cima, baixo, esquerda, direita, ok): texto de cada pad na borda da tela. Vazio = pad sem função.

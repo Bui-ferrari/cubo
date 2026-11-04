@@ -1,5 +1,6 @@
 -- name: Narrador
 -- icon: ............/....ffff..../..ff....ff../.f..aa....f./.f.aaaa...f./f..aaaa....f/f...aa.....f/.f........f./.f........f./..ff....ff../....ffff..../............
+-- layout: both
 -- Sorteia quem narra e conta o tempo para pensar na pista (DEMONSTRAÇÃO).
 local COL={rgb(0xD6,0x45,0x45),rgb(0x3E,0x7A,0xA7),rgb(0x4F,0xA7,0x60),rgb(0xF2,0xC2,0x30),rgb(0xD9,0x6B,0xB0),rgb(0xEC,0x66,0x3B)}
 local NAME={"Vermelho","Azul","Verde","Amarelo","Rosa","Laranja"}
@@ -57,8 +58,15 @@ end
 local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%d:%02d",s//60,s%60) end
 function draw()
   clear() decor()
-  text("Quem narra?",W//2,32,C.mute,14,CENTER)
-  local cx,cy,R=W//2,130,58
+  local P=portrait()
+  local cx,cy,R,rx
+  if P then
+    text("Quem narra?",W//2,32,C.mute,14,CENTER)
+    cx,cy,R=W//2,130,58
+  else
+    text("Quem narra?",X0+CW//2,Y0+2,C.mute,14,CENTER)
+    cx,cy,R,rx=X0+72,Y0+100,50,X0+209
+  end
   for p=1,n do
     local a=math.rad(-90+(p-1)*360/n)
     local x,y=cx+math.cos(a)*R,cy+math.sin(a)*R
@@ -66,16 +74,37 @@ function draw()
     if on then circle(x,y,20,C.fg) end
     circle(x,y,on and 16 or 12,COL[p])
   end
-  if phase=="setup" then
-    numtext(n,cx,cy,C.fg,36)
-    text("jogadores · OK sorteia",W//2,222,C.mute,12,CENTER)
-  elseif phase=="spin" then
-    text("sorteando...",W//2,222,C.mute,14,CENTER)
+  local late=(phase=="done") and (math.floor(flash*3)%2==0)
+  if P then
+    if phase=="setup" then
+      numtext(n,cx,cy,C.fg,36)
+      text("jogadores · OK sorteia",W//2,222,C.mute,12,CENTER)
+    elseif phase=="spin" then
+      text("sorteando...",W//2,222,C.mute,14,CENTER)
+    else
+      rect(X0,208,CW,54,COL[cur],14)
+      text("narrador",W//2,214,WHITE,10,CENTER)
+      text(NAME[cur],W//2,228,WHITE,22,CENTER)
+      text(phase=="done" and "hora de escolher a carta!" or (fmt(tleft).."  para a pista"),W//2,274,late and C.bad or C.accent,phase=="done" and 12 or 16,CENTER)
+    end
   else
-    rect(X0,208,CW,54,COL[cur],14)
-    text("narrador",W//2,214,WHITE,10,CENTER)
-    text(NAME[cur],W//2,228,WHITE,22,CENTER)
-    local late=(phase=="done") and (math.floor(flash*3)%2==0)
-    text(phase=="done" and "hora de escolher a carta!" or (fmt(tleft).."  para a pista"),W//2,274,late and C.bad or C.accent,phase=="done" and 12 or 16,CENTER)
+    if phase=="setup" then
+      numtext(n,cx,cy,C.fg,36)
+      text("jogadores",rx,Y0+70,C.mute,12,CENTER)
+      text("OK sorteia",rx,Y0+90,C.mute,12,CENTER)
+    elseif phase=="spin" then
+      text("sorteando...",rx,Y0+80,C.mute,14,CENTER)
+    else
+      rect(rx-59,Y0+30,118,54,COL[cur],14)
+      text("narrador",rx,Y0+36,WHITE,10,CENTER)
+      text(NAME[cur],rx,Y0+50,WHITE,20,CENTER)
+      if phase=="done" then
+        text("hora de escolher",rx,Y0+104,late and C.bad or C.accent,12,CENTER)
+        text("a carta!",rx,Y0+120,late and C.bad or C.accent,12,CENTER)
+      else
+        text(fmt(tleft),rx,Y0+102,C.accent,24,CENTER)
+        text("para a pista",rx,Y0+130,C.mute,11,CENTER)
+      end
+    end
   end
 end

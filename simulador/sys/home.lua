@@ -1,3 +1,4 @@
+-- layout: both
 local sel=1
 local t=0
 local shake_t=0
@@ -24,30 +25,39 @@ function update(dt) t=t+dt if shake_t>0 then shake_t=shake_t-dt end end
 function draw()
   clear()
   decor()
-  -- rosto
+  local land=landscape()
+  -- rosto (centro do rosto em fx,fy; desenhado em torno de 120,~65 no formato vertical)
+  local fx,fy=W//2,46
+  if land then fx,fy=W//4+8,70 end
+  local dx,dy=fx-120,fy-46
   local look=math.floor(math.sin(t*0.9)*4)
   local blink=(math.floor(t*10)%36)==0
   if shake_t>0 then
-    line(62,52,84,74,C.fg,5) line(84,52,62,74,C.fg,5)
-    line(156,52,178,74,C.fg,5) line(178,52,156,74,C.fg,5)
-    arc(120,100,10,0,360,C.fg,4)
+    line(62+dx,52+dy,84+dx,74+dy,C.fg,5) line(84+dx,52+dy,62+dx,74+dy,C.fg,5)
+    line(156+dx,52+dy,178+dx,74+dy,C.fg,5) line(178+dx,52+dy,156+dx,74+dy,C.fg,5)
+    arc(120+dx,100+dy,10,0,360,C.fg,4)
   else
-    if blink then rect(62,62,22,4,C.fg,2) rect(156,62,22,4,C.fg,2)
+    if blink then rect(62+dx,62+dy,22,4,C.fg,2) rect(156+dx,62+dy,22,4,C.fg,2)
     else
-      rect(62,46,22,30,C.fg,10) rect(156,46,22,30,C.fg,10)
-      rect(68+look,52,8,8,C.bg,4) rect(162+look,52,8,8,C.bg,4)
+      rect(62+dx,46+dy,22,30,C.fg,10) rect(156+dx,46+dy,22,30,C.fg,10)
+      rect(68+look+dx,52+dy,8,8,C.bg,4) rect(162+look+dx,52+dy,8,8,C.bg,4)
     end
-    arc(120,88,14,20,160,C.fg,5)
+    arc(120+dx,88+dy,14,20,160,C.fg,5)
   end
   -- cartão do app
   local n=_app_count()
-  rect(72,132,96,100,C.mute,18)
-  rect(72,128,96,100,C.panel,18)
-  frame(72,128,96,100,C.accent,18,3)
-  pixels(84,140,6,icon_rows(sel))
-  text(_app_name(sel),W//2,242,C.fg,20,CENTER)
+  local cx,cy,ny,py=W//2,128,242,278
+  if land then cx,cy,ny,py=W*3//4-8,56,162,206 end
+  rect(cx-48,cy+4,96,100,C.mute,18)
+  rect(cx-48,cy,96,100,C.panel,18)
+  frame(cx-48,cy,96,100,C.accent,18,3)
+  pixels(cx-36,cy+12,6,icon_rows(sel))
+  if land then
+    local ls=wrap(_app_name(sel),16,2*(X1-cx))
+    for k,l in ipairs(ls) do if k<=2 then text(l,cx,ny+(k-1)*18,C.fg,16,CENTER) end end
+  else text(_app_name(sel),cx,ny,C.fg,20,CENTER) end
   for i=1,n do
-    local x=W//2-(n*14)//2+(i-1)*14+7
-    circle(x,278,i==sel and 4 or 3,i==sel and C.accent or C.mute)
+    local x=cx-(n*14)//2+(i-1)*14+7
+    circle(x,py,i==sel and 4 or 3,i==sel and C.accent or C.mute)
   end
 end

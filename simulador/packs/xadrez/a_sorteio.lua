@@ -1,5 +1,6 @@
 -- name: Sorteio de cor
 -- icon: ............/....ffff..../..ffWWWWff../.ffWWaaWWff./.fWWWaaWWWf./.fWWaaaaWWf./.fWWWaaWWWf./.ffWWaaWWff./..ffWWWWff../....ffff..../............/............
+-- orient: fixed
 -- A seta gira e aponta quem joga de brancas. Em cima = lado das pretas, embaixo = lado das brancas.
 local ang,ang0,total,T,el,lasttick=90,90,0,2.6,0,0
 local phase="idle"     -- idle, spin, done

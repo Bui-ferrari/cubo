@@ -1,5 +1,6 @@
 -- name: Commander 4
 -- icon: ............/a....a....a./aa..aaa..aa./aaa.aaa.aaa./aaaaaaaaaaaa/aaaaaaaaaaaa/aaaaaaaaaaaa/.bbbbbbbbbb./............/............/............/............
+-- orient: fixed
 -- Quatro jogadores, 40 de vida. OK troca o modo; cada jogador aperta o pad do seu lado.
 -- Comandante: aperte o pad de quem ataca e depois o de quem recebe.
 local COL={rgb(0x3E,0x7A,0xA7),rgb(0xD6,0x45,0x45),rgb(0x4F,0xA3,0x6B),rgb(0xE0,0xA8,0x2E)}

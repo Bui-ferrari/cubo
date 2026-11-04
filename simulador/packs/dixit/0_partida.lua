@@ -1,5 +1,6 @@
 -- name: Partida
 -- icon: ............/..ffffffff../..fWWWWWWf../..fWWaaWWf../..fWaWWWWf../..fWaWWbWf../..fWaWWWWf../..fWWaaWWf../..fWWWWWWf../..ffffffff../............/............
+-- layout: both
 -- Dixit: rodízio de narrador, votação guiada, pontos automáticos e trilha até a meta (DEMONSTRAÇÃO).
 local COL={rgb(0xD6,0x45,0x45),rgb(0x3E,0x7A,0xA7),rgb(0x4F,0xA7,0x60),rgb(0xF2,0xC2,0x30),rgb(0xD9,0x6B,0xB0),rgb(0xEC,0x66,0x3B)}
 local NAME={"Vermelho","Azul","Verde","Amarelo","Rosa","Laranja"}
@@ -86,89 +87,155 @@ function on_pad(d)
 end
 function update(dt) fx=fx+dt end
 -- uma linha de jogador: bolinha, nome, barra de progresso, pontos (e ganho)
-local function row(p,y,h,showgain,mark)
+local function row(p,x,y,w,h,showgain,mark)
   local cy=y+h//2
-  if mark then frame(X0,y,CW,h-2,C.accent,8,2) end
-  circle(X0+14,cy,8,COL[p])
-  text(NAME[p],X0+28,cy-6,C.fg,12)
-  rect(X0+100,cy-4,50,8,C.panel,3)
-  local w=math.floor(50*math.min(1,sc[p]/meta))
-  if w>0 then rect(X0+100,cy-4,w,8,COL[p],3) end
-  numtext(sc[p],X0+168,cy,C.fg,16)
-  if showgain and gain[p]>0 then text("+"..gain[p],X1-2,cy-6,C.accent,12,RIGHT) end
+  if mark then frame(x,y,w,h-2,C.accent,8,2) end
+  circle(x+14,cy,8,COL[p])
+  text(NAME[p],x+28,cy-6,C.fg,12)
+  local bw=math.min(50,w-138)
+  if bw>=16 then
+    rect(x+100,cy-4,bw,8,C.panel,3)
+    local f=math.floor(bw*math.min(1,sc[p]/meta))
+    if f>0 then rect(x+100,cy-4,f,8,COL[p],3) end
+    numtext(sc[p],x+w-20,cy,C.fg,16)
+  else
+    numtext(sc[p],x+w-(showgain and 46 or 20),cy,C.fg,16)
+  end
+  if showgain and gain[p]>0 then text("+"..gain[p],x+w-2,cy-6,C.accent,12,RIGHT) end
 end
-local function list(y0,h,showgain)
-  for p=1,n do row(p,y0+(p-1)*h,h,showgain,(phase=="round" and p==narr())) end
+local function list(y0,h,showgain,x,w)
+  x=x or X0 w=w or CW
+  for p=1,n do row(p,x,y0+(p-1)*h,w,h,showgain,(phase=="round" and p==narr())) end
 end
-local function track()
+local function track(y0)
   local cw=24
-  local x0=(W-7*cw)//2
-  local y0=120
+  local cols=portrait() and 7 or 11
+  local x0=X0+(CW-cols*cw)//2
   for i=0,meta do
-    local cx,cy=x0+(i%7)*cw,y0+(i//7)*cw
+    local cx,cy=x0+(i%cols)*cw,y0+(i//cols)*cw
     local fin=(i==meta)
     rect(cx+1,cy+1,cw-2,cw-2,fin and C.accent or C.panel,4)
     if i%5==0 then text(i,cx+cw//2,cy+7,fin and C.bg or C.mute,9,CENTER) end
   end
   for p=1,n do
     local s=math.min(meta,sc[p])
-    local cx,cy=x0+(s%7)*cw,y0+(s//7)*cw
+    local cx,cy=x0+(s%cols)*cw,y0+(s//cols)*cw
     local k=p-1
     circle(cx+5+(k%3)*7,cy+7+(k//3)*10,3,COL[p])
   end
 end
 local function token(p,x,y,r) circle(x,y+2,r,C.mute) circle(x,y,r,COL[p]) ring(x,y,r,WHITE,2) end
 local function badge(p,x,y,r) circle(x,y,r,WHITE) circle(x,y,r-5,COL[p]) end
+local function lines(s,size,cx,y,maxw,c)
+  for _,l in ipairs(wrap(s,size,maxw)) do text(l,cx,y,c,size,CENTER) y=y+size+3 end
+end
 function draw()
   clear() decor()
+  local P=portrait()
+  local cx=X0+CW//2
   if phase=="setup" then
-    text("Dixit",W//2,32,C.accent,18,CENTER)
-    text("Quantos jogam?",W//2,62,C.mute,12,CENTER)
-    numtext(n,W//2,104,C.fg,40)
-    for p=1,n do token(p,W//2+(p-1-(n-1)/2)*30,160,12) end
-    text("Meta",W//2,198,C.mute,12,CENTER)
-    numtext(meta,W//2,228,C.fg,28)
-    text("pontos",W//2,250,C.mute,11,CENTER)
+    if P then
+      text("Dixit",cx,32,C.accent,18,CENTER)
+      text("Quantos jogam?",cx,62,C.mute,12,CENTER)
+      numtext(n,cx,104,C.fg,40)
+      for p=1,n do token(p,cx+(p-1-(n-1)/2)*30,160,12) end
+      text("Meta",cx,198,C.mute,12,CENTER)
+      numtext(meta,cx,228,C.fg,28)
+      text("pontos",cx,250,C.mute,11,CENTER)
+    else
+      local lx,rx=X0+70,X0+CW-64
+      text("Dixit",cx,Y0+2,C.accent,16,CENTER)
+      text("Quantos jogam?",lx,Y0+34,C.mute,12,CENTER)
+      numtext(n,lx,Y0+78,C.fg,40)
+      for p=1,n do token(p,lx+(p-1-(n-1)/2)*21,Y0+132,9) end
+      text("Meta",rx,Y0+34,C.mute,12,CENTER)
+      numtext(meta,rx,Y0+78,C.fg,32)
+      text("pontos",rx,Y0+102,C.mute,11,CENTER)
+    end
   elseif phase=="round" then
     local nr=narr()
-    text("Rodada "..round,W//2,30,C.mute,12,CENTER)
-    rect(X0,48,CW,52,COL[nr],14)
-    badge(nr,X0+30,74,15)
-    text("Narrador",X0+54,58,WHITE,10)
-    text(NAME[nr],X0+54,72,WHITE,22)
-    if trail then track() else list(110,26,false) end
-    text("depois das cartas: contar votos",W//2,274,C.mute,10,CENTER)
+    if P then
+      text("Rodada "..round,cx,30,C.mute,12,CENTER)
+      rect(X0,48,CW,52,COL[nr],14)
+      badge(nr,X0+30,74,15)
+      text("Narrador",X0+54,58,WHITE,10)
+      text(NAME[nr],X0+54,72,WHITE,22)
+      if trail then track(120) else list(110,26,false) end
+      text("depois das cartas: contar votos",cx,274,C.mute,10,CENTER)
+    else
+      text("Rodada "..round,cx,Y0+2,C.mute,12,CENTER)
+      if trail then
+        rect(X0,Y0+20,CW,40,COL[nr],12)
+        badge(nr,X0+24,Y0+40,12)
+        text("Narrador "..NAME[nr],X0+46,Y0+32,WHITE,16)
+        track(Y0+70)
+      else
+        rect(X0,Y0+20,124,64,COL[nr],14)
+        badge(nr,X0+24,Y0+52,13)
+        text("Narrador",X0+44,Y0+34,WHITE,10)
+        text(NAME[nr],X0+44,Y0+50,WHITE,16)
+        lines("depois das cartas: contar votos",10,X0+62,Y0+96,124,C.mute)
+        list(Y0+20,24,false,X0+136,132)
+      end
+    end
   elseif phase=="vote" then
     local p,nr=voters[vi],narr()
-    text("Votação · narrador "..NAME[nr],W//2,30,C.mute,11,CENTER)
-    rect(X0,48,CW,56,COL[p],14)
-    badge(p,X0+30,76,15)
-    text("Carta de",X0+54,58,WHITE,10)
-    text(NAME[p],X0+54,72,WHITE,22)
-    text("Acertou o narrador?",W//2,120,C.mute,12,CENTER)
     local yes=ans[p]
-    rect(X0+34,138,CW-68,34,yes and C.ok or C.panel,14)
-    text(yes and "SIM" or "NÃO",W//2,148,yes and WHITE or C.mute,18,CENTER)
-    text("Votos na carta dele",W//2,190,C.mute,12,CENTER)
-    numtext(vts[p],W//2,232,C.fg,36)
-    text(vi.." de "..#voters,W//2,274,C.mute,11,CENTER)
+    if P then
+      text("Votação · narrador "..NAME[nr],cx,30,C.mute,11,CENTER)
+      rect(X0,48,CW,56,COL[p],14)
+      badge(p,X0+30,76,15)
+      text("Carta de",X0+54,58,WHITE,10)
+      text(NAME[p],X0+54,72,WHITE,22)
+      text("Acertou o narrador?",cx,120,C.mute,12,CENTER)
+      rect(X0+34,138,CW-68,34,yes and C.ok or C.panel,14)
+      text(yes and "SIM" or "NÃO",cx,148,yes and WHITE or C.mute,18,CENTER)
+      text("Votos na carta dele",cx,190,C.mute,12,CENTER)
+      numtext(vts[p],cx,232,C.fg,36)
+      text(vi.." de "..#voters,cx,274,C.mute,11,CENTER)
+    else
+      local rx=X0+CW-60
+      text("Votação · narrador "..NAME[nr],cx,Y0+2,C.mute,11,CENTER)
+      rect(X0,Y0+20,140,52,COL[p],14)
+      badge(p,X0+26,Y0+46,13)
+      text("Carta de",X0+48,Y0+30,WHITE,10)
+      text(NAME[p],X0+48,Y0+44,WHITE,18)
+      text("Acertou o narrador?",X0+70,Y0+84,C.mute,11,CENTER)
+      rect(X0+10,Y0+104,120,34,yes and C.ok or C.panel,14)
+      text(yes and "SIM" or "NÃO",X0+70,Y0+112,yes and WHITE or C.mute,18,CENTER)
+      lines("Votos na carta dele",11,rx,Y0+30,116,C.mute)
+      numtext(vts[p],rx,Y0+96,C.fg,44)
+      text(vi.." de "..#voters,rx,Y1-14,C.mute,11,CENTER)
+    end
   elseif phase=="result" then
-    text("Pontos da rodada "..round,W//2,30,C.mute,12,CENTER)
-    list(52,28,true)
-    text(note,W//2,236,C.mute,10,CENTER)
-    text("erro? use Refazer",W//2,274,C.mute,10,CENTER)
+    if P then
+      text("Pontos da rodada "..round,cx,30,C.mute,12,CENTER)
+      list(52,28,true)
+      text(note,cx,236,C.mute,10,CENTER)
+      text("erro? use Refazer",cx,274,C.mute,10,CENTER)
+    else
+      local rx=X0+CW-44
+      text("Pontos da rodada "..round,cx,Y0+2,C.mute,12,CENTER)
+      list(Y0+22,26,true,X0,176)
+      lines(note,10,rx,Y0+30,86,C.mute)
+      lines("erro? use Refazer",10,rx,Y1-30,86,C.mute)
+    end
   else
     local top=0 for p=1,n do if sc[p]>top then top=sc[p] end end
     local win={}
     for p=1,n do if sc[p]==top then win[#win+1]=p end end
     local names={} for _,p in ipairs(win) do names[#names+1]=NAME[p] end
-    text("Fim da partida",W//2,30,C.mute,12,CENTER)
-    local bw=CW//#win
-    for k,p in ipairs(win) do rect(X0+(k-1)*bw,48,bw,64,COL[p],(#win==1) and 14 or 4) end
     local pulse=(math.floor(fx*4)%2==0)
-    frame(X0,48,CW,64,pulse and WHITE or C.accent,14,3)
-    text(table.concat(names," e "),W//2,58,WHITE,#win>2 and 14 or 20,CENTER)
-    text(#win>1 and "EMPATE" or "VENCEU",W//2,86,WHITE,14,CENTER)
-    list(124,28,false)
+    local by,bh=P and 48 or Y0+20,P and 64 or 52
+    text("Fim da partida",cx,P and 30 or Y0+2,C.mute,12,CENTER)
+    local bw=CW//#win
+    for k,p in ipairs(win) do rect(X0+(k-1)*bw,by,bw,bh,COL[p],(#win==1) and 14 or 4) end
+    frame(X0,by,CW,bh,pulse and WHITE or C.accent,14,3)
+    text(table.concat(names," e "),cx,by+10,WHITE,#win>2 and 14 or 20,CENTER)
+    text(#win>1 and "EMPATE" or "VENCEU",cx,by+bh-26,WHITE,14,CENTER)
+    if P then list(124,28,false)
+    else
+      for p=1,n do row(p,X0+((p-1)//3)*138,Y0+82+((p-1)%3)*26,130,26,false,false) end
+    end
   end
 end

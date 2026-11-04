@@ -1,5 +1,6 @@
 -- name: Reflexo
 -- icon: ............/.....aa...../....aaaa..../...aaaaaa.../............/.aa..aa..aa./.aa..aa..aa./............/...aaaaaa.../....aaaa..../.....aa...../............
+-- orient: fixed
 -- store: 1
 -- Um jogador por lado. Espere o VAI! e toque no seu pad primeiro. Cedo demais = fora da rodada.
 local state="idle"     -- idle, wait, go, done

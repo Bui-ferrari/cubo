@@ -1,5 +1,6 @@
 -- name: Tempo de jogo
 -- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............
+-- layout: both
 local DUR={20,30}
 local di=1
 local state="set"   -- set, run, pause, done
@@ -31,7 +32,9 @@ function draw()
   local bg=C.bg
   if state=="done" and math.floor(flash*3)%2==0 then bg=C.accent end
   clear(bg) if bg==C.bg then decor() end
-  text("Tempo de jogo",W//2,34,C.mute,14,CENTER)
-  text(fmt(left),W//2,110,C.fg,56,CENTER)
-  text(state=="set" and (DUR[di].." minutos") or (state=="run" and "valendo" or (state=="pause" and "em pausa" or "apito final!")),W//2,190,state=="done" and C.fg or C.accent,16,CENTER)
+  local cx,cy=W//2,H//2
+  local ty=landscape() and cy-40 or cy-50
+  text("Tempo de jogo",cx,Y0+8,C.mute,14,CENTER)
+  text(fmt(left),cx,ty,C.fg,56,CENTER)
+  text(state=="set" and (DUR[di].." minutos") or (state=="run" and "valendo" or (state=="pause" and "em pausa" or "apito final!")),cx,ty+80,state=="done" and C.fg or C.accent,16,CENTER)
 end

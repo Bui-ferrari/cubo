@@ -1,5 +1,6 @@
 -- name: Pontos de vida
 -- icon: ............/..ff..ff..../.fWWffWWf.../.fWWWWWWf.../.fWWWWWWf.../..fWWWWf..../...fWWf...../....ff....../............/............/............/............
+-- layout: both
 -- Conta os pontos de vida do herói. Dano e cura em passos de 1 e 5. Fica salvo.
 local hp=tonumber(recall("pv",20)) or 20
 local mx=tonumber(recall("pvmax",20)) or 20
@@ -32,21 +33,38 @@ function on_shake() end
 function update(dt) if flash>0 then flash=flash-dt end end
 function draw()
   clear() decor()
+  local land=landscape()
+  local cx=W//2
   local frac=mx>0 and hp/mx or 0
   local col=(hp==0) and C.bad or (frac>0.5 and C.ok or (frac>0.25 and C.warn or C.bad))
-  text(edit and "Máximo de PV" or "Pontos de vida",W//2,34,C.mute,14,CENTER)
+  text(edit and "Máximo de PV" or "Pontos de vida",cx,land and Y0 or 34,C.mute,14,CENTER)
   local jit=flash>0 and math.random(-2,2) or 0
-  numtext(edit and mx or hp,W//2+jit,128,flash>0 and fcol or ((hp==0 and not edit) and C.bad or C.fg),72)
+  local ncol=flash>0 and fcol or ((hp==0 and not edit) and C.bad or C.fg)
+  if land then
+    numtext(edit and mx or hp,cx+jit,Y0+62,ncol,72)
+    if not edit then
+      text("de "..mx,cx,Y0+104,C.mute,16,CENTER)
+      local bw=CW-20 local by=Y0+CH-62
+      rect(X0+10,by,bw,22,C.panel,10)
+      if hp>0 then rect(X0+10,by,math.max(10,math.floor(bw*frac)),22,col,10) end
+      frame(X0+10,by,bw,22,C.fg,10,2)
+      text((hp==0) and "CAÍDO" or (frac<=0.5 and "ferido" or "em forma"),cx,by+30,col,16,CENTER)
+    else
+      text("cima/baixo: passos de 5",cx,Y0+118,C.mute,11,CENTER)
+      text("laterais: passos de 1",cx,Y0+136,C.mute,11,CENTER)
+    end
+    return
+  end
+  numtext(edit and mx or hp,cx+jit,128,ncol,72)
   if not edit then
-    text("de "..mx,W//2,178,C.mute,16,CENTER)
+    text("de "..mx,cx,178,C.mute,16,CENTER)
     local bw=CW-20
     rect(X0+10,206,bw,22,C.panel,10)
     if hp>0 then rect(X0+10,206,math.max(10,math.floor(bw*frac)),22,col,10) end
     frame(X0+10,206,bw,22,C.fg,10,2)
-    local st=(hp==0) and "CAÍDO" or (frac<=0.5 and "ferido" or "em forma")
-    text(st,W//2,244,col,16,CENTER)
+    text((hp==0) and "CAÍDO" or (frac<=0.5 and "ferido" or "em forma"),cx,244,col,16,CENTER)
   else
-    text("pad cima/baixo: passos de 5",W//2,200,C.mute,11,CENTER)
-    text("laterais: passos de 1",W//2,218,C.mute,11,CENTER)
+    text("pad cima/baixo: passos de 5",cx,200,C.mute,11,CENTER)
+    text("laterais: passos de 1",cx,218,C.mute,11,CENTER)
   end
 end

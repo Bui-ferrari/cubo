@@ -1,5 +1,6 @@
 -- name: Duelo de dados
 -- icon: ............/.bbbbbb....../.bWbbbb....../.bbbWbb....../.bbbbbb....../.bbbbbb.oooooo/........oWoooo/........oooWoo/........oooooo/........oooooo/............/............
+-- orient: fixed
 -- Dois dados prontos, um em cada ponta. Cada jogador toca no seu lado e o maior vence.
 local BLUE,ORANGE=rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B)
 local PIPS={[1]={{.5,.5}},[2]={{.25,.25},{.75,.75}},[3]={{.25,.25},{.5,.5},{.75,.75}},[4]={{.25,.25},{.75,.25},{.25,.75},{.75,.75}},

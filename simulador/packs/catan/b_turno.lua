@@ -1,5 +1,6 @@
 -- name: Tempo de turno
 -- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............
+-- layout: both
 -- Cronômetro de turno opcional, com a cor do jogador da vez e contagem de rodadas.
 local NAMES={"Vermelho","Azul","Laranja","Branco"}
 local COLS={rgb(0xD6,0x45,0x45),rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B),rgb(0xF4,0xEE,0xE4)}
@@ -40,10 +41,18 @@ end
 local function fmt(s) s=math.max(0,math.ceil(s)) return string.format("%d:%02d",s//60,s%60) end
 function draw()
   clear() decor()
+  local P=portrait()
   local fg=(cur==4) and C.fg or rgb(255,255,255)
-  rect(X0,30,CW,40,COLS[cur],14)
-  text(NAMES[cur],W//2,40,fg,20,CENTER)
-  local cx,cy,r=W//2,176,78
+  local cx,cy,r
+  if P then
+    rect(X0,30,CW,40,COLS[cur],14)
+    text(NAMES[cur],W//2,40,fg,20,CENTER)
+    cx,cy,r=W//2,176,78
+  else
+    rect(X0,Y0+2,CW,34,COLS[cur],14)
+    text(NAMES[cur],X0+CW//2,Y0+9,fg,20,CENTER)
+    cx,cy,r=X0+78,Y0+112,58
+  end
   ring(cx,cy,r,C.panel,10)
   local frac=(dur>0) and (left/dur) or 0
   local urgent=(left<=10 and state~="set")
@@ -51,8 +60,20 @@ function draw()
   if cur==4 then col=urgent and C.bad or C.mute end
   if frac>0.005 then arc(cx,cy,r,-90,-90+360*frac,col,10) end
   local blink=(state=="done" and math.floor(fl*3)%2==0)
-  text(fmt(left),cx,cy-22,blink and C.bad or C.fg,44,CENTER)
+  local fs=P and 44 or 34
+  text(fmt(left),cx,cy-(P and 22 or 18),blink and C.bad or C.fg,fs,CENTER)
   local st=({set="toque em Iniciar",run="valendo",pause="em pausa",done="tempo!"})[state]
-  text(st,cx,cy+30,urgent and C.bad or C.mute,12,CENTER)
-  text("rodada "..rnd,W//2,cy+r+10,C.mute,11,CENTER)
+  text(st,cx,cy+(P and 30 or 22),urgent and C.bad or C.mute,12,CENTER)
+  if P then
+    text("rodada "..rnd,W//2,cy+r+10,C.mute,11,CENTER)
+  else
+    local x=X0+170
+    text("rodada "..rnd,x+49,Y0+46,C.mute,12,CENTER)
+    for k=1,4 do
+      local y=Y0+68+(k-1)*28
+      rect(x,y,98,24,COLS[k],8)
+      if k==cur then frame(x-3,y-3,104,30,C.fg,10,2) end
+      text(NAMES[k],x+10,y+6,(k==4) and C.fg or rgb(255,255,255),12)
+    end
+  end
 end

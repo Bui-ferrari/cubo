@@ -1,5 +1,6 @@
 -- name: Dados
 -- icon: ............/.aaaaaaaaaa./.affaaaaffa./.affaaaaffa./.aaaaaaaaaa./.aaaaffaaaa./.aaaaffaaaa./.aaaaaaaaaa./.affaaaaffa./.affaaaaffa./.aaaaaaaaaa./............
+-- layout: both
 local TYPES={2,3,4,6,8,10,12,20,100}
 local ti,qty=4,2
 local vals={}
@@ -60,22 +61,32 @@ end
 function draw()
   clear() decor()
   local t=TYPES[ti]
-  text(t==2 and "Moeda" or ("d"..t),W//2,34,C.fg,24,CENTER)
-  text("x"..qty,W//2,60,C.mute,16,CENTER)
-  local cols=qty==1 and 1 or (qty<=4 and 2 or 3)
+  local land=landscape()
+  local title=t==2 and "Moeda" or ("d"..t)
+  local ay,ah
+  if land then
+    text(title.."  x"..qty,W//2,Y0+2,C.fg,22,CENTER)
+    ay,ah=Y0+32,Y1-Y0-32-30
+  else
+    text(title,W//2,34,C.fg,24,CENTER)
+    text("x"..qty,W//2,60,C.mute,16,CENTER)
+    ay,ah=92,190
+  end
+  local cols
+  if land then cols=qty<=4 and qty or 3 else cols=qty==1 and 1 or (qty<=4 and 2 or 3) end
   local rows=math.ceil(qty/cols)
-  local s=math.min(CW//cols-12,196//rows-12,100)
+  local s=math.min(CW//cols-12,ah//rows-12,100)
   local gw=cols*(s+12)-12
   local gx=X0+(CW-gw)//2
-  local gy=92+(190-(rows*(s+12)-12))//2
+  local gy=ay+(ah-(rows*(s+12)-12))//2
   for i=1,qty do
     local c=(i-1)%cols local r=(i-1)//cols
     die(gx+c*(s+12),gy+r*(s+12),s,vals[i] or 1,t)
   end
   if rolling<=0 and qty>1 and t~=2 then
     local sum=0 for i=1,qty do sum=sum+(vals[i] or 0) end
-    text("Total "..sum,W//2,272,C.accent,20,CENTER)
+    text("Total "..sum,W//2,Y1-22,C.accent,20,CENTER)
   else
-    text(rolling>0 and "rolando..." or "chacoalhe ou toque em Rolar",W//2,276,C.mute,11,CENTER)
+    text(rolling>0 and "rolando..." or "chacoalhe ou toque em Rolar",W//2,Y1-18,C.mute,11,CENTER)
   end
 end

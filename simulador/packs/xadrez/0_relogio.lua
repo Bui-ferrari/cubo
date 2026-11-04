@@ -1,5 +1,6 @@
 -- name: Relógio de xadrez
 -- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............
+-- orient: fixed
 -- Em cima = pretas, embaixo = brancas. As brancas começam. Cada jogador aperta o botão do seu lado para passar a vez.
 -- Fischer: ganha o acréscimo ao jogar. Atraso: o relógio espera o acréscimo antes de descontar.
 local PRESETS={{"Bullet",60,0},{"Blitz",180,2},{"Rápida",600,0},{"Rápida",900,10},{"Clássica",5400,30}}

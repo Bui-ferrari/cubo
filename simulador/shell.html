@@ -104,6 +104,7 @@ body.full{padding-block:8px}
  <div class="controls">
   <button class="btn primary" id="bShake">Chacoalhar</button>
   <button class="btn" id="bHome">Menu</button>
+  <button class="btn" id="bRot" title="Gira o texto da tela para outro jogador (também: tecla R)">Girar tela: <span id="rotTxt">vertical</span></button>
   <button class="btn" id="bMotion" aria-pressed="false">Sensor do celular</button>
   <button class="btn primary" id="bPerm">Permitir sensor e microfone</button>
  </div>
@@ -113,6 +114,7 @@ body.full{padding-block:8px}
 
 <div class="side">
  <div class="card"><h2>Como usar</h2><ul>
+  <li><b>Girar tela:</b> o texto vira para o jogador do lado que o aparelho for inclinado (com o sensor ligado e Ajustes &gt; Virar tela em "inclinar"). No computador use o botão "Girar tela" ou a tecla R. Apps de dois jogadores com texto espelhado ficam fixos.</li>
   <li><b>6 pads, sem combinar dois toques:</b> cima, baixo, esquerda (em cima), direita (em cima), OK (embaixo à direita) e Voltar (embaixo à esquerda).</li>
   <li><b>Voltar</b> sempre sobe um nível: mini-app → menu do jogo → Menu. Ele é do sistema: nenhum app usa esse pad para outra coisa.</li>
   <li>Os rótulos nas bordas da tela mostram o que cada pad faz agora. Pad sem rótulo não faz nada naquele app.</li>
@@ -168,12 +170,38 @@ if(!F){statusEl.textContent='Não foi possível carregar o interpretador Lua.';r
 const {lua,lauxlib,lualib,to_luastring,to_jsstring}=F;
 const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
 ctx.imageSmoothingEnabled=false;
-const W=240,H=320;
+const W=240,H=320;            // tela física (sempre vertical)
+let LW=240,LH=320;            // tela lógica que o app enxerga (320 x 240 quando o conteúdo está deitado)
+let RV=0;                     // para quem o texto está virado: 0 = jogador de baixo, 90 = jogador da esquerda, 180 = de cima, 270 = da direita
+let appLayout='portrait',appFixed=false;   // meta do app: '-- layout: both' e '-- orient: fixed'
+const effRot=()=>appFixed?0:RV;
+let BASEX=null,APPX=null;
+function setupXform(){
+  const r=effRot();
+  ctx.setTransform(1,0,0,1,0,0);
+  if(r===90)ctx.transform(0,1,-1,0,W,0);
+  else if(r===180)ctx.transform(-1,0,0,-1,W,H);
+  else if(r===270)ctx.transform(0,-1,1,0,0,H);
+  LW=(r===90||r===270)?H:W;LH=(r===90||r===270)?W:H;
+  BASEX=ctx.getTransform();
+  if(appLayout!=='both'&&(r===90||r===270)){   // app antigo (só vertical): cabe na área útil, reduzido
+    const sc=188/268;
+    ctx.translate(LW/2,LH/2);ctx.scale(sc,sc);ctx.translate(-W/2,-H/2);
+  }
+  APPX=ctx.getTransform();
+}
+function luaDims(){
+  if(appLayout==='both'){
+    const r=effRot(),l=(r===90||r===270);
+    runChunk('W,H='+(l?H:W)+','+(l?W:H)+' X0,Y0=26,26 X1,Y1=W-26,H-26 CW,CH=X1-X0,Y1-Y0 ROT='+r,'dims');
+  }else runChunk('ROT=0','dims');
+}
+function setRot(v){v=((v%360)+360)%360;if(v===RV)return;RV=v;if(L)luaDims();}
 const LIMITS={appBytes:32768,saveBytes:512,frameMs:200};
 const $=id=>document.getElementById(id);
 
 /* ---------- configurações (persistem no navegador) ---------- */
-const S={theme:0,label:0,vol:3,bright:5,tilt:0,pads:4,inv:0};
+const S={theme:0,label:0,vol:3,bright:5,tilt:0,pads:4,inv:0,orient:1};
 try{const j=JSON.parse(localStorage.getItem('cubo:settings')||'{}');for(const k in S) if(typeof j[k]==='number') S[k]=j[k];}catch(e){}
 function saveSettings(){try{localStorage.setItem('cubo:settings',JSON.stringify(S));}catch(e){}}
 function applyBright(){cv.style.filter='brightness('+(0.4+0.12*S.bright)+')';}
@@ -268,7 +296,7 @@ function pstr(Ls,v){lua.lua_pushstring(Ls,to_luastring(v));return 1;}
 const n_=(Ls,i)=>lua.lua_tonumber(Ls,i);
 
 function bindApi(){
-  reg('_clear',Ls=>{ctx.fillStyle=q(n_(Ls,1));ctx.fillRect(0,0,W,H);return 0;});
+  reg('_clear',Ls=>{ctx.save();ctx.setTransform(BASEX);ctx.fillStyle=q(n_(Ls,1));ctx.fillRect(0,0,LW,LH);ctx.restore();return 0;});
   reg('_rect',Ls=>{const x=n_(Ls,1),y=n_(Ls,2),w=n_(Ls,3),h=n_(Ls,4),c=q(n_(Ls,5)),fill=n_(Ls,6),lw=n_(Ls,8)||2;let r=n_(Ls,7);
     r=r*(TH().rscale);
     if(r>0){path(x,y,w,h,r);}else{ctx.beginPath();ctx.rect(x,y,w,h);}
@@ -358,9 +386,10 @@ function startApp(id,srcOverride,nameOverride){
   if(id==='home'){curPack=null;packSkin=null;}
   try{speechSynthesis.cancel();}catch(e){}
   if(SYS[id])src=SYS[id];else if(srcOverride)src=srcOverride;else{const a=apps.find(a=>a.id===id);src=a.src;curName=a.name;}
+  appLayout=/^-- layout: *both/m.test(src)?'both':'portrait';appFixed=/^-- orient: *fixed/m.test(src);
   appBytes=new Blob([src]).size;
   if(appBytes>LIMITS.appBytes)lastErr='app passa de 32 KB ('+appBytes+' bytes)';
-  else if(runChunk(SYS.sdk,'sdk')&&runChunk(src,id)) callLua('on_enter');
+  else if(runChunk(SYS.sdk,'sdk')&&(luaDims(),true)&&runChunk(src,id)) callLua('on_enter');
   lastTick=performance.now();
 }
 function goHome(){startApp('home');}
@@ -380,7 +409,7 @@ function onMotion(e){
   devG=[(a.x||0)/9.81,(a.y||0)/9.81,(a.z||0)/9.81];
   const m=Math.hypot(a.x||0,a.y||0,a.z||0);
   if(m>26&&performance.now()-lastShakeAt>900){doShake();armed=false;pk=null;return;}
-  if(S.tilt)tiltStep();
+  if(S.tilt||S.orient)tiltStep();
 }
 /* Inclinar = apertar o lado para onde o aparelho pende. Relativo à posição de repouso (calibrada),
    dispara uma vez por inclinada e só rearma ao voltar. Diagonal (dois eixos) = canto. */
@@ -403,6 +432,7 @@ function tiltStep(){
   else if(Math.abs(py)>T)dir=py>0?'n':'s';
   if(!dir)return;
   armed=false;
+  if(S.orient){setRot({s:0,w:90,n:180,e:270}[dir]);return;}     // virar a tela para o jogador do lado que foi inclinado
   {const pd=dir==='e'?'en':dir==='w'?'wn':dir;flash[pd]=performance.now();tap(pd,1);}
 }
 const bMotion=$('bMotion'),motionMsg=$('motionMsg'),sInfo=$('sensorInfo'),sLive=$('sensorLive');
@@ -424,7 +454,7 @@ $('bCal').addEventListener('click',()=>{calReq=true;armed=true;pk=null;sLive.tex
 const bInv=$('bInv');bInv.setAttribute('aria-pressed',S.inv?'true':'false');
 bInv.addEventListener('click',()=>{S.inv=S.inv?0:1;bInv.setAttribute('aria-pressed',S.inv?'true':'false');saveSettings();});
 setInterval(()=>{
-  if(devOn&&nMot>0){motionMsg.textContent='Sensor ligado: '+rateN+' leituras/s';sLive.textContent=(S.tilt?'inclinação x '+tiltVis[0].toFixed(2)+'  y '+tiltVis[1].toFixed(2):'inclinação desligada (Ajustes > Inclinar)');}
+  if(devOn&&nMot>0){motionMsg.textContent='Sensor ligado: '+rateN+' leituras/s';sLive.textContent=((S.tilt||S.orient)?'inclinação x '+tiltVis[0].toFixed(2)+'  y '+tiltVis[1].toFixed(2):'inclinação desligada (Ajustes)');}
   rateN=0;
 },1000);
 packs.forEach(p=>{const b=document.createElement('button');b.className='btn';b.textContent=p.name;b.addEventListener('click',()=>{ensureAudio();qrInstall(p);});$('qrBtns').appendChild(b);});
@@ -492,7 +522,11 @@ addEventListener('keydown',e=>{
   else if(e.key===' '){e.preventDefault();ensureAudio();doShake();}
 });
 addEventListener('keyup',e=>{if(KEYS[e.key])release(KEYS[e.key]);});
+addEventListener('keydown',e=>{if((e.key==='r'||e.key==='R')&&!e.ctrlKey&&!e.metaKey&&!/INPUT|SELECT|TEXTAREA/.test((e.target.tagName||''))){setRot(RV+90);rotLabel();}});
 $('bShake').addEventListener('click',()=>{ensureAudio();doShake();});
+function rotLabel(){const r=effRot();$('rotTxt').textContent=(r===0?'vertical':r===180?'vertical (de cabeça p/ baixo)':r===90?'horizontal (esquerda)':'horizontal (direita)')+(appFixed?' · este app fica fixo':'');}
+$('bRot').addEventListener('click',()=>{setRot(RV+90);rotLabel();});
+setInterval(rotLabel,400);
 $('bHome').addEventListener('click',()=>{ensureAudio();goHome();});
 
 /* ---------- rótulos nas bordas ---------- */
@@ -537,15 +571,25 @@ function plateRect(side){
   const x=side[0]==='w'?3:W-25,y=side[1]==='n'?30:172;
   return[x,y,22,118,side[0]==='w'?-1:1];
 }
+/* o texto de cada plaquinha fica de frente para quem está lendo (RV); na dúvida, mantém a posição de costume */
+function plateRot(vertical,o){
+  const rv=effRot()*Math.PI/180,base=(vertical?o*Math.PI/2:0)+rv;
+  let best=0,bs=-9;
+  for(const c of (vertical?[-Math.PI/2,Math.PI/2]:[0,Math.PI])){
+    const d=Math.abs(Math.atan2(Math.sin(c-base),Math.cos(c-base)));
+    const sc=Math.cos(c-rv)-d*1e-3;
+    if(sc>bs){bs=sc;best=c;}
+  }
+  return best;
+}
 function chip(side,text){
   if(!text)return;
   const on=!!down[side]||performance.now()-(flash[side]||0)<180;
-  const byPlayer=S.label===1;
   const [x,y,w0,h0,o]=plateRect(side);
   const [ic,label]=iconFor(String(text));
   const vertical=o!==0;
   const L=vertical?h0:w0,T=vertical?w0:h0;              // L = lado de leitura, T = espessura
-  let rot=vertical?(byPlayer?-o:o)*Math.PI/2:((side==='n'&&byPlayer)?Math.PI:0);
+  const rot=plateRot(vertical,o);
   const BASE=ctx.getTransform();
   ctx.save();
   ctx.translate(x+w0/2,y+h0/2);ctx.rotate(rot);
@@ -593,10 +637,10 @@ function quarter(side,text){
 }
 function errorOverlay(){
   if(!lastErr)return;
-  ctx.fillStyle='rgba(120,20,20,.92)';ctx.fillRect(0,H-120,W,100);
+  ctx.fillStyle='rgba(120,20,20,.92)';ctx.fillRect(0,LH-120,LW,100);
   ctx.fillStyle='#fff';ctx.font=FONT(11);ctx.textAlign='left';ctx.textBaseline='top';
   const words=('ERRO: '+lastErr).match(/.{1,34}/g)||[];
-  words.slice(0,7).forEach((l,i)=>ctx.fillText(l,8,H-114+i*13));
+  words.slice(0,7).forEach((l,i)=>ctx.fillText(l,8,LH-114+i*13));
 }
 
 /* ---------- laço de quadros (30 por segundo) ---------- */
@@ -607,11 +651,16 @@ function frame(t){
   if(acc<1/30)return;
   const step=acc;acc=0;
   const a=performance.now();
+  setupXform();
+  ctx.save();ctx.setTransform(APPX);
   if(!lastErr||cur){callLua('update',step);callLua('draw');}
+  ctx.restore();
   ms+=performance.now()-a;frames++;
+  ctx.save();ctx.setTransform(1,0,0,1,0,0);
   chip('n',labs.n);chip('s',labs.s);chip('wn',labs.wn);chip('en',labs.en);chip('es',labs.es);chip('ws',cur==='home'?'':labs.ws);
-  errorOverlay();
-  if(performance.now()<noticeUntil){ctx.save();path(20,128,200,56,14*TH().rscale);ctx.fillStyle=q(themeColor('accent'));ctx.fill();ctx.fillStyle=q(themeColor('bg'));ctx.textAlign='center';ctx.textBaseline='middle';const ln=notice.split('|');ln.forEach((t,i)=>{ctx.font=FONT(i?15:11);ctx.fillText(t,120,ln.length>1?(i?165:143):156);});ctx.restore();}
+  ctx.restore();
+  ctx.save();ctx.setTransform(BASEX);errorOverlay();ctx.restore();
+  if(performance.now()<noticeUntil){ctx.save();ctx.setTransform(BASEX);ctx.translate((LW-240)/2,(LH-320)/2);path(20,128,200,56,14*TH().rscale);ctx.fillStyle=q(themeColor('accent'));ctx.fill();ctx.fillStyle=q(themeColor('bg'));ctx.textAlign='center';ctx.textBaseline='middle';const ln=notice.split('|');ln.forEach((t,i)=>{ctx.font=FONT(i?15:11);ctx.fillText(t,120,ln.length>1?(i?165:143):156);});ctx.restore();}
   if(t-statT>1000){
     const nm=({home:'Menu',settings:'Ajustes',store:'Loja',packmenu:curPack&&curPack.name,slides:'Regras'})[cur]||curName;
     statusEl.innerHTML='<b>'+nm+'</b> · '+(appBytes/1024).toFixed(1).replace('.',',')+' KB de 32 · '+(ms/Math.max(1,frames)).toFixed(1).replace('.',',')+' ms por quadro';
@@ -619,6 +668,6 @@ function frame(t){
   }
 }
 Promise.race([Promise.all(THEMES.map(k=>document.fonts.load(k.wt+' 16px "'+k.font+'"'))),new Promise(r=>setTimeout(r,1500))]).then(()=>{goHome();requestAnimationFrame(frame);});
-window.__cubo={startApp,onMotion,tiltStep,S,get splitApp(){return splitApp;},qr:id=>qrInstall(packs.find(p=>p.id===id)),packs,get curPack(){return curPack&&curPack.id;},goUp,press,release,doShake,setTheme:i=>{S.theme=i;cc.clear();saveSettings();},wifiGo,installed,get err(){return lastErr;},get cur(){return cur;},S,apps};
+window.__cubo={get rot(){return RV;},setRot,startApp,onMotion,tiltStep,S,get splitApp(){return splitApp;},qr:id=>qrInstall(packs.find(p=>p.id===id)),packs,get curPack(){return curPack&&curPack.id;},goUp,press,release,doShake,setTheme:i=>{S.theme=i;cc.clear();saveSettings();},wifiGo,installed,get err(){return lastErr;},get cur(){return cur;},S,apps};
 })();
 </script>

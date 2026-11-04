@@ -1,5 +1,6 @@
 -- name: Quem começa
 -- icon: ............/.....aa...../....aaaa..../...aaaaaa.../.....aa...../.....aa...../.....aa...../.....aa...../.....aa...../.....aa...../............/............
+-- orient: fixed
 -- A seta gira e aponta para o lado do jogador que começa.
 local players=4
 local SEATS={[2]={"n","s"},[3]={"s","e","w"},[4]={"n","e","s","w"}}

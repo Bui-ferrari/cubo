@@ -1,5 +1,6 @@
 -- name: Timer
 -- icon: ....ffff..../..ff....ff../.f...a....f./.f...a....f./f....a.....f/f....aaa...f/f..........f/.f........f./.f........f./..ff....ff../....ffff..../............
+-- layout: both
 local MODES={"Timer","Timer + música","Pomodoro"}
 local TENSE="a2:8 a2:8 e3:8 a2:8 a2:8 f3:8 e3:8 d3:8"
 local ALARM="a5:16 r:16 a5:16 r:16 a5:16 r:16 a5:8 r:4"
@@ -63,13 +64,14 @@ function draw()
   if state=="done" and math.floor(flash*3)%2==0 then bg=C.accent2 end
   clear(bg)
   if bg==C.bg then decor() end
-  text(mode==3 and (phase=="foco" and "Pomodoro · foco" or "Pomodoro · pausa") or MODES[mode],W//2,34,C.mute,14,CENTER)
-  local cx,cy,r=W//2,160,78
+  local land=landscape()
+  text(mode==3 and (phase=="foco" and "Pomodoro · foco" or "Pomodoro · pausa") or MODES[mode],W//2,land and Y0 or 34,C.mute,14,CENTER)
+  local cx,cy,r=W//2,land and 126 or 160,land and 66 or 78
   ring(cx,cy,r,C.panel,10)
   local frac=total>0 and remaining/total or 0
   if state~="done" and frac>0 then arc(cx,cy,r,-90,-90+360*frac,(phase=="pausa") and C.ok or C.accent,10) end
-  text(state=="done" and "00:00" or fmt(remaining),cx,cy-22,C.fg,44,CENTER)
+  text(state=="done" and "00:00" or fmt(remaining),cx,cy-(land and 20 or 22),C.fg,land and 40 or 44,CENTER)
   local msg={set="ajuste o tempo",run="correndo",pause="em pausa",done="acabou!"}
-  text(msg[state],cx,cy+34,state=="done" and C.accent or C.mute,14,CENTER)
-  if mode==2 and state~="done" then text("♪ música tensa",cx,276,C.mute,12,CENTER) end
+  text(msg[state],cx,cy+(land and 28 or 34),state=="done" and C.accent or C.mute,14,CENTER)
+  if mode==2 and state~="done" then text("♪ música tensa",cx,land and Y1-13 or Y1-18,C.mute,12,CENTER) end
 end

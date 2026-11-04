@@ -1,5 +1,6 @@
 -- name: Dados de dano
 -- icon: ............/.aaa..bbb.../.aWa..bWb.../.aaa..bbb.../............/...bb...aaa./..bWWb..aWa./...bb...aaa./............/.ffffffffff./............/............
+-- layout: both
 -- Escolha o tipo (d4 a d12) e a quantidade; role tudo e some o dano.
 local TYPES={4,6,8,10,12}
 local ti,qty=2,2
@@ -35,24 +36,44 @@ local function die(cx,cy,r,v,t)
 end
 function draw()
   clear() decor()
+  local land=landscape()
+  local cx=W//2
   local t=TYPES[ti]
-  text(qty.." x d"..t,W//2,34,C.fg,22,CENTER)
-  local cols=qty<=3 and qty or (qty<=6 and 3 or 4)
+  text(qty.." x d"..t,cx,land and Y0 or 34,C.fg,22,CENTER)
+  local done=vals[1] and rolling<=0
+  -- área dos dados: vertical = faixa central; horizontal = esquerda, com o total à direita
+  local ax,aw,ay,ah
+  if land then ax=X0 aw=CW-84 ay=Y0+30 ah=CH-34
+  else ax=X0 aw=CW ay=70 ah=150 end
+  local cols
+  if land then cols=qty<=2 and qty or (qty<=6 and 3 or 4) else cols=qty<=3 and qty or (qty<=6 and 3 or 4) end
   local rows=math.ceil(qty/cols)
-  local r=math.min(math.floor((CW/cols)/2)-6,math.floor(150/rows/2)-4,30)
-  local cw=CW//cols
+  local r=math.min(math.floor((aw/cols)/2)-6,math.floor(ah/rows/2)-4,30)
+  local cw=aw//cols
   for i=1,qty do
     local c=(i-1)%cols local rw=(i-1)//cols
     local nrow=math.min(cols,qty-rw*cols)
-    local gx=X0+(CW-nrow*cw)//2+c*cw+cw//2
-    local gy=70+rw*(2*r+12)+r+((150-(rows*(2*r+12)))//2)
+    local gx=ax+(aw-nrow*cw)//2+c*cw+cw//2
+    local gy=ay+rw*(2*r+12)+r+((ah-(rows*(2*r+12)))//2)
     die(gx,gy,r,vals[i],t)
   end
-  if vals[1] and rolling<=0 then
+  if land then
+    local rx=X1-38
+    if done then
+      local s=0 for i=1,qty do s=s+(vals[i] or 0) end
+      text("Dano total",rx,Y0+CH//2-30,C.mute,12,CENTER)
+      numtext(s,rx,Y0+CH//2,C.accent,34)
+    else
+      text(rolling>0 and "rolando..." or "OK ou",rx,Y0+CH//2-12,C.mute,12,CENTER)
+      if rolling<=0 then text("chacoalhe",rx,Y0+CH//2+4,C.mute,12,CENTER) end
+    end
+    return
+  end
+  if done then
     local s=0 for i=1,qty do s=s+(vals[i] or 0) end
-    text("Dano total",W//2,236,C.mute,12,CENTER)
-    numtext(s,W//2,266,C.accent,34)
+    text("Dano total",cx,236,C.mute,12,CENTER)
+    numtext(s,cx,266,C.accent,34)
   else
-    text(rolling>0 and "rolando..." or "OK ou chacoalhe para rolar",W//2,262,C.mute,12,CENTER)
+    text(rolling>0 and "rolando..." or "OK ou chacoalhe para rolar",cx,262,C.mute,12,CENTER)
   end
 end

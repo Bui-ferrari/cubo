@@ -1,5 +1,6 @@
 -- name: Bandeja de dados
 -- icon: ............/.aaa..bbb..../.aWa..bWb..../.aaa..bbb..../............/...bb...aaa.../..bWWb..aWa.../...bb...aaa.../............/.ffffffffff./.f........f./.ffffffffff./............
+-- layout: both
 -- Cada pad adiciona um dado de um tipo. Monte a jogada, chacoalhe e pronto.
 local TYPES={4,6,8,10,12,20,100,2}
 local SHAPE={[2]={0},[4]={3,-90},[6]={4,45},[8]={4,0},[10]={5,-90},[12]={10,-90},[20]={6,-90},[100]={0}}
@@ -40,19 +41,25 @@ local function token(x,y,s,d)
 end
 function draw()
   clear() decor()
-  text("Bandeja",W//2,32,C.fg,20,CENTER)
+  local land=landscape()
+  text("Bandeja",W//2,land and Y0 or 32,C.fg,20,CENTER)
   local n=#tray
+  local cols=land and 6 or 4
+  local pitch=46
+  local x0=X0+(CW-(cols-1)*pitch)//2
+  local y0=land and 82 or 100
   for i,d in ipairs(tray) do
-    local c=(i-1)%4 local r=(i-1)//4
-    local x=X0+24+c*46 local y=100+r*58
+    local c=(i-1)%cols local r=(i-1)//cols
+    local x=x0+c*pitch local y=y0+r*58
     local j=rolling>0 and math.random(-2,2) or 0
     token(x+j,y,40,d)
   end
-  if n==0 then text("escolha o tipo e toque",W//2,150,C.mute,12,CENTER) text("em OK para adicionar",W//2,168,C.mute,12,CENTER) end
+  if n==0 then text("escolha o tipo e toque",W//2,H//2-10,C.mute,12,CENTER) text("em OK para adicionar",W//2,H//2+8,C.mute,12,CENTER) end
+  local by=land and Y1-28 or Y1-32
   if rolled then
     local sum=0 for _,d in ipairs(tray) do sum=sum+(d.v or 0) end
-    text("Total "..sum,W//2,262,C.accent,22,CENTER)
+    text("Total "..sum,W//2,by,C.accent,22,CENTER)
   else
-    text(n.." dado"..(n==1 and "" or "s").." · tipo: "..nm(TYPES[cur]),W//2,264,C.mute,12,CENTER)
+    text(n.." dado"..(n==1 and "" or "s").." · tipo: "..nm(TYPES[cur]),W//2,by+2,C.mute,12,CENTER)
   end
 end

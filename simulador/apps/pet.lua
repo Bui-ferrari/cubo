@@ -1,5 +1,6 @@
 -- name: Bichinho
 -- icon: ............/....bbbb..../..bbbbbbbb../.bbbbbbbbbb./.bbfbbbbfbb./.bbfbbbbfbb./.bbbbbbbbbb./.bbbfbbfbbb./.bbbbffbbbb./..bbbbbbbb../...bb..bb.../............
+-- layout: both
 local food,joy,energy=70,70,70
 local sleeping=false
 local t=0
@@ -39,10 +40,10 @@ function update(dt)
   if sleeping then energy=clamp(energy+m*PER_MIN*8,0,100) food=clamp(food-m*PER_MIN*0.3,0,100)
   else food=clamp(food-m*PER_MIN,0,100) joy=clamp(joy-m*PER_MIN*0.7,0,100) energy=clamp(energy-m*PER_MIN*0.5,0,100) end
 end
-local function bar(y,label,v,c)
-  text(label,X0+2,y,C.mute,10,LEFT)
-  rect(X0+54,y+1,130,10,C.panel,5)
-  if v>2 then rect(X0+54,y+1,math.floor(130*v/100),10,c,5) end
+local function bar(x,y,bw,label,v,c)
+  text(label,x,y,C.mute,10,LEFT)
+  rect(x+52,y+1,bw,10,C.panel,5)
+  if v>2 then rect(x+52,y+1,math.floor(bw*v/100),10,c,5) end
 end
 function draw()
   clear(sleeping and C.panel or C.bg)
@@ -50,7 +51,9 @@ function draw()
   local mood=(food<25 or joy<25) and "sad" or "ok"
   local bob=math.floor(math.sin(t*3)*3)
   if act=="play" and actt>0 then bob=-math.floor(math.abs(math.sin(actt*9))*18) end
-  local px,py=W//2-64,86+bob
+  local port=portrait()
+  local px,py
+  if port then px,py=W//2-64,86+bob else px,py=X0+8,Y0+34+bob end
   local s=8
   -- corpo 16x13 (pixel art)
   local body={
@@ -87,7 +90,15 @@ function draw()
   else arc(px+64,py+56,12,20,160,C.fg,4) end
   if act=="love" and actt>0 then text("♥",px+112,py-10-math.floor((1.1-actt)*20),C.bad,24,CENTER) end
   if sleeping then text("z Z",px+120,py-14+math.floor(math.sin(t*2)*4),C.mute,20,CENTER) end
-  if act=="tired" and actt>0 then text("cansado...",W//2,70,C.mute,12,CENTER) end
-  bar(210,"fome",food,C.warn) bar(228,"alegria",joy,C.accent) bar(246,"sono",energy,C.accent2)
-  text(sleeping and "dormindo" or (mood=="sad" and "precisa de carinho" or "tudo bem"),W//2,270,C.mute,12,CENTER)
+  local st=sleeping and "dormindo" or (mood=="sad" and "precisa de carinho" or "tudo bem")
+  if port then
+    if act=="tired" and actt>0 then text("cansado...",W//2,70,C.mute,12,CENTER) end
+    bar(X0+2,210,130,"fome",food,C.warn) bar(X0+2,228,130,"alegria",joy,C.accent) bar(X0+2,246,130,"sono",energy,C.accent2)
+    text(st,W//2,270,C.mute,12,CENTER)
+  else
+    local bx=X0+154
+    if act=="tired" and actt>0 then text("cansado...",X0+72,Y0+8,C.mute,12,CENTER) end
+    bar(bx,Y0+60,64,"fome",food,C.warn) bar(bx,Y0+84,64,"alegria",joy,C.accent) bar(bx,Y0+108,64,"sono",energy,C.accent2)
+    text(st,bx+58,Y0+140,C.mute,12,CENTER)
+  end
 end

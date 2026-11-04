@@ -1,5 +1,6 @@
 -- name: Pontos
 -- icon: ............/.rrrrr....../.rrrrr.aaaa./............/.bbbbb.a..a./.bbbbb.aaaa./............/.ooooo....../.ooooo.aaaa./............/.WWWWW....../.WWWWW......
+-- layout: both
 -- Pontos de vitória de 4 jogadores, com maior estrada e maior exército (+2 cada). 10 pontos vence.
 local NAMES={"Vermelho","Azul","Laranja","Branco"}
 local COLS={rgb(0xD6,0x45,0x45),rgb(0x3E,0x7A,0xA7),rgb(0xEC,0x66,0x3B),rgb(0xF4,0xEE,0xE4)}
@@ -24,19 +25,24 @@ function on_pad(p)
   elseif p=="ok" then sel=sel%4+1 sfx("tick") end
   chk()
 end
+local function cell(i,x,y,w,h)
+  local fg=(i==4) and C.fg or rgb(255,255,255)
+  rect(x,y,w,h,COLS[i],14)
+  if i==sel then frame(x-3,y-3,w+6,h+6,C.fg,16,3) tri(x+8,y+h//2-8,x+8,y+h//2+8,x+18,y+h//2,fg) end
+  text(NAMES[i],x+24,y+8,fg,15)
+  text("base "..base[i],x+24,y+30,fg,11)
+  local bx=x+24
+  if road==i then rect(bx,y+h-16,52,12,fg,4) text("ESTRADA",bx+26,y+h-15,COLS[i],9,CENTER) bx=bx+56 end
+  if army==i then rect(bx,y+h-16,56,12,fg,4) text("EXÉRCITO",bx+28,y+h-15,COLS[i],9,CENTER) end
+  numtext(tot(i),x+w-34,y+h//2-2,fg,34)
+  if tot(i)>=10 and won==i then text("VENCEU!",x+w-34,y+4,fg,10,CENTER) end
+end
 function draw()
   clear() decor()
-  for i=1,4 do
-    local y=30+(i-1)*66
-    local fg=(i==4) and C.fg or rgb(255,255,255)
-    rect(X0,y,CW,60,COLS[i],14)
-    if i==sel then frame(X0-3,y-3,CW+6,66,C.fg,16,3) tri(X0+8,y+22,X0+8,y+38,X0+18,y+30,fg) end
-    text(NAMES[i],X0+24,y+8,fg,15)
-    text("base "..base[i],X0+24,y+30,fg,11)
-    local bx=X0+24
-    if road==i then rect(bx,y+44,52,12,fg,4) text("ESTRADA",bx+26,y+45,COLS[i],9,CENTER) bx=bx+56 end
-    if army==i then rect(bx,y+44,56,12,fg,4) text("EXÉRCITO",bx+28,y+45,COLS[i],9,CENTER) end
-    numtext(tot(i),X1-34,y+28,fg,34)
-    if tot(i)>=10 and won==i then text("VENCEU!",X1-34,y+4,fg,10,CENTER) end
+  if portrait() then
+    for i=1,4 do cell(i,X0,30+(i-1)*66,CW,60) end
+  else
+    local w,h=(CW-8)//2,(CH-8)//2
+    for i=1,4 do cell(i,X0+((i-1)%2)*(w+8),Y0+((i-1)//2)*(h+8),w,h) end
   end
 end
